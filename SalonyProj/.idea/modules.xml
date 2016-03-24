@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project version="4">
-  <component name="ProjectModuleManager">
-    <modules>
-      <module fileurl="file://$PROJECT_DIR$/SalonyProj.iml" filepath="$PROJECT_DIR$/SalonyProj.iml" />
-      <module fileurl="file://$PROJECT_DIR$/target/hiber.iml" filepath="$PROJECT_DIR$/target/hiber.iml" />
-    </modules>
-  </component>
-</project>
