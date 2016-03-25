@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence" version="2.0">
+
+    <persistence-unit name="NewPersistenceUnit">
+        <class>pl.polsl.model.AccessoriesEntity</class>
+        <class>pl.polsl.model.CarsEntity</class>
+        <class>pl.polsl.model.ContractorsEntity</class>
+        <class>pl.polsl.model.ContractsEntity</class>
+        <class>pl.polsl.model.InvoicesEntity</class>
+        <class>pl.polsl.model.PromotionsEntity</class>
+        <class>pl.polsl.model.ReportsEntity</class>
+        <class>pl.polsl.model.ShowroomsEntity</class>
+        <class>pl.polsl.model.WorkersEntity</class>
+        <properties>
+            <property name="eclipselink.jdbc.url" value="jdbc:mysql://localhost:3306/salonydb"/>
+            <property name="eclipselink.jdbc.driver" value="com.mysql.jdbc.Driver"/>
+            <property name="eclipselink.jdbc.user"/>
+            <property name="eclipselink.jdbc.password"/>
+            <property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/salonydb"/>
+            <property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver"/>
+            <property name="hibernate.connection.username"/>
+            <property name="hibernate.connection.password"/>
+            <property name="openjpa.ConnectionURL" value="jdbc:mysql://localhost:3306/salonydb"/>
+            <property name="openjpa.ConnectionDriverName" value="com.mysql.jdbc.Driver"/>
+            <property name="openjpa.ConnectionUserName"/>
+            <property name="openjpa.ConnectionPassword"/>
+            <property name="toplink.jdbc.url" value="jdbc:mysql://localhost:3306/salonydb"/>
+            <property name="toplink.jdbc.driver" value="com.mysql.jdbc.Driver"/>
+            <property name="toplink.jdbc.user"/>
+            <property name="toplink.jdbc.password"/>
+        </properties>
+    </persistence-unit>
+</persistence>
