@@ -9,8 +9,8 @@ import javax.persistence.*;
 @Table(name = "reports", schema = "salonydb", catalog = "")
 public class ReportEntity {
     private int id;
-    private Integer idShowRoom;
-    private Integer idContractor;
+    private ShowroomEntity idShowRoom;
+    private ContractorEntity idContractor;
     private String content;
 
     @Id
@@ -23,25 +23,25 @@ public class ReportEntity {
         this.id = id;
     }
 
-    @Basic
-    @Column(name = "idShowRoom")
-    public Integer getIdShowRoom() {
+   /* @ManyToOne
+    @JoinColumn (name = "idShowRoom")
+    public ShowroomEntity getIdShowRoom() {
         return idShowRoom;
     }
 
-    public void setIdShowRoom(Integer idShowRoom) {
+    public void setIdShowRoom(ShowroomEntity idShowRoom) {
         this.idShowRoom = idShowRoom;
-    }
+    }*/
 
-    @Basic
-    @Column(name = "idContractor")
-    public Integer getIdContractor() {
+    /*@ManyToOne
+    @JoinColumn (name = "idContractor")
+    public ContractorEntity getIdContractor() {
         return idContractor;
     }
 
-    public void setIdContractor(Integer idContractor) {
+    public void setIdContractor(ContractorEntity idContractor) {
         this.idContractor = idContractor;
-    }
+    }*/
 
     @Basic
     @Column(name = "content")
