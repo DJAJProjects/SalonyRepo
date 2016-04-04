@@ -2,16 +2,15 @@ package pl.polsl.web;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import pl.polsl.controller.ReportsController;
-import pl.polsl.model.ReportEntity;
+import pl.polsl.model.Report;
 
+
+// ###################TESTOWY#############################
 
 @Controller
 public class GreetingController {
@@ -21,12 +20,14 @@ public class GreetingController {
     public String greeting(@RequestParam(value="name", required=false, defaultValue="World") String name, Model model) {
 
 
-        ReportEntity r = reportsController.findReport(1);
+        Report r = reportsController.findReport(1);
         if(r != null){
             model.addAttribute("name", r.getContent());
+            model.addAttribute("name2", r.getIdContractor().getName());
         }
         else{
             model.addAttribute("name", "dupa");
+            model.addAttribute("name2", "dupa2");
         }
         return "greeting";
     }

@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/CarShowroomProj.iml" filepath="$PROJECT_DIR$/.idea/modules/CarShowroomProj.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/CarShowroomProj_main.iml" filepath="$PROJECT_DIR$/.idea/modules/CarShowroomProj_main.iml" group="CarShowroomProj" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/CarShowroomProj_test.iml" filepath="$PROJECT_DIR$/.idea/modules/CarShowroomProj_test.iml" group="CarShowroomProj" />
+      <module fileurl="file://$PROJECT_DIR$/hiber/hiber.iml" filepath="$PROJECT_DIR$/hiber/hiber.iml" />
     </modules>
   </component>
 </project>
