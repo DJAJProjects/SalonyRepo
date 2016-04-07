@@ -4,9 +4,10 @@ import jersey.repackaged.com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import pl.polsl.model.Car;
-import pl.polsl.repository.ReportsRepository;
 import pl.polsl.model.Report;
+import pl.polsl.model.Showroom;
+import pl.polsl.repository.ReportsRepository;
+import pl.polsl.repository.ShowroomsRepository;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -16,31 +17,27 @@ import java.util.List;
 
 
 /**
- * Created by Kuba on 02.04.2016.
+ * Created by Aleksandra on 07.04.2016.
  */
 
 @Component
-@Path("/raports")
+@Path("/showroom")
 @Produces(MediaType.APPLICATION_JSON)
-public class ReportsController {
+public class ShowroomsController {
 
     @Autowired
-    private ReportsRepository reportsRepository;
-
-    @Transactional
-    public Report findReport(int id){
-        return reportsRepository.findOne(id);}
+    private ShowroomsRepository showroomsRepository;
 
     @GET
     @Produces({MediaType.APPLICATION_JSON})
-    public List<Report> findAllRaports() {
-        return Lists.newArrayList(reportsRepository.findAll());
+    public List<Showroom> findAll() {
+        return Lists.newArrayList(showroomsRepository.findAll());
     }
 
     @GET
     @Path("/{id}")
     @Produces({MediaType.APPLICATION_JSON})
-    public Report findOne(int id){
-        return reportsRepository.findOne(id);
+    public Showroom findOne(int id){
+        return showroomsRepository.findOne(id);
     }
 }

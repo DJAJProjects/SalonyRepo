@@ -7,5 +7,19 @@
 <body>
 <p th:text="'Value: ' + ${name}" />
 <p th:text="'Foreign value: ' + ${name2}" />
+<table>
+    <tr class="info">
+        <th width="200">id</th>
+        <th width="200">idShowroom</th>
+        <th width="200">idName</th>
+        <th width="50">prodDate</th>
+    </tr>
+    <tr th:each ="c : ${cars}" >
+        <td th:text="${c.id}"/>
+        <td th:text="${c.idShowroom}"/>
+        <td th:text="${c.idName}"/>
+        <td th:text="${c.prodDate}"/>
+    </tr>
+</table>
 </body>
 </html>
