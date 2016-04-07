@@ -6,8 +6,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import pl.polsl.controller.CarsController;
 import pl.polsl.controller.ReportsController;
+import pl.polsl.model.Car;
 import pl.polsl.model.Report;
+
+import java.util.List;
 
 
 // ###################TESTOWY#############################
@@ -16,6 +20,9 @@ import pl.polsl.model.Report;
 public class GreetingController {
     @Autowired
     private ReportsController reportsController;
+    @Autowired
+    private CarsController carsController;
+
     @RequestMapping("/greeting")
     public String greeting(@RequestParam(value="name", required=false, defaultValue="World") String name, Model model) {
 
@@ -29,6 +36,12 @@ public class GreetingController {
             model.addAttribute("name", "dupa");
             model.addAttribute("name2", "dupa2");
         }
+//        Car car = carsController.findOne(1);
+        List<Car> listOfCars = carsController.findAllCars();
+        if(listOfCars != null) {
+            model.addAttribute("cars",listOfCars);
+        }
+
         return "greeting";
     }
 

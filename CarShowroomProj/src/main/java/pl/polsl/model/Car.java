@@ -45,7 +45,7 @@ public class Car {
     }
 
     @Basic
-    @Column(name = "ProdDate")
+    @Column(name = "prod_date")
     public Date getProdDate() {
         return prodDate;
     }
