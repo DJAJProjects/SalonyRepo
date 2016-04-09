@@ -55,7 +55,7 @@ public class Contract {
     }
 
     @Basic
-    @Column(name = "totalCost")
+    @Column(name = "total_cost")
     public Integer getTotalCost() {
         return totalCost;
     }
