@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="pl">
+    <meta charset="UTF-8"/>
+    <title>Salon samochodowy</title>
+    <link rel="stylesheet" href="../../datatables/dataTables.bootstrap.css"
+          th:href="@{/datatables/dataTables.bootstrap.css}"/>
+    <!-- Bootstrap 3.3.5 -->
+    <link rel="stylesheet" href="http://cdn.jsdelivr.net/webjars/bootstrap/3.2.0/css/bootstrap.min.css"
+          th:href="@{/bootstrap/css/bootstrap.min.css}"/>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css"/>
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css"/>
+    <!-- Select2 -->
+    <link rel="stylesheet" href="../../select2/select2.min.css"
+          th:href="@{/select2/select2.min.css}"/>
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+    <header id="#SITE" style="margin: 0 auto; max-width: 1000px">
+        <nav layout:fragment="content"  style="margin: 20px;">
+            <ul class="nav nav-pills">
+                <li role="presentation" ><a href="showroom.html" th:href="@{/showroom}">Salony</a></li>
+                <li role="presentation" ><a href="worker.html" th:href="@{/worker}">Pracownicy</a></li>
+            </ul>
+        </nav>
+        <hr/>
+    </header>
+<div layout:fragment="main"></div>
+
+</body>
+</html>
