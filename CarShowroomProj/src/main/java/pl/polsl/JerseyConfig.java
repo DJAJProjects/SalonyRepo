@@ -13,7 +13,6 @@ import javax.ws.rs.ApplicationPath;
 @ApplicationPath("/api")
 public class JerseyConfig extends ResourceConfig {
     public JerseyConfig(){
-        System.out.println("Wchodzi do jersey");
         register(CarsController.class);
     }
 }
