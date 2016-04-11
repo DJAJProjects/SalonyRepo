@@ -1,6 +1,7 @@
 package pl.polsl.model;
 
 import javax.persistence.*;
+import java.util.Set;
 
 /**
  * Created by Kuba on 04.04.2016.
@@ -12,7 +13,8 @@ public class Dictionary {
     private String type;
     private String value;
     private String value2;
-
+    private Set<Showroom> country;
+    private Set<Showroom> city;
     @Id
     @Column(name = "id")
     public int getId() {
@@ -53,4 +55,20 @@ public class Dictionary {
         this.value2 = value2;
     }
 
+    @OneToMany (mappedBy="country")
+    public Set<Showroom> getCountry() {
+        return country;
+    }
+
+    public void setCountry(Set<Showroom> country) {
+        this.country = country;
+    }
+    @OneToMany (mappedBy="city")
+    public Set<Showroom> getCity() {
+        return city;
+    }
+
+    public void setCity(Set<Showroom> city) {
+        this.city = city;
+    }
 }

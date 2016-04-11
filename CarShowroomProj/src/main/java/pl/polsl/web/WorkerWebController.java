@@ -13,11 +13,7 @@ import pl.polsl.controller.WorkersController;
 public class WorkerWebController {
     @Autowired
     private WorkersController workersController;
-    /**
-     * Load on page about groups
-     * @param model
-     * @return worker.html
-     */
+
     @RequestMapping(value ="/worker")
     public String allGroups(Model model){
         model.addAttribute("workers", workersController.findAll());

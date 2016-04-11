@@ -1,17 +1,22 @@
 package pl.polsl.model;
 
 import javax.persistence.*;
+import java.util.Set;
 
 /**
- * Created by Kuba on 04.04.2016.
+ * Created by Dominika Błasiak on 04.04.2016.
  */
 @Entity
 @Table(name="showrooms", schema = "salonydb")
 public class Showroom {
     private int id;
-    private Integer idCity;
+    private Dictionary city;
     private String street;
-    private Integer idCountry;
+    private Dictionary country;
+    private Set<Accessory> listOfAccesories;
+//    private Worker director;
+//    private Set<Worker> listOfWorkers;
+    private Set<Car> listOfCars;
 
     @Id
     @Column(name = "id")
@@ -24,13 +29,14 @@ public class Showroom {
     }
 
     @Basic
-    @Column(name = "id_city")
-    public Integer getIdCity() {
-        return idCity;
+    @ManyToOne
+    @JoinColumn(name = "id_city")
+    public Dictionary getCity() {
+        return city;
     }
 
-    public void setIdCity(Integer idCity) {
-        this.idCity = idCity;
+    public void setCity(Dictionary city) {
+        this.city = city;
     }
 
     @Basic
@@ -44,13 +50,47 @@ public class Showroom {
     }
 
     @Basic
-    @Column(name = "id_country")
-    public Integer getIdCountry() {
-        return idCountry;
+    @ManyToOne
+    @JoinColumn(name = "id_country")
+    public Dictionary getCountry() {
+        return country;
     }
 
-    public void setIdCountry(Integer idCountry) {
-        this.idCountry = idCountry;
+    public void setCountry(Dictionary country) {
+        this.country = country;
     }
 
+//    public Worker getDirector() {
+//        return director;
+//    }
+//
+//    public void setDirector(Worker director) {
+//        this.director = director;
+//    }
+//
+//    public Set<Worker> getListOfWorkers() {
+//        return listOfWorkers;
+//    }
+//
+//    public void setListOfWorkers(Set<Worker> listOfWorkers) {
+//        this.listOfWorkers = listOfWorkers;
+//    }
+
+    @OneToMany (mappedBy="showroom")
+    public Set<Car> getListOfCars() {
+        return listOfCars;
+    }
+
+    public void setListOfCars(Set<Car> listOfCars) {
+        this.listOfCars = listOfCars;
+    }
+
+    @OneToMany (mappedBy="showroom")
+    public Set<Accessory> getListOfAccesories() {
+        return listOfAccesories;
+    }
+
+    public void setListOfAccesories(Set<Accessory> listOfAccesories) {
+        this.listOfAccesories = listOfAccesories;
+    }
 }
