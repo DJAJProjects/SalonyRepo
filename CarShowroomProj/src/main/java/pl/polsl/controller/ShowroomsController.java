@@ -3,10 +3,7 @@ package pl.polsl.controller;
 import jersey.repackaged.com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
-import pl.polsl.model.Report;
 import pl.polsl.model.Showroom;
-import pl.polsl.repository.ReportsRepository;
 import pl.polsl.repository.ShowroomsRepository;
 
 import javax.ws.rs.GET;
@@ -17,7 +14,7 @@ import java.util.List;
 
 
 /**
- * Created by Aleksandra on 07.04.2016.
+ * Created by Dominika Błasiak on 07.04.2016.
  */
 
 @Component
@@ -39,5 +36,9 @@ public class ShowroomsController {
     @Produces({MediaType.APPLICATION_JSON})
     public Showroom findOne(int id){
         return showroomsRepository.findOne(id);
+    }
+
+    public void delete(int id){
+        showroomsRepository.delete(id);
     }
 }

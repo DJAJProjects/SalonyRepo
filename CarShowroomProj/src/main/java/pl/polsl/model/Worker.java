@@ -4,18 +4,19 @@ import javax.persistence.*;
 import java.sql.Date;
 
 /**
- * Created by Kuba on 04.04.2016.
+ * Created by Dominika Błasiak on 04.04.2016.
  */
 @Entity
 @Table(name="workers", schema = "salonydb")
 public class Worker {
     private int id;
-    private int idShowroom;
+//    private Showroom showroom;
     private String name;
     private String surname;
     private String position;
     private Integer payment;
     private Date dateHired;
+    private int showroom;
 
     @Id
     @Column(name = "id")
@@ -29,13 +30,23 @@ public class Worker {
 
     @Basic
     @Column(name = "id_showroom")
-    public int getIdShowroom() {
-        return idShowroom;
+    public int getShowroom() {
+        return showroom;
     }
 
-    public void setIdShowroom(int idShowroom) {
-        this.idShowroom = idShowroom;
+    public void setShowroom(int showroom) {
+        this.showroom = showroom;
     }
+
+    //    @Basic
+//    @Column(name = "id_showroom")
+//    public Showroom getShowroom() {
+//        return showroom;
+//    }
+//
+//    public void setShowroom(Showroom showroom) {
+//        this.showroom = showroom;
+//    }
 
     @Basic
     @Column(name = "name")

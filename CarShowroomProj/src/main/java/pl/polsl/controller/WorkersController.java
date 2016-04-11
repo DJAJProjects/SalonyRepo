@@ -3,9 +3,7 @@ package pl.polsl.controller;
 import jersey.repackaged.com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import pl.polsl.model.Showroom;
 import pl.polsl.model.Worker;
-import pl.polsl.repository.ShowroomsRepository;
 import pl.polsl.repository.WorkersRepository;
 
 import javax.ws.rs.GET;
@@ -16,7 +14,7 @@ import java.util.List;
 
 
 /**
- * Created by Alekandra on 07.04.2016.
+ * Created by Dominika Błasiak on 07.04.2016.
  */
 
 @Component
@@ -38,5 +36,9 @@ public class WorkersController {
     @Produces({MediaType.APPLICATION_JSON})
     public Worker findOne(int id){
         return workersRepository.findOne(id);
+    }
+
+    public void delete(int id){
+        workersRepository.delete(id);
     }
 }

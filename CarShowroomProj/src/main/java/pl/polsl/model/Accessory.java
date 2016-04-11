@@ -12,6 +12,7 @@ public class Accessory {
     private Integer idContract;
     private Integer idName;
     private Integer cost;
+    private Showroom showroom;
 
     @Id
     @Column(name = "id")
@@ -53,4 +54,14 @@ public class Accessory {
         this.cost = cost;
     }
 
+    @Basic
+    @ManyToOne
+    @JoinColumn(name = "id_showroom")
+    public Showroom getShowroom() {
+        return showroom;
+    }
+
+    public void setShowroom(Showroom showroom) {
+        this.showroom = showroom;
+    }
 }

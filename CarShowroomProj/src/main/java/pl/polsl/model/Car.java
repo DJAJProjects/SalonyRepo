@@ -10,9 +10,9 @@ import java.sql.Date;
 @Table(name="cars", schema = "salonydb")
 public class Car {
     private int id;
-    private int idShowroom;
     private Integer idName;
     private Date prodDate;
+    private Showroom showroom;
 
     @Id
     @Column(name = "id")
@@ -22,16 +22,6 @@ public class Car {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    @Basic
-    @Column(name = "id_showroom")
-    public int getIdShowroom() {
-        return idShowroom;
-    }
-
-    public void setIdShowroom(int idShowroom) {
-        this.idShowroom = idShowroom;
     }
 
     @Basic
@@ -54,4 +44,14 @@ public class Car {
         this.prodDate = prodDate;
     }
 
+    @Basic
+    @ManyToOne
+    @JoinColumn(name = "id_showroom")
+    public Showroom getShowroom() {
+        return showroom;
+    }
+
+    public void setShowroom(Showroom showroom) {
+        this.showroom = showroom;
+    }
 }
