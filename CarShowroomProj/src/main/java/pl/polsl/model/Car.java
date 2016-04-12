@@ -13,6 +13,7 @@ public class Car {
     private Integer idName;
     private Date prodDate;
     private Showroom showroom;
+    private Contract contract;
 
     @Id
     @Column(name = "id")
@@ -53,5 +54,16 @@ public class Car {
 
     public void setShowroom(Showroom showroom) {
         this.showroom = showroom;
+    }
+
+    @Basic
+    @ManyToOne
+    @JoinColumn(name = "id_contract")
+    public Contract getContract() {
+        return contract;
+    }
+
+    public void setContract(Contract contract) {
+        this.contract = contract;
     }
 }

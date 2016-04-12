@@ -15,6 +15,7 @@ public class Dictionary {
     private String value2;
     private Set<Showroom> country;
     private Set<Showroom> city;
+    private Set<Invoice> invoiceType;
 
 
     @Id
@@ -72,5 +73,14 @@ public class Dictionary {
 
     public void setCity(Set<Showroom> city) {
         this.city = city;
+    }
+
+    @OneToMany (mappedBy="invoiceType")
+    public Set<Invoice> getInvoiceType() {
+        return invoiceType;
+    }
+
+    public void setInvoiceType(Set<Invoice> invoice) {
+        this.invoiceType = invoice;
     }
 }
