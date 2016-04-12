@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:layout="http://www.w3.org/1999/xhtml" layout:decorator="index">
 <head>
-    <title>Salony</title>
+    <title>Sprzedaże</title>
 </head>
 <body>
 <div layout:fragment="main" style="margin: 0 auto; max-width: 1000px;">
@@ -17,7 +17,6 @@
             <table class="table">
                 <!-- head row -->
                 <tr style="font-weight: bold;">
-                    <td class="col-md-1">#</td>
                     <td class="col-md-3">Sprzedający</td>
                     <td class="col-md-3">Data wystawienia faktury</td>
                     <td class="col-md-2">Kontrahent</td>
@@ -26,7 +25,7 @@
                     <td class="col-md-1">Usuń</td>
                 </tr>
 
-                <tr th:each="contract : ${contract}">
+                <tr th:each="contract : ${contracts}">
                     <td th:text="${contract.worker.surname}"></td>
                     <td th:text="${contract.invoice.dateCreated}"></td>
                     <td th:text="${contract.contractor.surname}"></td>

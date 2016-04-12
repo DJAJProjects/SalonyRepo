@@ -13,7 +13,7 @@ public class Promotion {
     private String name;
     private Integer idAccessory;
     private Integer idCar;
-    private Integer idContract;
+    private Contract contract;
 
     @Id
     @Column(name = "id")
@@ -66,13 +66,14 @@ public class Promotion {
     }
 
     @Basic
-    @Column(name = "id_contract")
-    public Integer getIdContract() {
-        return idContract;
+    @ManyToOne
+    @JoinColumn(name = "id_contract")
+    public Contract getContract() {
+        return contract;
     }
 
-    public void setIdContract(Integer idContract) {
-        this.idContract = idContract;
+    public void setContract(Contract contract) {
+        this.contract = contract;
     }
 
 }

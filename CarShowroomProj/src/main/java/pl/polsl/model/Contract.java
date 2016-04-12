@@ -1,5 +1,7 @@
 package pl.polsl.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.Set;
 
@@ -16,6 +18,7 @@ public class Contract {
     private Integer totalCost;
     private Set<Accessory> accessoryList;
     private Set<Car> carList;
+    private Set<Promotion>promotionList;
 
     @Id
     @Column(name = "id")
@@ -26,6 +29,7 @@ public class Contract {
     public void setId(int id) {
         this.id = id;
     }
+    @JsonIgnore
     @Basic
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_seller")
@@ -83,5 +87,14 @@ public class Contract {
 
     public void setCarList(Set<Car> carList) {
         this.carList = carList;
+    }
+
+    @OneToMany (mappedBy="contract")
+    public Set<Promotion> getPromotionList() {
+        return promotionList;
+    }
+
+    public void setPromotionList(Set<Promotion> promotionList) {
+        this.promotionList = promotionList;
     }
 }
