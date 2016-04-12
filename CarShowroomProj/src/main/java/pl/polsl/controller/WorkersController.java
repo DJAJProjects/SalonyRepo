@@ -41,4 +41,9 @@ public class WorkersController {
     public void delete(int id){
         workersRepository.delete(id);
     }
+
+    //TODO napisać metodę która zwróci wszsytkich kierowników, którzy nie maja dodanego zakładu
+    public List<Worker> findAllFreeDirectors() {
+        return (List)workersRepository.findAll();
+    }
 }
