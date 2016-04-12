@@ -17,6 +17,7 @@ public class Contractor {
     private Dictionary idCity;
     private Dictionary idCountry;
     private String street;
+    private Contract contract;
 
     @Id
     @Column(name = "id")
@@ -107,4 +108,10 @@ public class Contractor {
     public void setStreet(String street) {
         this.street = street;
     }
+
+    @OneToOne(mappedBy="contractor")
+    public Contract getContract() {return contract;}
+
+    public void setContract(Contract contract){this.contract = contract;};
+
 }

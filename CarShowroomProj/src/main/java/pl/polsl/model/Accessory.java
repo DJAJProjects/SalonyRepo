@@ -9,7 +9,7 @@ import javax.persistence.*;
 @Table(name="accessories", schema = "salonydb")
 public class Accessory {
     private int id;
-    private Integer idContract;
+    private Contract contract;
     private Integer idName;
     private Integer cost;
     private Showroom showroom;
@@ -25,13 +25,14 @@ public class Accessory {
     }
 
     @Basic
-    @Column(name = "id_contract")
-    public Integer getIdContract() {
-        return idContract;
+    @ManyToOne
+    @JoinColumn(name = "id_contract")
+    public Contract getContract() {
+        return contract;
     }
 
-    public void setIdContract(Integer idContract) {
-        this.idContract = idContract;
+    public void setContract(Contract contract) {
+        this.contract = contract;
     }
 
     @Basic

@@ -22,12 +22,12 @@ public class ContractWebController {
         model.addAttribute("contracts", contractsController.findAllContracts());
         return "contracts";
     }
-    @RequestMapping(value ="/contractsNewView", method = RequestMethod.GET)
+    @RequestMapping(value ="/contractAdd", method = RequestMethod.GET)
     public String contractsNewView(Model model){
         return "newContract";
     }
     @RequestMapping(value ="/addContract", method = RequestMethod.POST)
     public String message(RedirectAttributes redirectAttributes, @RequestParam(value = "content", required = false)String content) {
-        return "redirect:/contractsNewView/";
+        return "redirect:/contracts/";
     }
 }

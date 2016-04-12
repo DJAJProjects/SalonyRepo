@@ -1,5 +1,7 @@
 package pl.polsl.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 /**
@@ -23,6 +25,7 @@ public class Report {
         this.id = id;
     }
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn (name = "id_showroom")
     public Showroom getIdShowroom() {
@@ -33,6 +36,7 @@ public class Report {
         this.idShowroom = idShowroom;
     }
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn (name = "id_contractor")
     public Contractor getIdContractor() {

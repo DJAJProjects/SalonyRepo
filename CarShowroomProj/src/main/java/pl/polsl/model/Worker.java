@@ -2,6 +2,8 @@ package pl.polsl.model;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Dominika Błasiak on 04.04.2016.
@@ -16,6 +18,7 @@ public class Worker {
     private Dictionary position;
     private Integer payment;
     private Date dateHired;
+    private Set<Contract> contractList;
 
     @Id
     @Column(name = "id")
@@ -33,7 +36,6 @@ public class Worker {
     public Showroom getShowroom() {
         return showroom;
     }
-
     public void setShowroom(Showroom showroom) {
         this.showroom = showroom;
     }
@@ -88,5 +90,12 @@ public class Worker {
         this.dateHired = dateHired;
     }
 
+    @OneToMany (mappedBy="worker")
+    public Set<Contract> getContractList() {
+        return contractList;
+    }
+    public void setContractList(Set<Contract> contractList) {
+        this.contractList = contractList;
+    }
 
 }

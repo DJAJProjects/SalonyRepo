@@ -1,5 +1,7 @@
 package pl.polsl.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.sql.Date;
 
@@ -13,6 +15,7 @@ public class Car {
     private Integer idName;
     private Date prodDate;
     private Showroom showroom;
+    private Contract contract;
 
     @Id
     @Column(name = "id")
@@ -44,6 +47,7 @@ public class Car {
         this.prodDate = prodDate;
     }
 
+    @JsonIgnore
     @Basic
     @ManyToOne
     @JoinColumn(name = "id_showroom")
@@ -53,5 +57,17 @@ public class Car {
 
     public void setShowroom(Showroom showroom) {
         this.showroom = showroom;
+    }
+
+    @JsonIgnore
+    @Basic
+    @ManyToOne
+    @JoinColumn(name = "id_contract")
+    public Contract getContract() {
+        return contract;
+    }
+
+    public void setContract(Contract contract) {
+        this.contract = contract;
     }
 }

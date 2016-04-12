@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.sql.Date;
 
 /**
- * Created by Kuba on 04.04.2016.
+ * Created by Aleksandra Chronowska on 04.04.2016.
  */
 @Entity
 @Table(name="invoices", schema = "salonydb")
@@ -14,7 +14,8 @@ public class Invoice {
     private Date dateSold;
     private Date paymentDeadline;
     private Integer idPaymentForm;
-    private Integer idType;
+    private Dictionary invoiceType;
+    private Contract contract;
 
     @Id
     @Column(name = "id")
@@ -67,12 +68,19 @@ public class Invoice {
     }
 
     @Basic
-    @Column(name = "id_type")
-    public Integer getIdType() {
-        return idType;
+    @ManyToOne
+    @JoinColumn(name="id_type")
+    public Dictionary getInvoiceType() {
+        return invoiceType;
     }
 
-    public void setIdType(Integer idType) {
-        this.idType = idType;
+    public void setInvoiceType(Dictionary type) {
+        this.invoiceType = type;
     }
+
+    @OneToOne(mappedBy="invoice")
+    public Contract getContract() {return contract;}
+
+    public void setContract(Contract contract){this.contract = contract;};
+
 }
