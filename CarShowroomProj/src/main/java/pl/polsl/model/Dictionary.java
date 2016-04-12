@@ -17,7 +17,6 @@ public class Dictionary {
     private Set<Showroom> city;
     private Set<Invoice> invoiceType;
 
-
     @Id
     @Column(name = "id")
     public int getId() {

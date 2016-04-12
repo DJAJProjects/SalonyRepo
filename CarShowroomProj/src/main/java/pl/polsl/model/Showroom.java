@@ -10,14 +10,24 @@ import java.util.Set;
 @Table(name="showrooms", schema = "salonydb")
 public class Showroom {
     private int id;
-    private Dictionary city;
-    private String street;
-    private Dictionary country;
     private String name;
-    private Set<Accessory> listOfAccesories;
+    private String street;
+    private Dictionary city;
+    private Dictionary country;
     private Worker director;
+    private Set<Accessory> listOfAccesories;
+
 //    private Set<Worker> listOfWorkers;
     private Set<Car> listOfCars;
+
+    public Showroom(){}
+    public Showroom(String name, String street, Dictionary city, Dictionary country, Worker director) {
+        this.name = name;
+        this.street = street;
+        this.city = city;
+        this.country = country;
+        this.director = director;
+    }
 
     @Id
     @Column(name = "id")

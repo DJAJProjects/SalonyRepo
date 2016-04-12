@@ -25,6 +25,11 @@ public class ShowroomsController {
     @Autowired
     private ShowroomsRepository showroomsRepository;
 
+    @Autowired
+    private DictionaryController dictionaryController;
+
+    @Autowired
+    private WorkersController workersController;
     @GET
     @Produces({MediaType.APPLICATION_JSON})
     public List<Showroom> findAll() {
@@ -40,5 +45,9 @@ public class ShowroomsController {
 
     public void delete(int id){
         showroomsRepository.delete(id);
+    }
+
+    public Showroom addShowroom(String name, String street, int city, int country, int director) {
+        return showroomsRepository.save(new Showroom(name, street, dictionaryController.findOne(city), dictionaryController.findOne(country),workersController.findOne(director)));
     }
 }

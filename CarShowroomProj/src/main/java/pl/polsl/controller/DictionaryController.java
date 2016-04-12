@@ -3,9 +3,7 @@ package pl.polsl.controller;
 import jersey.repackaged.com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import pl.polsl.model.Accessory;
 import pl.polsl.model.Dictionary;
-import pl.polsl.repository.AccessoriesRepository;
 import pl.polsl.repository.DictionaryRepository;
 
 import javax.ws.rs.GET;
@@ -36,4 +34,12 @@ public class DictionaryController {
     @Produces({MediaType.APPLICATION_JSON})
     public Dictionary findOne(int id){
         return dictionaryRepository.findOne(id);}
+
+    public List<Dictionary> findAllCities(){
+        return dictionaryRepository.findAllTheSameType("city");
+    }
+
+    public List<Dictionary> findAllCountries() {
+        return dictionaryRepository.findAllTheSameType("country");
+    }
 }
