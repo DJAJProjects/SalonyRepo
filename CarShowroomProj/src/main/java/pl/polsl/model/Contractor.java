@@ -14,8 +14,8 @@ public class Contractor {
     private String pesel;
     private String nip;
     private String regon;
-    private Integer idCity;
-    private Integer idCountry;
+    private Dictionary idCity;
+    private Dictionary idCountry;
     private String street;
 
     @Id
@@ -78,23 +78,23 @@ public class Contractor {
         this.regon = regon;
     }
 
-    @Basic
-    @Column(name = "id_city")
-    public Integer getIdCity() {
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_city")
+    public Dictionary getIdCity() {
         return idCity;
     }
 
-    public void setIdCity(Integer idCity) {
+    public void setIdCity(Dictionary idCity) {
         this.idCity = idCity;
     }
 
-    @Basic
-    @Column(name = "id_country")
-    public Integer getIdCountry() {
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_country")
+    public Dictionary getIdCountry() {
         return idCountry;
     }
 
-    public void setIdCountry(Integer idCountry) {
+    public void setIdCountry(Dictionary idCountry) {
         this.idCountry = idCountry;
     }
 
@@ -107,6 +107,4 @@ public class Contractor {
     public void setStreet(String street) {
         this.street = street;
     }
-
-
 }

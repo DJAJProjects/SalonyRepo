@@ -9,42 +9,41 @@ import javax.persistence.*;
 @Table(name="privileges", schema = "salonydb")
 public class Privileges {
     private int id;
-    private String priviliegescol;
     private String name;
-    private String contractsR;
-    private String contractsI;
-    private String contractsD;
-    private String contractsU;
-    private String invoicesR;
-    private String invoicesI;
-    private String invoicesD;
-    private String invoicesU;
-    private String carsR;
-    private String carsI;
-    private String carsD;
-    private String carsU;
-    private String accessoriesR;
-    private String accessoriesI;
-    private String accessoriesD;
-    private String accessoriesU;
-    private String contractorsR;
-    private String contractorsI;
-    private String contractorsD;
-    private String contractorsU;
-    private String reportsR;
-    private String reportsD;
-    private String showroomsR;
-    private String showroomsI;
-    private String showroomsD;
-    private String showroomsU;
-    private String workersR;
-    private String workersI;
-    private String workersD;
-    private String workersU;
-    private String promotionsR;
-    private String promotionsI;
-    private String promotionsD;
-    private String promotionsU;
+    private boolean contractsR;
+    private boolean contractsI;
+    private boolean contractsD;
+    private boolean contractsU;
+    private boolean invoicesR;
+    private boolean invoicesI;
+    private boolean invoicesD;
+    private boolean invoicesU;
+    private boolean carsR;
+    private boolean carsI;
+    private boolean carsD;
+    private boolean carsU;
+    private boolean accessoriesR;
+    private boolean accessoriesI;
+    private boolean accessoriesD;
+    private boolean accessoriesU;
+    private boolean contractorsR;
+    private boolean contractorsI;
+    private boolean contractorsD;
+    private boolean contractorsU;
+    private boolean reportsR;
+    private boolean reportsD;
+    private boolean showroomsR;
+    private boolean showroomsI;
+    private boolean showroomsD;
+    private boolean showroomsU;
+    private boolean workersR;
+    private boolean workersI;
+    private boolean workersD;
+    private boolean workersU;
+    private boolean promotionsR;
+    private boolean promotionsI;
+    private boolean promotionsD;
+    private boolean promotionsU;
 
     @Id
     @Column(name = "id")
@@ -54,16 +53,6 @@ public class Privileges {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    @Basic
-    @Column(name = "priviliegescol")
-    public String getPriviliegescol() {
-        return priviliegescol;
-    }
-
-    public void setPriviliegescol(String priviliegescol) {
-        this.priviliegescol = priviliegescol;
     }
 
     @Basic
@@ -78,341 +67,341 @@ public class Privileges {
 
     @Basic
     @Column(name = "contracts_r")
-    public String getContractsR() {
+    public boolean getContractsR() {
         return contractsR;
     }
 
-    public void setContractsR(String contractsR) {
+    public void setContractsR(boolean contractsR) {
         this.contractsR = contractsR;
     }
 
     @Basic
     @Column(name = "contracts_i")
-    public String getContractsI() {
+    public boolean getContractsI() {
         return contractsI;
     }
 
-    public void setContractsI(String contractsI) {
+    public void setContractsI(boolean contractsI) {
         this.contractsI = contractsI;
     }
 
     @Basic
     @Column(name = "contracts_d")
-    public String getContractsD() {
+    public boolean getContractsD() {
         return contractsD;
     }
 
-    public void setContractsD(String contractsD) {
+    public void setContractsD(boolean contractsD) {
         this.contractsD = contractsD;
     }
 
     @Basic
     @Column(name = "contracts_u")
-    public String getContractsU() {
+    public boolean getContractsU() {
         return contractsU;
     }
 
-    public void setContractsU(String contractsU) {
+    public void setContractsU(boolean contractsU) {
         this.contractsU = contractsU;
     }
 
     @Basic
     @Column(name = "invoices_r")
-    public String getInvoicesR() {
+    public boolean getInvoicesR() {
         return invoicesR;
     }
 
-    public void setInvoicesR(String invoicesR) {
+    public void setInvoicesR(boolean invoicesR) {
         this.invoicesR = invoicesR;
     }
 
     @Basic
     @Column(name = "invoices_i")
-    public String getInvoicesI() {
+    public boolean getInvoicesI() {
         return invoicesI;
     }
 
-    public void setInvoicesI(String invoicesI) {
+    public void setInvoicesI(boolean invoicesI) {
         this.invoicesI = invoicesI;
     }
 
     @Basic
     @Column(name = "invoices_d")
-    public String getInvoicesD() {
+    public boolean getInvoicesD() {
         return invoicesD;
     }
 
-    public void setInvoicesD(String invoicesD) {
+    public void setInvoicesD(boolean invoicesD) {
         this.invoicesD = invoicesD;
     }
 
     @Basic
     @Column(name = "invoices_u")
-    public String getInvoicesU() {
+    public boolean getInvoicesU() {
         return invoicesU;
     }
 
-    public void setInvoicesU(String invoicesU) {
+    public void setInvoicesU(boolean invoicesU) {
         this.invoicesU = invoicesU;
     }
 
     @Basic
     @Column(name = "cars_r")
-    public String getCarsR() {
+    public boolean getCarsR() {
         return carsR;
     }
 
-    public void setCarsR(String carsR) {
+    public void setCarsR(boolean carsR) {
         this.carsR = carsR;
     }
 
     @Basic
     @Column(name = "cars_i")
-    public String getCarsI() {
+    public boolean getCarsI() {
         return carsI;
     }
 
-    public void setCarsI(String carsI) {
+    public void setCarsI(boolean carsI) {
         this.carsI = carsI;
     }
 
     @Basic
     @Column(name = "cars_d")
-    public String getCarsD() {
+    public boolean getCarsD() {
         return carsD;
     }
 
-    public void setCarsD(String carsD) {
+    public void setCarsD(boolean carsD) {
         this.carsD = carsD;
     }
 
     @Basic
     @Column(name = "cars_u")
-    public String getCarsU() {
+    public boolean getCarsU() {
         return carsU;
     }
 
-    public void setCarsU(String carsU) {
+    public void setCarsU(boolean carsU) {
         this.carsU = carsU;
     }
 
     @Basic
     @Column(name = "accessories_r")
-    public String getAccessoriesR() {
+    public boolean getAccessoriesR() {
         return accessoriesR;
     }
 
-    public void setAccessoriesR(String accessoriesR) {
+    public void setAccessoriesR(boolean accessoriesR) {
         this.accessoriesR = accessoriesR;
     }
 
     @Basic
     @Column(name = "accessories_i")
-    public String getAccessoriesI() {
+    public boolean getAccessoriesI() {
         return accessoriesI;
     }
 
-    public void setAccessoriesI(String accessoriesI) {
+    public void setAccessoriesI(boolean accessoriesI) {
         this.accessoriesI = accessoriesI;
     }
 
     @Basic
     @Column(name = "accessories_d")
-    public String getAccessoriesD() {
+    public boolean getAccessoriesD() {
         return accessoriesD;
     }
 
-    public void setAccessoriesD(String accessoriesD) {
+    public void setAccessoriesD(boolean accessoriesD) {
         this.accessoriesD = accessoriesD;
     }
 
     @Basic
     @Column(name = "accessories_u")
-    public String getAccessoriesU() {
+    public boolean getAccessoriesU() {
         return accessoriesU;
     }
 
-    public void setAccessoriesU(String accessoriesU) {
+    public void setAccessoriesU(boolean accessoriesU) {
         this.accessoriesU = accessoriesU;
     }
 
     @Basic
     @Column(name = "contractors_r")
-    public String getContractorsR() {
+    public boolean getContractorsR() {
         return contractorsR;
     }
 
-    public void setContractorsR(String contractorsR) {
+    public void setContractorsR(boolean contractorsR) {
         this.contractorsR = contractorsR;
     }
 
     @Basic
     @Column(name = "contractors_i")
-    public String getContractorsI() {
+    public boolean getContractorsI() {
         return contractorsI;
     }
 
-    public void setContractorsI(String contractorsI) {
+    public void setContractorsI(boolean contractorsI) {
         this.contractorsI = contractorsI;
     }
 
     @Basic
     @Column(name = "contractors_d")
-    public String getContractorsD() {
+    public boolean getContractorsD() {
         return contractorsD;
     }
 
-    public void setContractorsD(String contractorsD) {
+    public void setContractorsD(boolean contractorsD) {
         this.contractorsD = contractorsD;
     }
 
     @Basic
     @Column(name = "contractors_u")
-    public String getContractorsU() {
+    public boolean getContractorsU() {
         return contractorsU;
     }
 
-    public void setContractorsU(String contractorsU) {
+    public void setContractorsU(boolean contractorsU) {
         this.contractorsU = contractorsU;
     }
 
     @Basic
     @Column(name = "reports_r")
-    public String getReportsR() {
+    public boolean getReportsR() {
         return reportsR;
     }
 
-    public void setReportsR(String reportsR) {
+    public void setReportsR(boolean reportsR) {
         this.reportsR = reportsR;
     }
 
     @Basic
     @Column(name = "reports_d")
-    public String getReportsD() {
+    public boolean getReportsD() {
         return reportsD;
     }
 
-    public void setReportsD(String reportsD) {
+    public void setReportsD(boolean reportsD) {
         this.reportsD = reportsD;
     }
 
     @Basic
     @Column(name = "showrooms_r")
-    public String getShowroomsR() {
+    public boolean getShowroomsR() {
         return showroomsR;
     }
 
-    public void setShowroomsR(String showroomsR) {
+    public void setShowroomsR(boolean showroomsR) {
         this.showroomsR = showroomsR;
     }
 
     @Basic
     @Column(name = "showrooms_i")
-    public String getShowroomsI() {
+    public boolean getShowroomsI() {
         return showroomsI;
     }
 
-    public void setShowroomsI(String showroomsI) {
+    public void setShowroomsI(boolean showroomsI) {
         this.showroomsI = showroomsI;
     }
 
     @Basic
     @Column(name = "showrooms_d")
-    public String getShowroomsD() {
+    public boolean getShowroomsD() {
         return showroomsD;
     }
 
-    public void setShowroomsD(String showroomsD) {
+    public void setShowroomsD(boolean showroomsD) {
         this.showroomsD = showroomsD;
     }
 
     @Basic
     @Column(name = "showrooms_u")
-    public String getShowroomsU() {
+    public boolean getShowroomsU() {
         return showroomsU;
     }
 
-    public void setShowroomsU(String showroomsU) {
+    public void setShowroomsU(boolean showroomsU) {
         this.showroomsU = showroomsU;
     }
 
     @Basic
     @Column(name = "workers_r")
-    public String getWorkersR() {
+    public boolean getWorkersR() {
         return workersR;
     }
 
-    public void setWorkersR(String workersR) {
+    public void setWorkersR(boolean workersR) {
         this.workersR = workersR;
     }
 
     @Basic
     @Column(name = "workers_i")
-    public String getWorkersI() {
+    public boolean getWorkersI() {
         return workersI;
     }
 
-    public void setWorkersI(String workersI) {
+    public void setWorkersI(boolean workersI) {
         this.workersI = workersI;
     }
 
     @Basic
     @Column(name = "workers_d")
-    public String getWorkersD() {
+    public boolean getWorkersD() {
         return workersD;
     }
 
-    public void setWorkersD(String workersD) {
+    public void setWorkersD(boolean workersD) {
         this.workersD = workersD;
     }
 
     @Basic
     @Column(name = "workers_u")
-    public String getWorkersU() {
+    public boolean getWorkersU() {
         return workersU;
     }
 
-    public void setWorkersU(String workersU) {
+    public void setWorkersU(boolean workersU) {
         this.workersU = workersU;
     }
 
     @Basic
     @Column(name = "promotions_r")
-    public String getPromotionsR() {
+    public boolean getPromotionsR() {
         return promotionsR;
     }
 
-    public void setPromotionsR(String promotionsR) {
+    public void setPromotionsR(boolean promotionsR) {
         this.promotionsR = promotionsR;
     }
 
     @Basic
     @Column(name = "promotions_i")
-    public String getPromotionsI() {
+    public boolean getPromotionsI() {
         return promotionsI;
     }
 
-    public void setPromotionsI(String promotionsI) {
+    public void setPromotionsI(boolean promotionsI) {
         this.promotionsI = promotionsI;
     }
 
     @Basic
     @Column(name = "promotions_d")
-    public String getPromotionsD() {
+    public boolean getPromotionsD() {
         return promotionsD;
     }
 
-    public void setPromotionsD(String promotionsD) {
+    public void setPromotionsD(boolean promotionsD) {
         this.promotionsD = promotionsD;
     }
 
     @Basic
     @Column(name = "promotions_u")
-    public String getPromotionsU() {
+    public boolean getPromotionsU() {
         return promotionsU;
     }
 
-    public void setPromotionsU(String promotionsU) {
+    public void setPromotionsU(boolean promotionsU) {
         this.promotionsU = promotionsU;
     }
 

@@ -10,13 +10,12 @@ import java.sql.Date;
 @Table(name="workers", schema = "salonydb")
 public class Worker {
     private int id;
-//    private Showroom showroom;
+    private Showroom showroom;
     private String name;
     private String surname;
-    private String position;
+    private Dictionary position;
     private Integer payment;
     private Date dateHired;
-    private int showroom;
 
     @Id
     @Column(name = "id")
@@ -28,25 +27,16 @@ public class Worker {
         this.id = id;
     }
 
-    @Basic
-    @Column(name = "id_showroom")
-    public int getShowroom() {
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_showroom")
+    public Showroom getShowroom() {
         return showroom;
     }
 
-    public void setShowroom(int showroom) {
+    public void setShowroom(Showroom showroom) {
         this.showroom = showroom;
     }
-
-    //    @Basic
-//    @Column(name = "id_showroom")
-//    public Showroom getShowroom() {
-//        return showroom;
-//    }
-//
-//    public void setShowroom(Showroom showroom) {
-//        this.showroom = showroom;
-//    }
 
     @Basic
     @Column(name = "name")
@@ -68,13 +58,13 @@ public class Worker {
         this.surname = surname;
     }
 
-    @Basic
-    @Column(name = "position")
-    public String getPosition() {
+    @ManyToOne
+    @JoinColumn(name = "id_position")
+    public Dictionary getPosition() {
         return position;
     }
 
-    public void setPosition(String position) {
+    public void setPosition(Dictionary position) {
         this.position = position;
     }
 
@@ -89,7 +79,7 @@ public class Worker {
     }
 
     @Basic
-    @Column(name = "dateHired")
+    @Column(name = "date_hired")
     public Date getDateHired() {
         return dateHired;
     }

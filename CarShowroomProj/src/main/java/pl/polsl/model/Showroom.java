@@ -13,8 +13,9 @@ public class Showroom {
     private Dictionary city;
     private String street;
     private Dictionary country;
+    private String name;
     private Set<Accessory> listOfAccesories;
-//    private Worker director;
+    private Worker director;
 //    private Set<Worker> listOfWorkers;
     private Set<Car> listOfCars;
 
@@ -28,7 +29,6 @@ public class Showroom {
         this.id = id;
     }
 
-    @Basic
     @ManyToOne
     @JoinColumn(name = "id_city")
     public Dictionary getCity() {
@@ -50,6 +50,16 @@ public class Showroom {
     }
 
     @Basic
+    @Column(name = "name")
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Basic
     @ManyToOne
     @JoinColumn(name = "id_country")
     public Dictionary getCountry() {
@@ -60,13 +70,16 @@ public class Showroom {
         this.country = country;
     }
 
-//    public Worker getDirector() {
-//        return director;
-//    }
-//
-//    public void setDirector(Worker director) {
-//        this.director = director;
-//    }
+    @ManyToOne
+    @JoinColumn(name = "id_director")
+    public Worker getDirector() {
+        return director;
+    }
+
+    public void setDirector(Worker director) {
+        this.director = director;
+    }
+
 //
 //    public Set<Worker> getListOfWorkers() {
 //        return listOfWorkers;
