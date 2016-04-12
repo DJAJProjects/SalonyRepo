@@ -18,8 +18,8 @@ import pl.polsl.model.Showroom;
 @Controller
 public class ShowroomWebController {
 
-    private boolean visibleAddForm = false;
-
+    private boolean addVisible = false;
+    private boolean editVisible = false;
     @Autowired
     private ShowroomsController showroomsController;
     @Autowired
@@ -34,26 +34,46 @@ public class ShowroomWebController {
         return "showroom";
     }
 
-    @RequestMapping(value ="/editShowroom")
-    public void editShowroom(){
+    @RequestMapping(value ="/editShowroom/{id}")
+    public String editShowroom(Model model, @PathVariable("id")int id){
+        editVisible=true;
+        Showroom showroom = showroomsController.findOne(id);
+        model.addAttribute("directorId", showroom.getDirector().getId());
+        model.addAttribute("cityId", showroom.getCity().getId());
+        model.addAttribute("countryId", showroom.getCountry().getId());
+        model.addAttribute("directorSurname",showroom.getDirector().getSurname());
+        model.addAttribute("showroom", showroom);
+        model.addAttribute("directors", workersController.findAllFreeDirectors());
+        model.addAttribute("countries", dictionaryController.findAllCountries());
+        model.addAttribute("cities", dictionaryController.findAllCities());
+        model.addAttribute("showrooms", showroomsController.findAll());
+        model.addAttribute("editVisible", editVisible);
+        return "showroom";
 
+    }
+
+    @RequestMapping(value ="/editShowroom", method = RequestMethod.POST)
+    public String editShowroom(@RequestParam("id") int id,@RequestParam("name") String name, @RequestParam(value = "street") String street, @RequestParam(value = "city")int city, @RequestParam(value = "country")int country, @RequestParam(value = "director")int director){
+        Showroom showroom = showroomsController.updateShowroom(id, name,street,city, country, director);
+        editVisible = false;
+        return "redirect:/showroom/";
     }
 
     @RequestMapping(value ="/addShowroom")
     public String addShowroom(Model model){
-        visibleAddForm = true;
+        addVisible = true;
         model.addAttribute("cities", dictionaryController.findAllCities());
         model.addAttribute("countries", dictionaryController.findAllCountries());
         model.addAttribute("directors", workersController.findAllFreeDirectors());
         model.addAttribute("showrooms", showroomsController.findAll());
-        model.addAttribute("visible", visibleAddForm);
+        model.addAttribute("addVisible", addVisible);
         return "showroom";
     }
 
     @RequestMapping(value ="/addShowroom", method = RequestMethod.POST)
     public String addShowroom(@RequestParam("name") String name, @RequestParam(value = "street") String street, @RequestParam(value = "city")int city, @RequestParam(value = "country")int country, @RequestParam(value = "director")int director){
         Showroom showroom = showroomsController.addShowroom(name,street,city, country, director);
-        visibleAddForm = true;
+        addVisible = false;
         return "redirect:/showroom/";
     }
 

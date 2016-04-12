@@ -50,4 +50,14 @@ public class ShowroomsController {
     public Showroom addShowroom(String name, String street, int city, int country, int director) {
         return showroomsRepository.save(new Showroom(name, street, dictionaryController.findOne(city), dictionaryController.findOne(country),workersController.findOne(director)));
     }
+
+    public Showroom updateShowroom(int id, String name, String street, int city, int country, int director) {
+        Showroom showroom = showroomsRepository.findOne(id);
+        showroom.setName(name);
+        showroom.setStreet(street);
+        showroom.setCity(dictionaryController.findOne(city));
+        showroom.setCountry(dictionaryController.findOne(country));
+        showroom.setDirector(workersController.findOne(director));
+        return  showroomsRepository.save(showroom);
+    }
 }
