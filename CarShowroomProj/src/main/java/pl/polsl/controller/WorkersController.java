@@ -25,6 +25,13 @@ public class WorkersController {
     @Autowired
     private WorkersRepository workersRepository;
 
+    @Autowired
+    private DictionaryController dictionaryController;
+
+    @Autowired
+    private ShowroomsController showroomsController;
+
+
     @GET
     @Produces({MediaType.APPLICATION_JSON})
     public List<Worker> findAll() {
@@ -45,5 +52,18 @@ public class WorkersController {
     //TODO napisać metodę która zwróci wszsytkich kierowników, którzy nie maja dodanego zakładu
     public List<Worker> findAllFreeDirectors() {
         return (List)workersRepository.findAll();
+    }
+
+    public Worker addShowroom(String name, String surname, int position, int showroom) {
+        return workersRepository.save(new Worker(name,surname,dictionaryController.findOne(position),showroomsController.findOne(showroom)));
+    }
+
+    public Worker updateWorker(int id, String name, String surname, int position, int showroom) {
+        Worker worker = workersRepository.findOne(id);
+        worker.setName(name);
+        worker.setSurname(surname);
+        worker.setPosition(dictionaryController.findOne(position));
+        worker.setShowroom(showroomsController.findOne(showroom));
+        return workersRepository.save(worker);
     }
 }

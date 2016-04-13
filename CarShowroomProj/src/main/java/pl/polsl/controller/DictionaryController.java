@@ -42,4 +42,7 @@ public class DictionaryController {
     public List<Dictionary> findAllCountries() {
         return dictionaryRepository.findAllTheSameType("country");
     }
+
+    public List<Dictionary> findAllPositions() { return dictionaryRepository.findAllTheSameType("position");
+    }
 }

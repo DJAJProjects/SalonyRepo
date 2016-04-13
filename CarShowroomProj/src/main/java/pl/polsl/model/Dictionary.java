@@ -65,7 +65,7 @@ public class Dictionary {
     public void setCountry(Set<Showroom> country) {
         this.country = country;
     }
-    @OneToMany (mappedBy="city")
+    @OneToMany
     public Set<Showroom> getCity() {
         return city;
     }
@@ -74,7 +74,7 @@ public class Dictionary {
         this.city = city;
     }
 
-    @OneToMany (mappedBy="invoiceType")
+    @OneToMany (mappedBy="invoiceType",cascade = CascadeType.REMOVE, fetch = FetchType.EAGER, orphanRemoval = false)
     public Set<Invoice> getInvoiceType() {
         return invoiceType;
     }

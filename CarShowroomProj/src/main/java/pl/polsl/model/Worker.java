@@ -2,7 +2,6 @@ package pl.polsl.model;
 
 import javax.persistence.*;
 import java.sql.Date;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -19,6 +18,14 @@ public class Worker {
     private Integer payment;
     private Date dateHired;
     private Set<Contract> contractList;
+
+    public Worker(){}
+    public Worker(String name, String surname, Dictionary position, Showroom showroom) {
+        this.name = name;
+        this.surname = surname;
+        this.position = position;
+        this.showroom = showroom;
+    }
 
     @Id
     @Column(name = "id")

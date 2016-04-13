@@ -12,6 +12,6 @@ import pl.polsl.model.Worker;
 @Repository
 @Transactional
 public interface WorkersRepository extends PagingAndSortingRepository<Worker, Integer> {
-//    @Query(value = "select directory from Workers directory where directory.position.id = :11")
+//    @Query(value = "select director from workers director where director.position.id = :1")
 //    List<Worker> findAllFreeDirectors();
 }
