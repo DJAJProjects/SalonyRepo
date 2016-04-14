@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import pl.polsl.controller.DictionaryController;
 import pl.polsl.controller.ShowroomsController;
 import pl.polsl.controller.WorkersController;
-import pl.polsl.model.Showroom;
 import pl.polsl.model.Worker;
 
 /**
@@ -51,8 +50,8 @@ public class WorkerWebController {
     }
 
     @RequestMapping(value ="/addWorker", method = RequestMethod.POST)
-    public String addWorker(@RequestParam("name") String name, @RequestParam(value = "surname") String surname, @RequestParam(value = "position")int position, @RequestParam(value = "showroom")int showroom){
-        Worker worker = workersController.addShowroom(name,surname,position, showroom);
+    public String addWorker(@RequestParam("name") String name, @RequestParam(value = "surname") String surname, @RequestParam(value = "position")int position, @RequestParam(value = "showroom")int showroom,@RequestParam(value = "login")String login, @RequestParam(value = "password")String password){
+        Worker worker = workersController.addShowroom(name,surname,position, showroom, login,password);
         addVisible = false;
         return "redirect:/worker/";
     }

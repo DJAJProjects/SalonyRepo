@@ -54,8 +54,8 @@ public class WorkersController {
         return (List)workersRepository.findAll();
     }
 
-    public Worker addShowroom(String name, String surname, int position, int showroom) {
-        return workersRepository.save(new Worker(name,surname,dictionaryController.findOne(position),showroomsController.findOne(showroom)));
+    public Worker addShowroom(String name, String surname, int position, int showroom, String login, String password) {
+        return workersRepository.save(new Worker(name,surname,dictionaryController.findOne(position),showroomsController.findOne(showroom),login, password));
     }
 
     public Worker updateWorker(int id, String name, String surname, int position, int showroom) {
@@ -65,5 +65,9 @@ public class WorkersController {
         worker.setPosition(dictionaryController.findOne(position));
         worker.setShowroom(showroomsController.findOne(showroom));
         return workersRepository.save(worker);
+    }
+
+    public Worker findOne(String login, String password) {
+        return workersRepository.findOne(login, password);
     }
 }

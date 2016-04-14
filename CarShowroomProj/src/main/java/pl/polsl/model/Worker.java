@@ -11,20 +11,26 @@ import java.util.Set;
 @Table(name="workers", schema = "salonydb")
 public class Worker {
     private int id;
-    private Showroom showroom;
     private String name;
     private String surname;
     private Dictionary position;
+    private Showroom showroom;
     private Integer payment;
     private Date dateHired;
     private Set<Contract> contractList;
+    private String login;
+    private String password;
 
-    public Worker(){}
-    public Worker(String name, String surname, Dictionary position, Showroom showroom) {
+    public Worker() {
+    }
+
+    public Worker(String name, String surname, Dictionary position, Showroom showroom, String login, String password) {
         this.name = name;
         this.surname = surname;
         this.position = position;
         this.showroom = showroom;
+        this.login = login;
+        this.password = password;
     }
 
     @Id
@@ -105,4 +111,23 @@ public class Worker {
         this.contractList = contractList;
     }
 
+    @Basic
+    @Column
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    @Basic
+    @Column
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }

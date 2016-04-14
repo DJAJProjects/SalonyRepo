@@ -77,7 +77,7 @@ public class ShowroomWebController {
         return "redirect:/showroom/";
     }
 
-    @RequestMapping(value ="/deleteShowroom/{id}", method = RequestMethod.GET)
+    @RequestMapping(value ="/deleteShowroom/{id}")
     public String deleteShowroom(@PathVariable("id")int id){
         showroomsController.delete(id);
         return "redirect:/showroom/";
