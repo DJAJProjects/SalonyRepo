@@ -21,6 +21,6 @@ public interface WorkersRepository extends PagingAndSortingRepository<Worker, In
     public Worker findOne(@Param("login")String login, @Param("password")String password);
 //    @Query(value = "select worker from Workers worker where worker.login = :login")
 //    public Worker findOne(@Param("login")String login, @Param("password")String password);
-//    @Query(value = "select director from workers director where director.position.id = :1")
-//    List<Worker> findAllFreeDirectors();
+    @Query(value = "select director from Worker director where director.position.id = :position AND director.showroom=null")
+    public List<Worker> findAllOneType(@Param("position")int position);
 }

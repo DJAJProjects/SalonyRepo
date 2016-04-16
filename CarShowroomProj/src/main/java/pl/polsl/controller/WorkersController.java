@@ -49,9 +49,8 @@ public class WorkersController {
         workersRepository.delete(id);
     }
 
-    //TODO napisać metodę która zwróci wszsytkich kierowników, którzy nie maja dodanego zakładu
     public List<Worker> findAllFreeDirectors() {
-        return (List)workersRepository.findAll();
+        return (List)workersRepository.findAllOneType(11);
     }
 
     public Worker addShowroom(String name, String surname, int position, int showroom, String login, String password) {
