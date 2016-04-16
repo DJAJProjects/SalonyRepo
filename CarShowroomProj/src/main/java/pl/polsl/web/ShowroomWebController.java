@@ -71,7 +71,8 @@ public class ShowroomWebController {
     }
 
     @RequestMapping(value ="/addShowroom", method = RequestMethod.POST)
-    public String addShowroom(@RequestParam("name") String name, @RequestParam(value = "street") String street, @RequestParam(value = "city")int city, @RequestParam(value = "country")int country, @RequestParam(value = "director")int director){
+    public String addShowroom( @RequestParam(value = "name") String name, @RequestParam(value = "street", required = false) String street, @RequestParam(value = "city", required = false)Integer city, @RequestParam(value = "country", required = false)Integer country, @RequestParam(value = "director", required = false)Integer director){
+
         Showroom showroom = showroomsController.addShowroom(name,street,city, country, director);
         addVisible = false;
         return "redirect:/showroom/";
