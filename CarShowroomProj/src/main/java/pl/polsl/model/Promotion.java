@@ -1,6 +1,7 @@
 package pl.polsl.model;
 
 import javax.persistence.*;
+import java.util.Set;
 
 /**
  * Created by Kuba on 04.04.2016.
@@ -13,7 +14,7 @@ public class Promotion {
     private String name;
     private Integer idAccessory;
     private Integer idCar;
-    private Contract contract;
+//    private Set<Contract> contractList;
 
     @Id
     @Column(name = "id")
@@ -65,15 +66,14 @@ public class Promotion {
         this.idCar = idCar;
     }
 
-    @Basic
-    @ManyToOne
-    @JoinColumn(name = "id_contract")
-    public Contract getContract() {
-        return contract;
-    }
+//    @Basic
+//    @OneToMany (mappedBy="promotion")
+//    public Set<Contract> getContractList() {
+//        return contractList;
+//    }
+//    public void setContractList(Set<Contract> contractList) {
+//        this.contractList = contractList;
+//    }
 
-    public void setContract(Contract contract) {
-        this.contract = contract;
-    }
 
 }

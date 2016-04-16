@@ -3,10 +3,10 @@ package pl.polsl.controller;
 import jersey.repackaged.com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
-import pl.polsl.model.Car;
-import pl.polsl.model.Report;
-import pl.polsl.repository.CarsRepository;
+import pl.polsl.model.Contract;
+import pl.polsl.model.Contractor;
+import pl.polsl.repository.ContractorsRepository;
+import pl.polsl.repository.ContractsRepository;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -15,29 +15,24 @@ import javax.ws.rs.core.MediaType;
 import java.util.List;
 
 /**
- * Created by Kuba on 3/19/2016.
+ * Created by Aleksandra on 2016-04-15.
  */
 @Component
-@Path("/cars")
+@Path("/contractors")
 @Produces(MediaType.APPLICATION_JSON)
-public class CarsController {
-
+public class ContractorsController {
     @Autowired
-    private CarsRepository carsRepository;
+    private ContractorsRepository contractorsRepository;
 
     @GET
     @Produces({MediaType.APPLICATION_JSON})
-    public List<Car> findAllCars() {
-        return Lists.newArrayList(carsRepository.findAll());
+    public List<Contractor> findAllContractors() {
+        return Lists.newArrayList(contractorsRepository.findAll());
     }
 
     @GET
     @Path("/{id}")
     @Produces({MediaType.APPLICATION_JSON})
-    public Car findOne(int id){
-        return carsRepository.findOne(id);}
-
-    public void edit(int id){
-        carsRepository.save(findOne(id));
-    }
+    public Contractor findOne(int id){
+        return contractorsRepository.findOne(id);}
 }

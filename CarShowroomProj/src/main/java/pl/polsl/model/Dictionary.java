@@ -16,6 +16,9 @@ public class Dictionary {
     private Set<Showroom> country;
     private Set<Showroom> city;
     private Set<Invoice> invoiceType;
+    private Set<Invoice>paymentForm;
+    private Set<Car>carName;
+
 
     @Id
     @Column(name = "id")
@@ -79,7 +82,25 @@ public class Dictionary {
         return invoiceType;
     }
 
-    public void setInvoiceType(Set<Invoice> invoice) {
-        this.invoiceType = invoice;
+    public void setInvoiceType(Set<Invoice> paymentForm) {
+        this.invoiceType = paymentForm;
+    }
+
+    @OneToMany (mappedBy="paymentForm",cascade = CascadeType.REMOVE, fetch = FetchType.EAGER, orphanRemoval = false)
+    public Set<Invoice> getPaymentForm() {
+        return paymentForm;
+    }
+
+    public void setPaymentForm(Set<Invoice> paymentForm) {
+        this.paymentForm = paymentForm;
+    }
+
+    @OneToMany (mappedBy="carName",cascade = CascadeType.REMOVE, fetch = FetchType.EAGER, orphanRemoval = false)
+    public Set<Car> getCarName() {
+        return carName;
+    }
+
+    public void setCarName(Set<Car> carName) {
+        this.carName = carName;
     }
 }

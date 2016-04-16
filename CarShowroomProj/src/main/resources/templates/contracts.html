@@ -6,8 +6,9 @@
 <body>
 <div layout:fragment="main" style="margin: 0 auto; max-width: 1000px;">
     <div class="btn-group" role="group" aria-label="..." style="margin: 20px 0;">
-        <button type="button" class="btn btn-default"><a href="showroom_add.html" th:href="@{/addContract}">Nowa sprzedaż</a></button>
+        <button type="button" class="btn btn-default"><a href="contracts.html" th:href="@{/addContract}">Nowa sprzedaż</a></button>
     </div>
+    <!-- Contract all view-->
     <div>
         <div class="panel panel-default">
             <!-- Default panel contents -->
@@ -18,7 +19,7 @@
                 <!-- head row -->
                 <tr style="font-weight: bold;">
                     <td class="col-md-3">Sprzedający</td>
-                    <td class="col-md-3">Data wystawienia faktury</td>
+                    <!--<td class="col-md-3">Data wystawienia faktury</td>-->
                     <td class="col-md-2">Kontrahent</td>
                     <td class="col-md-2">Cena</td>
                     <td class="col-md-1">Edytuj</td>
@@ -27,15 +28,82 @@
 
                 <tr th:each="contract : ${contracts}">
                     <td th:text="${contract.worker.surname}"></td>
-                    <td th:text="${contract.invoice.dateCreated}"></td>
+                    <!--<td th:text="${contract.invoice.dateCreated}"></td>-->
                     <td th:text="${contract.contractor.surname}"></td>
                     <td th:text="${contract.totalCost}"></td>
                     <td><a href="contracts.html" th:href="@{'/editContract/'+${contract.id}}" ><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a></td>
-                    <td><a href="contracts.html" th:href="@{'/deleteSContract/'+${contract.id}}"><span class="glyphicon glyphicon-minus" aria-hidden="true"></span></a></td>
+                    <td><a href="contracts.html" th:href="@{'/deleteContract/'+${contract.id}}"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a></td>
                 </tr>
             </table>
         </div>
+        <br/>
+        <!--Add new contract-->
+        <div th:unless="${carView}" >
+        <form th:if="${activeAddView}" class="form-horizontal" role="form" method="post" action="/addNew">
+            <div class="form-group">
+                <label class="control-label col-sm-2">Kwota:</label>
+                <div class="col-sm-10">
+                    <input name="cost" type="text" class="form-control" placeholder="Wprowadź kwotę"/>
+                </div>
+            </div>
+            <div class="form-group">
+            <label class="control-label col-sm-2">Klient:</label>
+                <div class="col-sm-10">
+                    <select name="client" class="form-control" aria-label="..." >
+                        <option th:value="-1" text="Klient:"></option>
+                        <option  th:each="c : ${contractors}" th:value="${c.id}" th:text="${c.surname}" th:selected="${c.id}"></option>
+                    </select>
+                </div>
+            </div>
+            <br/>
+
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" class="btn btn-default">Zatwierdź</button>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button th:unless="${carView}" type="button" class="btn btn-default"><a href="contracts.html" th:href="@{/car}">Wybierz samochód</a></button>
+                </div>
+            </div>
+
+        </form>
+        </div>
+        <div th:if="${carView}" >
+            <div class="form-group">
+                <label>Wybrane przez Ciebie samochody:</label>
+            </div>
+
+            <div th:if="${choosenCar}">
+                <tr th:each ="item : ${choosenCar}">
+                    <td th:text="${item.carName.value}"/>
+                    <br/>
+                </tr>
+            </div>
+            <form class="form-horizontal" role="form" method="post" action="/addCar">
+                <div class="form-group">
+                    <label class="control-label col-sm-2">Samochody:</label>
+                    <div class="col-sm-10">
+                        <select name="car" class="form-control" aria-label="..." >
+                            <option th:value="-1" text="Samochód:"></option>
+                            <option  th:each="c : ${cars}" th:value="${c.id}" th:text="${c.carName.value}" th:selected="${c.id}"></option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button type="submit" class="btn btn-default">Ok</button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <button type="button" class="btn btn-default"><a href="contracts.html" th:href="@{/contracts}">Generuj fakture</a></button>
+                </div>
+            </form>
+        </div>
+
     </div>
+
 </div>
 </body>
 </html>

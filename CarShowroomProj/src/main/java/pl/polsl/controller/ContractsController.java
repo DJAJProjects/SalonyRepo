@@ -4,8 +4,10 @@ import jersey.repackaged.com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import pl.polsl.model.Contract;
+import pl.polsl.model.Contractor;
 import pl.polsl.repository.AccessoriesRepository;
 import pl.polsl.repository.ContractsRepository;
+import pl.polsl.web.MainController;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -22,17 +24,36 @@ import java.util.List;
 
 public class ContractsController {
     @Autowired
-    private ContractsRepository contractController;
+    private ContractsRepository contractsRepository;
+    @Autowired
+    private WorkersController workersController;
 
     @GET
     @Produces({MediaType.APPLICATION_JSON})
     public List<Contract> findAllContracts() {
-        return Lists.newArrayList(contractController.findAll());
+        return Lists.newArrayList(contractsRepository.findAll());
     }
 
     @GET
     @Path("/{id}")
     @Produces({MediaType.APPLICATION_JSON})
     public Contract findOne(int id){
-        return contractController.findOne(id);}
+        return contractsRepository.findOne(id);}
+
+    public void delete(int id) {
+        contractsRepository.delete(id);
+    }
+    public Contract edit(Contract con) {
+        return contractsRepository.save(con);
+    }
+
+    public Contract addNew(int cost, Contractor contractor) {
+        Contract contract= new Contract();
+        contract.setTotalCost(cost);
+        //TODO mokeup
+        MainController.worker= workersController.findOne(1);
+        contract.setWorker(MainController.worker);
+        contract.setContractor(contractor);
+        return contractsRepository.save(contract);
+    }
 }

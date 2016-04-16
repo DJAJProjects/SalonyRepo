@@ -18,8 +18,9 @@ public class Contract {
     private Integer totalCost;
     private Set<Accessory> accessoryList;
     private Set<Car> carList;
-    private Set<Promotion>promotionList;
+//    private Promotion promotion;
 
+    @GeneratedValue
     @Id
     @Column(name = "id")
     public int getId() {
@@ -51,7 +52,8 @@ public class Contract {
         this.invoice = idInvoice;
     }
 
-    @OneToOne
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_contractor")
     public Contractor getContractor() {
         return contractor;
@@ -89,12 +91,13 @@ public class Contract {
         this.carList = carList;
     }
 
-    @OneToMany (mappedBy="contract")
-    public Set<Promotion> getPromotionList() {
-        return promotionList;
-    }
-
-    public void setPromotionList(Set<Promotion> promotionList) {
-        this.promotionList = promotionList;
-    }
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "id_promotion")
+//    public Promotion getPromotion() {
+//        return promotion;
+//    }
+//
+//    public void setPromotion(Dictionary idCountry) {
+//        this.promotion = promotion;
+//    }
 }

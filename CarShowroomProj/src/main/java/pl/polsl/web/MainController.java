@@ -25,7 +25,6 @@ public class MainController {
     private WorkersController workersController;
 
     public static Worker worker;
-
     @RequestMapping(value = "signIn", method= RequestMethod.POST)
     public String signIn(Model model, @RequestParam(value = "login")String login, @RequestParam(value = "password")String password){
         worker = workersController.findOne(login,password);

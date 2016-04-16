@@ -12,7 +12,7 @@ import java.sql.Date;
 @Table(name="cars", schema = "salonydb")
 public class Car {
     private int id;
-    private Integer idName;
+    private Dictionary carName;
     private Date prodDate;
     private Showroom showroom;
     private Contract contract;
@@ -27,14 +27,14 @@ public class Car {
         this.id = id;
     }
 
-    @Basic
-    @Column(name = "id_name")
-    public Integer getIdName() {
-        return idName;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_name")
+    public Dictionary getCarName() {
+        return carName;
     }
 
-    public void setIdName(Integer idName) {
-        this.idName = idName;
+    public void setCarName(Dictionary carName) {
+        this.carName = carName;
     }
 
     @Basic

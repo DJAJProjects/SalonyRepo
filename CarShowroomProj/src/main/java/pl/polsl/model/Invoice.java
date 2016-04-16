@@ -13,10 +13,11 @@ public class Invoice {
     private Date dateCreated;
     private Date dateSold;
     private Date paymentDeadline;
-    private Integer idPaymentForm;
+    private Dictionary paymentForm;
     private Dictionary invoiceType;
     private Contract contract;
 
+    @GeneratedValue
     @Id
     @Column(name = "id")
     public int getId() {
@@ -58,13 +59,14 @@ public class Invoice {
     }
 
     @Basic
-    @Column(name = "id_payment_form")
-    public Integer getIdPaymentForm() {
-        return idPaymentForm;
+    @ManyToOne
+    @JoinColumn(name="id_payment_form")
+    public Dictionary getPaymentForm() {
+        return invoiceType;
     }
 
-    public void setIdPaymentForm(Integer idPaymentForm) {
-        this.idPaymentForm = idPaymentForm;
+    public void setPaymentForm(Dictionary idPaymentForm) {
+        this.paymentForm = idPaymentForm;
     }
 
     @Basic
