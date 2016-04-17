@@ -14,7 +14,6 @@ public class Promotion {
     private String name;
     private Integer idAccessory;
     private Integer idCar;
-//    private Set<Contract> contractList;
 
     @Id
     @GeneratedValue

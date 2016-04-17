@@ -116,6 +116,4 @@ public class Contractor {
 
     public void setContract(Set<Contract> contract){this.contract = contract;};
 
-
-
 }
