@@ -30,6 +30,7 @@ public class Showroom {
     }
 
     @Id
+    @GeneratedValue
     @Column(name = "id")
     public int getId() {
         return id;

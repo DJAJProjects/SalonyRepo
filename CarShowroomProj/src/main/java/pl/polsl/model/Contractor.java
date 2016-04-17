@@ -21,6 +21,7 @@ public class Contractor {
     private Set<Contract> contract;
 
     @Id
+    @GeneratedValue
     @Column(name = "id")
     public int getId() {
         return id;

@@ -46,6 +46,7 @@ public class Privileges {
     private boolean promotionsU;
 
     @Id
+    @GeneratedValue
     @Column(name = "id")
     public int getId() {
         return id;

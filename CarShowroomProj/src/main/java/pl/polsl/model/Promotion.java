@@ -17,6 +17,7 @@ public class Promotion {
 //    private Set<Contract> contractList;
 
     @Id
+    @GeneratedValue
     @Column(name = "id")
     public int getId() {
         return id;

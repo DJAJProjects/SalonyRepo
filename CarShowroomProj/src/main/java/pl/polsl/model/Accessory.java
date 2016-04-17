@@ -15,6 +15,7 @@ public class Accessory {
     private Showroom showroom;
 
     @Id
+    @GeneratedValue
     @Column(name = "id")
     public int getId() {
         return id;
