@@ -15,24 +15,25 @@ import javax.ws.rs.core.MediaType;
 import java.util.List;
 
 /**
- * Created by Aleksandra on 2016-04-15.
+ * Created by Kuba on 2016-04-15.
  */
 @Component
-@Path("/contractors")
+@Path("/contracts")
 @Produces(MediaType.APPLICATION_JSON)
+
 public class ContractorsController {
     @Autowired
-    private ContractorsRepository contractorsRepository;
+    private ContractorsRepository contractorsController;
 
     @GET
     @Produces({MediaType.APPLICATION_JSON})
     public List<Contractor> findAllContractors() {
-        return Lists.newArrayList(contractorsRepository.findAll());
+        return Lists.newArrayList(contractorsController.findAll());
     }
 
     @GET
     @Path("/{id}")
     @Produces({MediaType.APPLICATION_JSON})
     public Contractor findOne(int id){
-        return contractorsRepository.findOne(id);}
+        return contractorsController.findOne(id);}
 }

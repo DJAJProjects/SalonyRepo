@@ -15,8 +15,8 @@ public class Contractor {
     private String pesel;
     private String nip;
     private String regon;
-    private Dictionary idCity;
-    private Dictionary idCountry;
+    private Dictionary city;
+    private Dictionary country;
     private String street;
     private Set<Contract> contract;
 
@@ -83,22 +83,22 @@ public class Contractor {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_city")
-    public Dictionary getIdCity() {
-        return idCity;
+    public Dictionary getCity() {
+        return city;
     }
 
-    public void setIdCity(Dictionary idCity) {
-        this.idCity = idCity;
+    public void setCity(Dictionary city) {
+        this.city = city;
     }
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_country")
-    public Dictionary getIdCountry() {
-        return idCountry;
+    public Dictionary getCountry() {
+        return country;
     }
 
-    public void setIdCountry(Dictionary idCountry) {
-        this.idCountry = idCountry;
+    public void setCountry(Dictionary country) {
+        this.country = country;
     }
 
     @Basic
