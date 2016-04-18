@@ -13,9 +13,20 @@ public class Invoice {
     private Date dateCreated;
     private Date dateSold;
     private Date paymentDeadline;
-    private Integer idPaymentForm;
+    private Dictionary idPaymentForm;
     private Dictionary invoiceType;
     private Contract contract;
+
+    public Invoice() {}
+
+    public Invoice(Date dateCreated, Date dateSold, Date paymentDeadline, Dictionary idPaymentForm, Dictionary invoiceType, Contract contract) {
+        this.dateCreated = dateCreated;
+        this.dateSold = dateSold;
+        this.paymentDeadline = paymentDeadline;
+        this.idPaymentForm = idPaymentForm;
+        this.invoiceType = invoiceType;
+        this.contract = contract;
+    }
 
     @Id
     @Column(name = "id")
@@ -58,12 +69,13 @@ public class Invoice {
     }
 
     @Basic
-    @Column(name = "id_payment_form")
-    public Integer getIdPaymentForm() {
+    @ManyToOne
+    @JoinColumn(name = "id_payment_form")
+    public Dictionary getIdPaymentForm() {
         return idPaymentForm;
     }
 
-    public void setIdPaymentForm(Integer idPaymentForm) {
+    public void setIdPaymentForm(Dictionary idPaymentForm) {
         this.idPaymentForm = idPaymentForm;
     }
 

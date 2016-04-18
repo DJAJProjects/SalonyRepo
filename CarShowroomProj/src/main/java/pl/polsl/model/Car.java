@@ -12,10 +12,20 @@ import java.sql.Date;
 @Table(name="cars", schema = "salonydb")
 public class Car {
     private int id;
-    private Integer idName;
+    private Dictionary idName;
     private Date prodDate;
     private Showroom showroom;
     private Contract contract;
+    private Integer cost;
+
+    public Car() {}
+
+    public Car(Dictionary idName, Date prodDate, Showroom showroom, Integer cost) {
+        this.idName = idName;
+        this.prodDate = prodDate;
+        this.showroom = showroom;
+        this.cost = cost;
+    }
 
     @Id
     @Column(name = "id")
@@ -28,12 +38,13 @@ public class Car {
     }
 
     @Basic
-    @Column(name = "id_name")
-    public Integer getIdName() {
+    @ManyToOne
+    @JoinColumn(name = "id_name")
+    public Dictionary getIdName() {
         return idName;
     }
 
-    public void setIdName(Integer idName) {
+    public void setIdName(Dictionary idName) {
         this.idName = idName;
     }
 
@@ -69,5 +80,15 @@ public class Car {
 
     public void setContract(Contract contract) {
         this.contract = contract;
+    }
+
+    @Basic
+    @Column(name = "cost")
+    public Integer getCost() {
+        return cost;
+    }
+
+    public void setCost(Integer cost) {
+        this.cost = cost;
     }
 }

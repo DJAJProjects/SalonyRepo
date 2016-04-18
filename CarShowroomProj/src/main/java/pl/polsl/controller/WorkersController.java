@@ -31,7 +31,6 @@ public class WorkersController {
     @Autowired
     private ShowroomsController showroomsController;
 
-
     @GET
     @Produces({MediaType.APPLICATION_JSON})
     public List<Worker> findAll() {
