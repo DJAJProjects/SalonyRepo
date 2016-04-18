@@ -16,6 +16,7 @@ public class Report {
     private String content;
 
     @Id
+    @GeneratedValue
     @Column(name = "id")
     public int getId() {
         return id;

@@ -91,6 +91,14 @@ public class Contract {
         this.carList = carList;
     }
 
+    @ManyToMany
+    @JoinTable(
+            name="contracts_promotions",
+            joinColumns=@JoinColumn(name="id_contracts", referencedColumnName="id"),
+            inverseJoinColumns=@JoinColumn(name="id_promotions", referencedColumnName="id"))
+    private Set<Promotion> promotionList;
+
+
 //    @ManyToOne(fetch = FetchType.LAZY)
 //    @JoinColumn(name = "id_promotion")
 //    public Promotion getPromotion() {
