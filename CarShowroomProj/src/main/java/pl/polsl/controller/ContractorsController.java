@@ -7,6 +7,7 @@ import pl.polsl.model.Contract;
 import pl.polsl.model.Contractor;
 import pl.polsl.repository.ContractorsRepository;
 import pl.polsl.repository.ContractsRepository;
+import pl.polsl.repository.DictionaryRepository;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -23,17 +24,33 @@ import java.util.List;
 
 public class ContractorsController {
     @Autowired
-    private ContractorsRepository contractorsController;
+    private ContractorsRepository contractorsRepository;
+
+    @Autowired
+    private DictionaryRepository dictionaryRepository;
 
     @GET
     @Produces({MediaType.APPLICATION_JSON})
     public List<Contractor> findAllContractors() {
-        return Lists.newArrayList(contractorsController.findAll());
+        return Lists.newArrayList(contractorsRepository.findAll());
     }
 
     @GET
     @Path("/{id}")
     @Produces({MediaType.APPLICATION_JSON})
     public Contractor findOne(int id){
-        return contractorsController.findOne(id);}
+        return contractorsRepository.findOne(id);}
+
+    public Contractor addContractor(String name,
+                                    String surname,
+                                    String pesel,
+                                    String nip,
+                                    String regon,
+                                    int city,
+                                    int country,
+                                    String street) {
+        return contractorsRepository.save(new Contractor(name, surname, pesel, nip, regon,
+                                                    dictionaryRepository.findOne(city),
+                                                    dictionaryRepository.findOne(country), street));
+    }
 }
