@@ -15,10 +15,10 @@ public class Showroom {
     private Dictionary city;
     private Dictionary country;
     private Worker director;
-    private Set<Accessory> listOfAccesories;
+//    private Set<Accessory> listOfAccesories;
 
 //    private Set<Worker> listOfWorkers;
-    private Set<Car> listOfCars;
+//    private Set<Car> listOfCars;
 
     public Showroom(){}
     public Showroom(String name, String street, Dictionary city, Dictionary country, Worker director) {
@@ -100,21 +100,21 @@ public class Showroom {
 //        this.listOfWorkers = listOfWorkers;
 //    }
 
-    @OneToMany (mappedBy="showroom")
-    public Set<Car> getListOfCars() {
-        return listOfCars;
-    }
+//    @OneToMany (mappedBy="showroom")
+//    public Set<Car> getListOfCars() {
+//        return listOfCars;
+//    }
+//
+//    public void setListOfCars(Set<Car> listOfCars) {
+//        this.listOfCars = listOfCars;
+//    }
 
-    public void setListOfCars(Set<Car> listOfCars) {
-        this.listOfCars = listOfCars;
-    }
-
-    @OneToMany (mappedBy="showroom")
-    public Set<Accessory> getListOfAccesories() {
-        return listOfAccesories;
-    }
-
-    public void setListOfAccesories(Set<Accessory> listOfAccesories) {
-        this.listOfAccesories = listOfAccesories;
-    }
+//    @OneToMany (mappedBy="showroom")
+//    public Set<Accessory> getListOfAccesories() {
+//        return listOfAccesories;
+//    }
+//
+//    public void setListOfAccesories(Set<Accessory> listOfAccesories) {
+//        this.listOfAccesories = listOfAccesories;
+//    }
 }

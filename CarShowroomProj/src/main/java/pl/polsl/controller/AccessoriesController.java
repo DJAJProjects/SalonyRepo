@@ -36,4 +36,8 @@ public class AccessoriesController {
     @Produces({MediaType.APPLICATION_JSON})
     public Accessory findOne(int id){
         return accessoriesRepository.findOne(id);}
+    public void edit(int id){
+        accessoriesRepository.save(findOne(id));
+    }
+
 }

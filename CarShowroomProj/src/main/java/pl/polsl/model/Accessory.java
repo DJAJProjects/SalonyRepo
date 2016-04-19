@@ -10,9 +10,9 @@ import javax.persistence.*;
 public class Accessory {
     private int id;
     private Contract contract;
-    private Integer idName;
+    private Dictionary accessory;
     private Integer cost;
-    private Showroom showroom;
+//    private Showroom showroom;
 
     @Id
     @GeneratedValue
@@ -36,16 +36,15 @@ public class Accessory {
         this.contract = contract;
     }
 
-    @Basic
-    @Column(name = "id_name")
-    public Integer getIdName() {
-        return idName;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_name")
+    public Dictionary getAccessory() {
+        return accessory;
     }
 
-    public void setIdName(Integer idName) {
-        this.idName = idName;
+    public void setAccessory(Dictionary carName) {
+        this.accessory = carName;
     }
-
     @Basic
     @Column(name = "cost")
     public Integer getCost() {
@@ -56,14 +55,14 @@ public class Accessory {
         this.cost = cost;
     }
 
-    @Basic
-    @ManyToOne
-    @JoinColumn(name = "id_showroom")
-    public Showroom getShowroom() {
-        return showroom;
-    }
-
-    public void setShowroom(Showroom showroom) {
-        this.showroom = showroom;
-    }
+//    @Basic
+//    @ManyToOne
+//    @JoinColumn(name = "id_showroom")
+//    public Showroom getShowroom() {
+//        return showroom;
+//    }
+//
+//    public void setShowroom(Showroom showroom) {
+//        this.showroom = showroom;
+//    }
 }

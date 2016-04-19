@@ -18,6 +18,7 @@ public class Dictionary {
     private Set<Invoice> invoiceType;
     private Set<Invoice>paymentForm;
     private Set<Car>carName;
+    private Set<Accessory>accessory;
 
 
     @Id
@@ -103,5 +104,14 @@ public class Dictionary {
 
     public void setCarName(Set<Car> carName) {
         this.carName = carName;
+    }
+
+    @OneToMany (mappedBy="accessory",cascade = CascadeType.REMOVE, fetch = FetchType.EAGER, orphanRemoval = false)
+    public Set<Accessory> getAccessory() {
+        return accessory;
+    }
+
+    public void setAccessory(Set<Accessory> accessory) {
+        this.accessory = accessory;
     }
 }

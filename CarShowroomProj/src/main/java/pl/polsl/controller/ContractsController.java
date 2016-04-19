@@ -47,10 +47,10 @@ public class ContractsController {
         return contractsRepository.save(con);
     }
 
-    public Contract addNew(int cost, Contractor contractor) {
+    public Contract addNew(Contractor contractor) {
         Contract contract= new Contract();
-        contract.setTotalCost(cost);
         //TODO mokeup
+        contract.setTotalCost(0);
         MainController.worker= workersController.findOne(1);
         contract.setWorker(MainController.worker);
         contract.setContractor(contractor);

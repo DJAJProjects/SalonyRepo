@@ -18,7 +18,7 @@ public class Contract {
     private Integer totalCost;
     private Set<Accessory> accessoryList;
     private Set<Car> carList;
-//    private Promotion promotion;
+    private Set<Promotion>promotions;
 
     @GeneratedValue
     @Id
@@ -96,16 +96,9 @@ public class Contract {
             name="contracts_promotions",
             joinColumns=@JoinColumn(name="id_contracts", referencedColumnName="id"),
             inverseJoinColumns=@JoinColumn(name="id_promotions", referencedColumnName="id"))
-    private Set<Promotion> promotionList;
+    public Set<Promotion> getPromotions() {
+        return promotions;
+    }
+    public void setPromotions(Set<Promotion>promotions) {this.promotions = promotions;}
 
-
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "id_promotion")
-//    public Promotion getPromotion() {
-//        return promotion;
-//    }
-//
-//    public void setPromotion(Dictionary idCountry) {
-//        this.promotion = promotion;
-//    }
 }

@@ -40,12 +40,12 @@
         <!--Add new contract-->
         <div th:unless="${carView}" >
         <form th:if="${activeAddView}" class="form-horizontal" role="form" method="post" action="/addNew">
-            <div class="form-group">
-                <label class="control-label col-sm-2">Kwota:</label>
-                <div class="col-sm-10">
-                    <input name="cost" type="text" class="form-control" placeholder="Wprowadź kwotę"/>
-                </div>
-            </div>
+            <!--<div class="form-group">-->
+                <!--<label class="control-label col-sm-2">Kwota:</label>-->
+                <!--<div class="col-sm-10">-->
+                    <!--<input name="cost" type="text" class="form-control" placeholder="Wprowadź kwotę"/>-->
+                <!--</div>-->
+            <!--</div>-->
             <div class="form-group">
             <label class="control-label col-sm-2">Klient:</label>
                 <div class="col-sm-10">
@@ -62,25 +62,25 @@
                     <button type="submit" class="btn btn-default">Zatwierdź</button>
                 </div>
             </div>
-            <div class="form-group">
-                <div class="col-sm-offset-2 col-sm-10">
-                    <button th:unless="${carView}" type="button" class="btn btn-default"><a href="contracts.html" th:href="@{/car}">Wybierz samochód</a></button>
-                </div>
-            </div>
+
 
         </form>
         </div>
         <div th:if="${carView}" >
+
+            <!-- Add cars-->
             <div class="form-group">
                 <label>Wybrane przez Ciebie samochody:</label>
             </div>
 
             <div th:if="${choosenCar}">
+
                 <tr th:each ="item : ${choosenCar}">
                     <td th:text="${item.carName.value}"/>
                     <br/>
                 </tr>
             </div>
+            <br/>
             <form class="form-horizontal" role="form" method="post" action="/addCar">
                 <div class="form-group">
                     <label class="control-label col-sm-2">Samochody:</label>
@@ -96,10 +96,74 @@
                         <button type="submit" class="btn btn-default">Ok</button>
                     </div>
                 </div>
-                <div class="form-group">
-                    <button type="button" class="btn btn-default"><a href="contracts.html" th:href="@{/contracts}">Generuj fakture</a></button>
-                </div>
+
             </form>
+
+            <!-- Add accessories-->
+            <div class="form-group">
+                <label>Dodatkowe części samochodowe:</label>
+            </div>
+
+            <div th:if="${choosenAccessories}">
+                <tr th:each ="item : ${choosenAccessories}">
+                    <td th:text="${item.accessory.value}"/>
+                    <br/>
+                </tr>
+            </div>
+            <br/>
+            <form class="form-horizontal" role="form" method="post" action="/addAccessory">
+                <div class="form-group">
+                    <label class="control-label col-sm-2">Akcesoria:</label>
+                    <div class="col-sm-10">
+                        <select name="accessory" class="form-control" aria-label="..." >
+                            <option th:value="-1" text="Akcesoria:"></option>
+                            <option  th:each="c : ${accessories}" th:value="${c.id}" th:text="${c.accessory.value}" th:selected="${c.id}"></option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button type="submit" class="btn btn-default">Ok</button>
+                    </div>
+                </div>
+
+            </form>
+
+            <!-- Add actual promotion -->
+            <div class="form-group">
+                <label>Wybrane promocje:</label>
+            </div>
+            <div th:if="${choosenAccessories}">
+                <tr th:each ="item : ${choosenPromotion}">
+                    <td th:text="${item.name}"/>
+                    <br/>
+                </tr>
+            </div>
+            <br/>
+            <form th:if="${promotionView}" class="form-horizontal" role="form" method="post" action="/addPromotion">
+                <div class="form-group">
+                    <label class="control-label col-sm-2">Aktualne promocje:</label>
+                    <div class="col-sm-10">
+                        <select name="promotion" class="form-control" aria-label="..." >
+                            <option th:value="-1" text="Promocje:"></option>
+                            <option  th:each="c : ${promotions}" th:value="${c.id}" th:text="${c.name}" th:selected="${c.id}"></option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button type="submit" class="btn btn-default">Ok</button>
+                    </div>
+                </div>
+
+            </form>
+
+
+            <!-- Go to make invoice-->
+            <div class="form-group">
+                <button type="button" class="btn btn-default"><a href="contracts.html" th:href="@{/contracts}">Generuj fakture</a></button>
+            </div>
+
         </div>
 
     </div>

@@ -13,8 +13,9 @@ import java.sql.Date;
 public class Car {
     private int id;
     private Dictionary carName;
-    private Date prodDate;
-    private Showroom showroom;
+//    private Date prodDate;
+    private int cost;
+//    private Showroom showroom;
     private Contract contract;
 
     @Id
@@ -38,27 +39,37 @@ public class Car {
         this.carName = carName;
     }
 
+//    @Basic
+//     @Column(name = "prod_date")
+//     public Date getProdDate() {
+//        return prodDate;
+//    }
+//
+//    public void setProdDate(Date prodDate) {
+//        this.prodDate = prodDate;
+//    }
+
     @Basic
     @Column(name = "prod_date")
-    public Date getProdDate() {
-        return prodDate;
+    public int getCost() {
+        return cost;
     }
 
-    public void setProdDate(Date prodDate) {
-        this.prodDate = prodDate;
+    public void setCost(int cost) {
+        this.cost = cost;
     }
 
-    @JsonIgnore
-    @Basic
-    @ManyToOne
-    @JoinColumn(name = "id_showroom")
-    public Showroom getShowroom() {
-        return showroom;
-    }
-
-    public void setShowroom(Showroom showroom) {
-        this.showroom = showroom;
-    }
+//    @JsonIgnore
+//    @Basic
+//    @ManyToOne
+//    @JoinColumn(name = "id_showroom")
+//    public Showroom getShowroom() {
+//        return showroom;
+//    }
+//
+//    public void setShowroom(Showroom showroom) {
+//        this.showroom = showroom;
+//    }
 
     @JsonIgnore
     @Basic

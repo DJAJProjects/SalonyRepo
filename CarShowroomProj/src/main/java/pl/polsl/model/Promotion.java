@@ -1,6 +1,7 @@
 package pl.polsl.model;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.Set;
 
 /**
@@ -12,8 +13,11 @@ public class Promotion {
     private int id;
     private int percValue;
     private String name;
-    private Integer idAccessory;
-    private Integer idCar;
+    private Date dateStart;
+    private Date dateEnd;
+//    private Integer idAccessory;
+    private Set<Contract>contracts;
+
 
     @Id
     @GeneratedValue
@@ -47,33 +51,44 @@ public class Promotion {
     }
 
     @Basic
-    @Column(name = "id_accessory")
-    public Integer getIdAccessory() {
-        return idAccessory;
+    @Column(name = "date_start")
+    public Date getDateStart() {
+        return dateStart;
     }
 
-    public void setIdAccessory(Integer idAccessory) {
-        this.idAccessory = idAccessory;
+    public void setDateStart(Date start) {
+        this.dateStart = start;
     }
 
     @Basic
-    @Column(name = "id_car")
-    public Integer getIdCar() {
-        return idCar;
+    @Column(name = "date_end")
+    public Date getDateEnd() {
+        return dateEnd;
     }
 
-    public void setIdCar(Integer idCar) {
-        this.idCar = idCar;
+    public void setDateEnd(Date end) {
+        this.dateEnd = end;
     }
+
 
 //    @Basic
-//    @OneToMany (mappedBy="promotion")
-//    public Set<Contract> getContractList() {
-//        return contractList;
+//    @Column(name = "id_accessory")
+//    public Integer getIdAccessory() {
+//        return idAccessory;
 //    }
-//    public void setContractList(Set<Contract> contractList) {
-//        this.contractList = contractList;
+//
+//    public void setIdAccessory(Integer idAccessory) {
+//        this.idAccessory = idAccessory;
 //    }
 
+    @Basic
+    @ManyToMany(mappedBy = "promotions")
+    public Set<Contract> getContracts() {
+        return this.contracts;
+    }
+
+    public void setContracts(Set<Contract> contracts) {
+        this.contracts = contracts;
+    }
 
 }
