@@ -20,6 +20,27 @@ public class Contractor {
     private String street;
     private Set<Contract> contract;
 
+
+    public Contractor(){}
+
+    public Contractor(String name,
+                      String surname,
+                      String pesel,
+                      String nip,
+                      String regon,
+                      Dictionary city,
+                      Dictionary country,
+                      String street){
+        this.name = name;
+        this.surname = surname;
+        this.pesel = pesel;
+        this.nip = nip;
+        this.regon = regon;
+        this.city = city;
+        this.country = country;
+        this.street = street;
+    }
+
     @Id
     @GeneratedValue
     @Column(name = "id")
