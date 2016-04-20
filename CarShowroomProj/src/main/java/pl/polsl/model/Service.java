@@ -84,9 +84,8 @@ public class Service {
         this.type = type;
     }
 
-    @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn (name = "cost")
+
+    @Column (name = "cost")
     public DecimalFormat getCost() {
         return cost;
     }
