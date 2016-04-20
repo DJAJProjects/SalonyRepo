@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:layout="http://www.w3.org/1999/xhtml" layout:decorator="index"
+      xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Samochody</title>
+</head>
+<body>
+<div layout:fragment="main" style="margin: 0 auto; max-width: 1000px;">
+    <div th:if="${visibleShowForm}" class="btn-group" role="group" aria-label="..." style="margin: 20px 0;">
+        <a href="cars.html" th:href="@{'/addNewCar'}"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>Dodaj samochód</a>
+    </div>
+    <div th:if="${visibleShowForm}">
+        <div class="panel panel-default">
+            <!-- Default panel contents -->
+            <div class="panel-heading">Dostępne samochody:</div>
+            <!-- Table -->
+            <table class="table">
+                <!-- head row -->
+                <tr style="font-weight: bold;">
+                    <td class="col-md-2">Model</td>
+                    <td class="col-md-2">Data produkcji</td>
+                    <td class="con-md-2">Cena [PLN]</td>
+                    <td class="col-md-2">Salon</td>
+                    <td class="col-md-2">Edytuj</td>
+                    <td class="col-md-2">Usuń</td>
+                </tr>
+                <tr th:each="car : ${cars}">
+                    <td th:text="${car.carName.value}"></td>
+                    <td th:text="${car.prodDate}"></td>
+                    <td th:text="${car.cost}"></td>
+                    <td th:text="${car.showroom.name}"></td>
+                    <td><a href="cars.html" th:href="@{'/editCar/'+${car.id}}"><span class="glyphicon glyphicon-edit" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Edytuj"></span></a></td>
+                    <td><a href="cars.html" th:href="@{'/deleteCar/'+${car.id}}"><span class="glyphicon glyphicon-remove" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Usuń"></span></a></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <!--Add car-->
+    <form th:if="${visibleAddForm}" class="form-horizontal" role="form" method="post" action="/addNewCar">
+        <div class="form-group">
+            <label class="control-label col-sm-2">Model:</label>
+            <div class="col-sm-10">
+                <select type="text" name="name" placeholder="Wybierz model" list="carAddList" required="required" class="form-control" aria-label="...">
+                    <datalist id="carAddList">
+                        <option th:each="car : ${carNames}" th:value="${car.id}" th:text="${car.value}"></option>
+                    </datalist>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <!--??????????????????????? WALIDACJA DATY (MIN MAX) HOW TO ?????????????????????-->
+            <label class="control-label col-sm-2">Data produkcji:</label>
+            <div class="col-sm-10">
+                <input name="dateProd" type="date" class="form-control" min="2000-01-01" placeholder="YYYY-MM-DD"
+                       pattern="[2]{1}[0-9]{3}-[0-1]{1}[0-9]{1}-[0-3]{1}[0-9]{1}" required="required"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-2">Cena [PLN]:</label>
+            <div class="col-sm-10">
+                <input name="cost" type="number" min="0" max="999999" class="form-control" placeholder="Wprowadź cenę"
+                    required="required"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-2">Salon:</label>
+            <div class="col-sm-10">
+                <select type="text" name="showroom" placeholder="Wybierz salon" list="showroomAddList" required="required" class="form-control" aria-label="...">
+                    <datalist id="showroomAddList">
+                        <option th:each="showroom : ${showrooms}" th:value="${showroom.id}" th:text="${showroom.name}"></option>
+                    </datalist>
+                </select>
+            </div>
+        </div>
+       <!--Confirm add car by login-->
+        <div class="form-group">
+            <label class="control-label col-sm-2">Login:</label>
+            <div class="col-sm-10">
+                <input name="login" type="text" class="form-control" placeholder="Wprowadź login" required="required"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-2">Hasło:</label>
+            <div class="col-sm-10">
+                <input name="password" type="password" class="form-control" placeholder="Wprowadź hasło" required="required"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" class="btn btn-default">Dodaj</button>
+            </div>
+        </div>
+    </form>
+
+    <!--Nie działa jeszcze nie wiem czemu xDD-->
+    <!--Edit car-->
+    <form th:if="${visibleEditForm}" class="form-horizontal" role="form" method="post" action="/editCar/*{id}" th:object="${car}">
+        <input type="hidden" style="display: none;" name="id" th:field="*{id}"/>
+        sajbcbdsdyubd quovfh hcqb d cqhocodn cjd jwhfdje hdsjsffsdsfd fdh jf
+        <div class="form-group">
+            <label class="control-label col-sm-2">Model:</label>
+            <div class="col-sm-10">
+                <select type="text" name="name" placeholder="Wybierz model" list="carEditList" required="required" class="form-control" aria-label="...">
+                    <datalist id="carEditList">
+                        <option th:each="carName : ${carNames}" th:value="${carName.id}" th:text="${carName.value}" th:selected="${carName.id}==${carNameId}"></option>
+                    </datalist>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-2">Data produkcji:</label>
+            <div class="col-sm-10">
+                <input th:field="*{prodDate}" name="dateProd" type="date" class="form-control" min="2000-01-01" placeholder="YYYY-MM-DD"
+                       pattern="[2]{1}[0-9]{3}-[0-1]{1}[0-9]{1}-[0-3]{1}[0-9]{1}" required="required"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-2">Cena [PLN]:</label>
+            <div class="col-sm-10">
+                <input th:field="*{cost}" name="cost" type="number" min="30000" max="999999" class="form-control" placeholder="Wprowadź cenę"
+                       required="required"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-2">Salon:</label>
+            <div class="col-sm-10">
+                <select type="text" name="showroom" placeholder="Wybierz salon" list="showroomEditList" required="required" class="form-control" aria-label="...">
+                    <datalist id="showroomEditList">
+                        <option th:each="showroom : ${showrooms}" th:value="${showroom.id}" th:text="${showroom.name}" th:selected="${showroom.id}==${showroomId}"></option>
+                    </datalist>
+                </select>
+            </div>
+        </div>
+    </form>
+
+</div>
+</body>
+</html>
