@@ -18,6 +18,15 @@ public class Car {
     private Showroom showroom;
     private Contract contract;
 
+    public Car() {}
+
+    public Car(Dictionary carName, Date prodDate, Showroom showroom, Integer cost) {
+        this.carName = carName;
+        this.prodDate = prodDate;
+        this.showroom = showroom;
+        this.cost = cost;
+    }
+
     @Id
     @GeneratedValue
     @Column(name = "id")
@@ -40,8 +49,8 @@ public class Car {
     }
 
     @Basic
-     @Column(name = "prod_date")
-     public Date getProdDate() {
+    @Column(name = "prod_date")
+    public Date getProdDate() {
         return prodDate;
     }
 

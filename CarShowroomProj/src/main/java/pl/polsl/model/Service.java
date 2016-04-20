@@ -84,7 +84,6 @@ public class Service {
         this.type = type;
     }
 
-
     @Column (name = "cost")
     public DecimalFormat getCost() {
         return cost;
