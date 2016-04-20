@@ -17,6 +17,19 @@ public class Invoice {
     private Dictionary invoiceType;
     private Contract contract;
 
+
+    public Invoice() {}
+
+    public Invoice(Date dateCreated, Date dateSold, Date paymentDeadline, Dictionary paymentForm, Dictionary invoiceType, Contract contract) {
+        this.dateCreated = dateCreated;
+        this.dateSold = dateSold;
+        this.paymentDeadline = paymentDeadline;
+        this.paymentForm = paymentForm;
+        this.invoiceType = invoiceType;
+        this.contract = contract;
+    }
+
+
     @GeneratedValue
     @Id
     @Column(name = "id")

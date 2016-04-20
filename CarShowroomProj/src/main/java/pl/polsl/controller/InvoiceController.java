@@ -12,6 +12,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import java.sql.Date;
 import java.util.List;
 
 /**
@@ -24,6 +25,10 @@ import java.util.List;
 public class InvoiceController {
     @Autowired
     private InvoiceRepository invoiceRepository;
+    @Autowired
+    private DictionaryController dictionaryController;
+    @Autowired
+    ContractsController contractsController;
 
     @GET
     @Produces({MediaType.APPLICATION_JSON})
@@ -36,4 +41,15 @@ public class InvoiceController {
     @Produces({MediaType.APPLICATION_JSON})
     public Invoice findOne(int id){
         return invoiceRepository.findOne(id);}
+
+    public void delete(int id){
+        invoiceRepository.delete(id);
+    }
+
+    public Invoice addInvoice(Date dateCreate, Date dateSold, Date paymentDeadline, int paymentForm, int type, int contract) {
+        return invoiceRepository.save(new Invoice(dateCreate, dateSold, paymentDeadline,
+                dictionaryController.findOne(paymentForm), dictionaryController.findOne(type),
+                contractsController.findOne(contract)));
+    }
+
 }
