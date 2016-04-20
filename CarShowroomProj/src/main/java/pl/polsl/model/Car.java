@@ -50,7 +50,7 @@ public class Car {
 //    }
 
     @Basic
-    @Column(name = "prod_date")
+    @Column(name = "cost")
     public int getCost() {
         return cost;
     }
