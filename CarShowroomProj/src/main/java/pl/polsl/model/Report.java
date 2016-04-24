@@ -11,8 +11,8 @@ import javax.persistence.*;
 @Table(name="reports", schema = "salonydb")
 public class Report {
     private int id;
-    private Showroom idShowroom;
-    private Contractor idContractor;
+    private Showroom showroom;
+    private Contractor contractor;
     private String content;
 
     @Id
@@ -29,23 +29,23 @@ public class Report {
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn (name = "id_showroom")
-    public Showroom getIdShowroom() {
-        return idShowroom;
+    public Showroom getShowroom() {
+        return showroom;
     }
 
-    public void setIdShowroom(Showroom idShowroom) {
-        this.idShowroom = idShowroom;
+    public void setShowroom(Showroom showroom) {
+        this.showroom = showroom;
     }
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn (name = "id_contractor")
-    public Contractor getIdContractor() {
-        return idContractor;
+    public Contractor getContractor() {
+        return contractor;
     }
 
-    public void setIdContractor(Contractor idContractor) {
-        this.idContractor = idContractor;
+    public void setContractor(Contractor contractor) {
+        this.contractor = contractor;
     }
 
     @Basic
