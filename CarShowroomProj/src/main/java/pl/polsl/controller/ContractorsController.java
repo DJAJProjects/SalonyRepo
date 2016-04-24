@@ -53,4 +53,25 @@ public class ContractorsController {
                                                     dictionaryRepository.findOne(city),
                                                     dictionaryRepository.findOne(country), street));
     }
+
+    public Contractor updateShowroom(int id,
+                                     String name,
+                                     String surname,
+                                     String pesel,
+                                     String nip,
+                                     String regon,
+                                     int city,
+                                     int country,
+                                     String street) {
+        Contractor contractor = contractorsRepository.findOne(id);
+        contractor.setName(name);
+        contractor.setSurname(surname);
+        contractor.setStreet(street);
+        contractor.setPesel(pesel);
+        contractor.setNip(nip);
+        contractor.setRegon(regon);
+        contractor.setCity(dictionaryRepository.findOne(city));
+        contractor.setCountry(dictionaryRepository.findOne(country));
+        return  contractorsRepository.save(contractor);
+    }
 }
