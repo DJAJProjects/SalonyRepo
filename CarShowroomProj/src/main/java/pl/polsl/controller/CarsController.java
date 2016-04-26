@@ -15,7 +15,10 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Created by Kuba on 3/19/2016.
@@ -64,8 +67,12 @@ public class CarsController {
         car.setProdDate(prodDate);
         car.setShowroom(showroomsRepository.findOne(showroom));
         car.setCost(cost);
-        //      car.setContract();        //???????????????????????
+        //      car.setContract();        //??????????????????????? przypisuje przy sprzedazach
         return carsRepository.save(car);
+    }
+
+    public List<Car>findCarAvaliable() {
+        return findAllCars().stream().filter((Car car)->car.getContract()== null).collect(Collectors.toList());
     }
 
 }

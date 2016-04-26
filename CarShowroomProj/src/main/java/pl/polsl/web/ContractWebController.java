@@ -75,6 +75,7 @@ public class ContractWebController {
         model.addAttribute("contractors",contractorsController.findAllContractors());
         model.addAttribute("carView",1);
         model.addAttribute("cars",carsController.findAllCars());
+        System.out.println("find any: "+ carsController.findCarAvaliable().size());
         model.addAttribute("choosenCar", choosenCarList);
         model.addAttribute("choosenAccessories", choosenAccessories);
         model.addAttribute("choosenPromotion", choosenPromotionList);
@@ -94,6 +95,7 @@ public class ContractWebController {
         Contract con = contractsController.findOne(currentContractId);
         System.out.println(c.getCarName().getValue());
         con.getCarList().add(c);
+        c.setContract(con);
         carsController.edit(car);
         con.setTotalCost(con.getTotalCost() + c.getCost());
         contractsController.edit(con);

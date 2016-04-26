@@ -39,5 +39,7 @@ public class AccessoriesController {
     public void edit(int id){
         accessoriesRepository.save(findOne(id));
     }
-
+    public void deleteOne(int id) {
+        accessoriesRepository.delete(id);
+    }
 }
