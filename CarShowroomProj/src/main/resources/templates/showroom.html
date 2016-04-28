@@ -52,13 +52,13 @@
         <div class="form-group">
             <label class="control-label col-sm-2">Nazwa:</label>
             <div class="col-sm-10">
-                <input th:disabled="${controlsDisabled}" th:field="*{name}" name="name" type="text" class="form-control" placeholder="Wprowadź nazwę salonu"/>
+                <input th:disabled="${controlsDisabled}" th:field="*{name}" name="name" type="text" class="form-control" placeholder="Wprowadź nazwę salonu" required="required"/>
             </div>
         </div>
         <div class="form-group">
             <label class="control-label col-sm-2">Ulica:</label>
             <div class="col-sm-10">
-                <input th:disabled="${controlsDisabled}" th:field="*{street}" name="street" type="text" class="form-control" placeholder="Wprowadź adres"/>
+                <input th:disabled="${controlsDisabled}" th:field="*{street}" name="street" type="text" class="form-control" placeholder="Wprowadź adres" required="required"/>
             </div>
         </div>
         <div class="form-group">
