@@ -30,7 +30,7 @@ public class GreetingController {
         Report r = reportsController.findReport(1);
         if(r != null){
             model.addAttribute("name", r.getContent());
-            model.addAttribute("name2", r.getIdContractor().getName());
+            model.addAttribute("name2", r.getContractor().getName());
         }
         else{
             model.addAttribute("name", "dupa");
