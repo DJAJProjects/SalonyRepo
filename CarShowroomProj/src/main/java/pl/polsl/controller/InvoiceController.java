@@ -44,7 +44,7 @@ public class InvoiceController {
     public void delete(int id){
         invoiceRepository.delete(id);
     }
-
+    public void edit(int id) {invoiceRepository.save(findOne(id));}
     public Invoice addNew(Contract con, int paymentForm, int type){
         Invoice invoice = new Invoice();
         invoice.setDateCreated(new Date());
