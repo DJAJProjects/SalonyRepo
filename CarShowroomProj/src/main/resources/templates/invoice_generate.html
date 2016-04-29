@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.w3.org/1999/xhtml" layout:decorator="index">
+<head>
+    <title>Generuj fakture</title>
+    <script>
+        $(function() {
+            $('.datepicker').datepicker();
+        });
+    </script>
+</head>
+<body>
+<div layout:fragment="main" style="margin: 0 auto; max-width: 1000px;">
+
+    <div class="form-group">
+        <label class="control-label col-sm-2">Data sprzedaży:</label>
+        <p th:text="${dateCreated}"></p>
+    </div>
+    <br/>
+    <div class="form-group row">
+        <label class="control-label col-sm-2">Salon:</label>
+        <div>
+            <p class="control-label col-sm-1" th:text="${showroom.name}" ></p>
+            <p th:text="${showroom.street}"></p>
+        </div>
+    </div>
+    <br/>
+    <div class="form-group">
+        <label class="control-label col-sm-2">Klient:</label>
+        <p th:text="${contract.contractor.surname}"></p>
+    </div>
+    <br/>
+
+    <div class="form-group">
+        <label class="control-label col-sm-2">Kwota transakcji:</label>
+        <p th:text="${contract.totalCost}"></p>
+    </div>
+    <br/>
+
+    <form class="form-horizontal" role="form" method="post" action="/generateNew">
+        <div class="form-group">
+            <label class="control-label col-sm-2">Data:</label>
+            <div class="col-sm-10">
+                <input name = "date" type="text" class="datepicker form-control"/>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-sm-2">Typ płatności:</label>
+            <div class="col-sm-10">
+                <select name="paymentForm" class="form-control" aria-label="..." >
+                    <option th:value="-1" text="Płatność:"></option>
+                    <option  th:each="c : ${paymentforms}" th:value="${c.id}" th:text="${c.value}" th:selected="${c.id}"></option>
+                </select>
+            </div>
+        </div>
+
+        <br/>
+        <div class="form-group">
+            <label class="control-label col-sm-2">Typ faktury:</label>
+            <div class="col-sm-10">
+                <select name="invoiceType" class="form-control" aria-label="..." >
+                    <option th:value="-1" text="Faktura:"></option>
+                    <option  th:each="c : ${invoiceTypes}" th:value="${c.id}" th:text="${c.value}" th:selected="${c.id}"></option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-2">
+                <button type="submit" class="btn btn-default">Zatwierdź</button>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+</html>

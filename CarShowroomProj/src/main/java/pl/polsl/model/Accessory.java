@@ -26,7 +26,7 @@ public class Accessory {
     }
 
     @Basic
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_contract")
     public Contract getContract() {
         return contract;

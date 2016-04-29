@@ -45,6 +45,13 @@ public class DictionaryController {
 
     public List<Dictionary> findAllPositions() { return dictionaryRepository.findAllTheSameType("position");
     }
+    public List<Dictionary> findAllPaymentForm() {
+        return dictionaryRepository.findAllTheSameType("payment_form");
+    }
+    public List<Dictionary> findAllInvoiceType() {
+        return dictionaryRepository.findAllTheSameType("invoice_type");
+    }
+
 
     public List<Dictionary> findAllCarName() {
         return dictionaryRepository.findAllTheSameType("car_name");
