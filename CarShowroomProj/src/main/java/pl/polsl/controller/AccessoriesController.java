@@ -13,6 +13,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by Aleksandra on 2016-04-07.
@@ -39,5 +40,10 @@ public class AccessoriesController {
     public void edit(int id){
         accessoriesRepository.save(findOne(id));
     }
-
+    public void deleteOne(int id) {
+        accessoriesRepository.delete(id);
+    }
+    public List<Accessory>findAccessoriesAvaliable() {
+        return findAll().stream().filter((Accessory ac)->ac.getContract()== null).collect(Collectors.toList());
+    }
 }

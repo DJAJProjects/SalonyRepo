@@ -6,9 +6,15 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import pl.polsl.model.Car;
+<<<<<<< HEAD
 import pl.polsl.model.Dictionary;
 import pl.polsl.model.Showroom;
 
+=======
+import pl.polsl.model.Promotion;
+
+import java.util.Date;
+>>>>>>> origin/develeop
 import java.util.List;
 
 /**
