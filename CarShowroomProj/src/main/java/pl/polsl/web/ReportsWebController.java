@@ -3,11 +3,16 @@ package pl.polsl.web;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import pl.polsl.ViewMode;
 import pl.polsl.controller.*;
 import pl.polsl.model.Contractor;
+import pl.polsl.model.Report;
+
+import java.sql.Date;
 
 /**
  * Created by Kuba on 20.04.2016.
@@ -15,22 +20,13 @@ import pl.polsl.model.Contractor;
 @Controller
 public class ReportsWebController {
 
-    private boolean addVisible = false;
+    private ViewMode viewMode;
 
     @Autowired
     private ReportsController reportsController;
 
     @Autowired
-    private DictionaryController dictionaryController;
-
-    @Autowired
-    private ShowroomsController showroomController;
-
-    @Autowired
-    private WorkersController workersController;
-
-    @Autowired
-    private ContractorsController contractorsController;
+    private ShowroomsController showroomsController;
 
     @RequestMapping(value ="/reports")
     public String getReports(Model model){
@@ -38,28 +34,48 @@ public class ReportsWebController {
         return "reports";
     }
 
-    @RequestMapping(value ="/addReport")
-    public String addReports(Model model){
-        addVisible = true;
-        model.addAttribute("addVisible", addVisible);
-        model.addAttribute("cities", dictionaryController.findAllCities());
-        model.addAttribute("countries", dictionaryController.findAllCountries());
-        model.addAttribute("contractors", contractorsController.findAllContractors());
+    @RequestMapping(value ="/viewReport/{id}")
+    public String viewReport(Model model, @PathVariable("id")int id) {
+
+        viewMode = ViewMode.VIEW_ALL;
+
+        Report report = reportsController.findOne(id);
+
+        model.addAttribute("showroom", report.getShowroom().getId());
+        model.addAttribute("report", report);
+        model.addAttribute("reports", reportsController.findAllRaports());
+        model.addAttribute("showrooms", showroomsController.findAll());
+        model.addAttribute("controlsPanelVisible", true);
+        model.addAttribute("controlsDisabled", true);
+
         return "reports";
     }
 
-    @RequestMapping(value ="/addReport", method = RequestMethod.POST)
-    public String addContractor(@RequestParam("name") String name,
-                                @RequestParam(value = "surname") String surname,
-                                @RequestParam(value = "pesel") String pesel,
-                                @RequestParam(value = "nip") String nip,
-                                @RequestParam(value = "regon") String regon,
-                                @RequestParam(value = "city") int city,
-                                @RequestParam(value = "country") int country,
-                                @RequestParam(value = "street") String street){
-        Contractor contractor = contractorsController.addContractor(name, surname, pesel, nip, regon, city, country, street);
-        addVisible = false;
-        return "redirect:/contractors/";
+    @RequestMapping(value ="/addReport")
+    public String addReports(Model model){
+
+        viewMode = ViewMode.INSERT;
+
+        Report report = new Report();
+
+        model.addAttribute("report", report);
+        model.addAttribute("controlsPanelVisible", true);
+        model.addAttribute("controlsDisabled", false);
+        model.addAttribute("reports", reportsController.findAllRaports());
+        model.addAttribute("showrooms", showroomsController.findAll());
+        return "reports";
+    }
+
+    @RequestMapping(value ="/acceptModifyReport", method = RequestMethod.POST)
+    public String acceptModifyReport(@RequestParam(value = "name") String name,
+                             @RequestParam(value = "showroom") int showroom,
+                             @RequestParam(value = "content") String content,
+                             @RequestParam(value = "dateBeggining") String dateBeggining,
+                             @RequestParam(value = "dateEnd") String dateEnd ){
+        if(viewMode == ViewMode.INSERT){
+            Report report = reportsController.addReport(name, showroom, content, Date.valueOf(dateBeggining),Date.valueOf(dateEnd));
+        }
+        return "redirect:/reports/";
     }
 
 }
