@@ -97,7 +97,7 @@ public class Dictionary {
         this.paymentForm = paymentForm;
     }
 
-    @OneToMany (mappedBy="carName",cascade = CascadeType.REMOVE, fetch = FetchType.EAGER, orphanRemoval = false)
+    @OneToMany (mappedBy="carName",cascade = CascadeType.REMOVE, orphanRemoval = false)
     public Set<Car> getCarName() {
         return carName;
     }
@@ -106,7 +106,7 @@ public class Dictionary {
         this.carName = carName;
     }
 
-    @OneToMany (mappedBy="accessory",cascade = CascadeType.REMOVE, fetch = FetchType.EAGER, orphanRemoval = false)
+    @OneToMany (mappedBy="accessory",cascade = CascadeType.REMOVE, orphanRemoval = false)
     public Set<Accessory> getAccessory() {
         return accessory;
     }

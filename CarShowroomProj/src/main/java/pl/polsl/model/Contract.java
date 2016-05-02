@@ -32,7 +32,7 @@ public class Contract {
     }
     @JsonIgnore
     @Basic
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_seller")
     public Worker getWorker() {
         return worker;
@@ -52,8 +52,7 @@ public class Contract {
         this.invoice = idInvoice;
     }
 
-
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_contractor")
     public Contractor getContractor() {
         return contractor;
@@ -73,7 +72,7 @@ public class Contract {
         this.totalCost = totalCost;
     }
 
-    @OneToMany (mappedBy="contract")
+    @OneToMany (mappedBy="contract", fetch = FetchType.EAGER)
     public Set<Accessory> getAccessoryList() {
         return accessoryList;
     }
@@ -82,7 +81,7 @@ public class Contract {
         this.accessoryList = accessoryList;
     }
 
-    @OneToMany (mappedBy="contract")
+    @OneToMany (mappedBy="contract",fetch = FetchType.EAGER)
     public Set<Car> getCarList() {
         return carList;
     }
@@ -91,7 +90,7 @@ public class Contract {
         this.carList = carList;
     }
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name="contracts_promotions",
             joinColumns=@JoinColumn(name="id_contracts", referencedColumnName="id"),

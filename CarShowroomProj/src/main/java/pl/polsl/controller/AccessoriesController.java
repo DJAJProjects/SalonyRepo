@@ -12,7 +12,10 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -43,7 +46,21 @@ public class AccessoriesController {
     public void deleteOne(int id) {
         accessoriesRepository.delete(id);
     }
-    public List<Accessory>findAccessoriesAvaliable() {
-        return findAll().stream().filter((Accessory ac)->ac.getContract()== null).collect(Collectors.toList());
+
+    /**
+     * Created by: Aleksandra Chronowska
+     * @param accessories choosen accessories
+     * @return avaliable to choose accessory
+     */
+    public Set<Accessory>findAccessoriesAvaliable(Set<Accessory>accessories) {
+        Set<Accessory>accessoriesSet = findAll().stream().filter((Accessory ac)->ac.getContract()== null).collect(Collectors.toSet());
+        List<Accessory>properList=new ArrayList<>();
+        for(Accessory accessory : accessories) {
+            Optional<Accessory> result = accessoriesSet.stream().filter(x -> x.getId() == accessory.getId()).findAny();
+            if(result.isPresent())
+                properList.add(result.get());
+        }
+        accessoriesSet.removeAll(properList);
+        return accessoriesSet;
     }
 }

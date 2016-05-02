@@ -38,7 +38,7 @@ public class Car {
         this.id = id;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne()
     @JoinColumn(name = "id_name")
     public Dictionary getCarName() {
         return carName;
@@ -82,7 +82,7 @@ public class Car {
 
     @JsonIgnore
     @Basic
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_contract")
     public Contract getContract() {
         return contract;

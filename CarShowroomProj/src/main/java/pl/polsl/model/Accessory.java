@@ -26,7 +26,7 @@ public class Accessory {
     }
 
     @Basic
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_contract")
     public Contract getContract() {
         return contract;
@@ -36,7 +36,7 @@ public class Accessory {
         this.contract = contract;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne()
     @JoinColumn(name = "id_name")
     public Dictionary getAccessory() {
         return accessory;

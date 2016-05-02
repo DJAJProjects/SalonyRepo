@@ -3,6 +3,7 @@ package pl.polsl.controller;
 import jersey.repackaged.com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import pl.polsl.model.Car;
 import pl.polsl.model.Invoice;
 import pl.polsl.model.Promotion;
 import pl.polsl.repository.InvoiceRepository;
@@ -12,8 +13,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by Aleksandra on 2016-04-07.
@@ -38,8 +38,17 @@ public class PromotionsController {
     public Promotion findOne(int id){
         return promotionsRepository.findOne(id);}
 
-    public List<Promotion> findActual(Date date) {
-        return Lists.newArrayList(promotionsRepository.findActual(date));
+    public List<Promotion> findActual(Date date, Set<Promotion> promotionList) {
+        List<Promotion>promotions = Lists.newArrayList(promotionsRepository.findActual(date));
+        List<Promotion>properList = new ArrayList<>();
+        for(Promotion promotion : promotionList) {
+            Optional<Promotion> result = promotions.stream().filter(x -> x.getId() == promotion.getId()).findAny();
+            if(result.isPresent())
+                properList.add(result.get());
+        }
+        boolean remo = promotions.removeAll(properList);
+        System.out.println(remo);
+        return promotions;
     }
 
     public Promotion edit(Promotion con) {

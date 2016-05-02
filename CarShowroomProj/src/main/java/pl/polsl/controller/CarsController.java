@@ -1,5 +1,6 @@
 package pl.polsl.controller;
 
+import javafx.print.Collation;
 import jersey.repackaged.com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -18,6 +19,7 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -71,8 +73,21 @@ public class CarsController {
         return carsRepository.save(car);
     }
 
-    public List<Car>findCarAvaliable() {
-        return findAllCars().stream().filter((Car car)->car.getContract()== null).collect(Collectors.toList());
+    /**
+     * Created by: Aleksandra Chronowska
+     * @param cars choosen cars
+     * @return avaliable to choose cars
+     */
+    public Set<Car>findCarAvaliable(Set<Car>cars) {
+        Set<Car>carList = findAllCars().stream().filter((Car car)->car.getContract()== null).collect(Collectors.toSet());
+        List<Car>properList=new ArrayList<>();
+            for(Car car : cars) {
+                Optional<Car> result = carList.stream().filter(x -> x.getId() == car.getId()).findAny();
+                if(result.isPresent())
+                    properList.add(result.get());
+            }
+            carList.removeAll(properList);
+        return carList;
     }
 
 }

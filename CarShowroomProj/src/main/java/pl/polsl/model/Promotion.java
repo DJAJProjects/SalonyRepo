@@ -82,7 +82,7 @@ public class Promotion {
 //    }
 
     @Basic
-    @ManyToMany(mappedBy = "promotions")
+    @ManyToMany(mappedBy = "promotions", fetch = FetchType.EAGER)
     public Set<Contract> getContracts() {
         return this.contracts;
     }
