@@ -6,9 +6,8 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import pl.polsl.model.Car;
-import pl.polsl.model.Promotion;
+import pl.polsl.model.Showroom;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -18,4 +17,7 @@ import java.util.List;
     @Repository
     @Transactional
     public interface CarsRepository extends PagingAndSortingRepository<Car, Integer> {
+
+    @Query(value = "select car from Car car where car.showroom = :showroom ")
+    public List<Car> findAllTheSameShowroom ( @Param("showroom")Showroom showroom);
 }

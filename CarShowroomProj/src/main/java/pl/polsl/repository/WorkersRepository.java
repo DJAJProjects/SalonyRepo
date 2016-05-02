@@ -6,6 +6,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import pl.polsl.model.Dictionary;
+import pl.polsl.model.Showroom;
 import pl.polsl.model.Worker;
 
 import java.util.List;
@@ -23,4 +24,7 @@ public interface WorkersRepository extends PagingAndSortingRepository<Worker, In
 //    public Worker findOne(@Param("login")String login, @Param("password")String password);
     @Query(value = "select director from Worker director where director.position.id = :position AND director.showroom=null")
     public List<Worker> findAllOneType(@Param("position")int position);
+
+    @Query(value = "select worker from Worker worker where worker.showroom = :showroom ")
+    public List<Worker> findAllTheSameShowroom (@Param("showroom")Showroom showroom);
 }
