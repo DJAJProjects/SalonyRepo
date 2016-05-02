@@ -55,4 +55,23 @@ public class PromotionsController {
         return promotionsRepository.save(con);
     }
 
+    public void deletePromotion(int id){
+        promotionsRepository.delete(id);
+    }
+
+    public Promotion addPromotion(int percValue, String name, java.sql.Date dateStart, java.sql.Date dateEnd) {
+        return promotionsRepository.save(new Promotion(percValue, name, dateStart, dateEnd));
+    }
+
+    public Promotion editPromotion(int id, int percValue, String name, java.sql.Date dateStart, java.sql.Date dateEnd) {
+
+        Promotion promotion = promotionsRepository.findOne(id);
+
+        promotion.setPercValue(percValue);
+        promotion.setName(name);
+        promotion.setDateStart(dateStart);
+        promotion.setDateEnd(dateEnd);
+        return promotionsRepository.save(promotion);
+    }
+
 }

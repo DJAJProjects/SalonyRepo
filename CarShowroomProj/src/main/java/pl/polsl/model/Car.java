@@ -14,7 +14,7 @@ public class Car {
     private int id;
     private Dictionary carName;
     private Date prodDate;
-    private int cost;
+    private Integer cost;
     private Showroom showroom;
     private Contract contract;
 
@@ -60,11 +60,11 @@ public class Car {
 
     @Basic
     @Column(name = "cost")
-    public int getCost() {
+    public Integer getCost() {
         return cost;
     }
 
-    public void setCost(int cost) {
+    public void setCost(Integer cost) {
         this.cost = cost;
     }
 

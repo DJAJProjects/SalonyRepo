@@ -19,6 +19,7 @@ public class Dictionary {
     private Set<Invoice>paymentForm;
     private Set<Car>carName;
     private Set<Accessory>accessory;
+    private Set<Service> serviceType;
 
 
     @Id
@@ -113,5 +114,14 @@ public class Dictionary {
 
     public void setAccessory(Set<Accessory> accessory) {
         this.accessory = accessory;
+    }
+
+    @OneToMany()
+    public Set<Service> getServices() {
+        return serviceType;
+    }
+
+    public void setServices(Set<Service> services) {
+        this.serviceType = services;
     }
 }

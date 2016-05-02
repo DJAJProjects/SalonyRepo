@@ -69,4 +69,9 @@ public class WorkersController {
     public Worker findOne(String login, String password) {
         return workersRepository.findOne(login, password);
     }
+
+    public List<Worker> findAllServicemans() {
+        return (List)workersRepository.findAllOneType(12);
+    }
+
 }

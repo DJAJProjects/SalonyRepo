@@ -7,6 +7,7 @@ import pl.polsl.model.Accessory;
 import pl.polsl.model.Car;
 import pl.polsl.repository.AccessoriesRepository;
 import pl.polsl.repository.CarsRepository;
+import pl.polsl.repository.DictionaryRepository;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -28,6 +29,8 @@ import java.util.stream.Collectors;
 public class AccessoriesController {
     @Autowired
     private AccessoriesRepository accessoriesRepository;
+    @Autowired
+    private DictionaryRepository dictionaryRepository;
 
     @GET
     @Produces({MediaType.APPLICATION_JSON})
@@ -40,11 +43,30 @@ public class AccessoriesController {
     @Produces({MediaType.APPLICATION_JSON})
     public Accessory findOne(int id){
         return accessoriesRepository.findOne(id);}
+
     public void edit(int id){
         accessoriesRepository.save(findOne(id));
     }
+
     public void deleteOne(int id) {
         accessoriesRepository.delete(id);
+    }
+
+    public void deleteAccessory(int id) {
+        accessoriesRepository.delete(id);
+    }
+
+    public Accessory addAccessory(int name, int cost) {
+        return accessoriesRepository.save(new Accessory(dictionaryRepository.findOne(name),cost));
+    }
+
+    public Accessory editAccessory(int id, int idName, int cost) {
+
+        Accessory accessory = accessoriesRepository.findOne(id);
+
+        accessory.setAccessory(dictionaryRepository.findOne(idName));
+        accessory.setCost(cost);
+        return accessoriesRepository.save(accessory);
     }
 
     /**

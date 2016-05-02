@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.text.DecimalFormat;
-import java.util.Date;
+import java.sql.Date;
 
 /**
  * Created by Kuba on 20.04.2016.
@@ -13,12 +13,34 @@ import java.util.Date;
 @Table(name="services", schema = "salonydb")
 public class Service {
     private int id;
-    private Accessory accessory;
-    private Dictionary type;
+    private Dictionary serviceType;
     private Worker serviceman;
     private Car car;
+    private Accessory accessory;
+    private Integer cost;
     private Date dateConducted;
-    private DecimalFormat cost;
+
+    public Service() {
+    }
+
+    public Service(int id, Dictionary type, Worker serviceman, Car car, Accessory accessory, int cost, Date dateConducted) {
+        this.id = id;
+        this.serviceType = type;
+        this.serviceman = serviceman;
+        this.car = car;
+        this.accessory = accessory;
+        this.cost = cost;
+        this.dateConducted = dateConducted;
+    }
+
+    public Service(Dictionary type, Worker serviceman, Car car, Accessory accessory, int cost, Date dateConducted) {
+        this.serviceType = type;
+        this.serviceman = serviceman;
+        this.car = car;
+        this.accessory = accessory;
+        this.cost = cost;
+        this.dateConducted = dateConducted;
+    }
 
     @Id
     @GeneratedValue
@@ -31,7 +53,8 @@ public class Service {
         this.id = id;
     }
 
-    @Column(name = "dateConducted")
+    @Basic
+    @Column(name = "date_conducted")
     public Date getDateConducted() {
         return dateConducted;
     }
@@ -43,53 +66,54 @@ public class Service {
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn (name = "id_accessory")
-    public Accessory getIdAccessory() {
+    public Accessory getAccessory() {
         return accessory;
     }
 
-    public void setIdAccessory(Accessory accessory) {
+    public void setAccessory(Accessory accessory) {
         this.accessory = accessory;
     }
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn (name = "id_serviceman")
-    public Worker getIdServiceman() {
+    public Worker getServiceman() {
         return serviceman;
     }
 
-    public void setIdServiceman(Worker serviceman) {
+    public void setServiceman(Worker serviceman) {
         this.serviceman = serviceman;
     }
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn (name = "id_car")
-    public Car getIdCar() {
+    public Car getCar() {
         return car;
     }
 
-    public void setIdCar(Car car) {
+    public void setCar(Car car) {
         this.car = car;
     }
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn (name = "id_type")
-    public Dictionary getIdType() {
-        return type;
+    public Dictionary getServiceType() {
+        return serviceType;
     }
 
-    public void setIdType(Dictionary type) {
-        this.type = type;
+    public void setServiceType(Dictionary type) {
+        this.serviceType = type;
     }
 
+    @Basic
     @Column (name = "cost")
-    public DecimalFormat getCost() {
+    public Integer getCost() {
         return cost;
     }
 
-    public void setCost(DecimalFormat cost) {
+    public void setCost(Integer cost) {
         this.cost = cost;
     }
 

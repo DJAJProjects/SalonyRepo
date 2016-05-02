@@ -3,11 +3,19 @@
 <head lang="pl">
     <meta charset="UTF-8"/>
     <title>Salon samochodowy</title>
-    <link rel="stylesheet" href="../../datatables/dataTables.bootstrap.css"
-          th:href="@{/datatables/dataTables.bootstrap.css}"/>
+
+    <!-- Jquery 2.2.3 -->
+    <script src="https://code.jquery.com/jquery-2.2.3.min.js"></script>
     <!-- Bootstrap 3.3.5 -->
     <link rel="stylesheet" href="http://cdn.jsdelivr.net/webjars/bootstrap/3.2.0/css/bootstrap.min.css"
           th:href="@{/bootstrap/css/bootstrap.min.css}"/>
+    <script src="http://cdn.jsdelivr.net/webjars/bootstrap/3.2.0/js/bootstrap.min.js"
+            th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+    <!-- Datepicker -->
+    <link rel="stylesheet" href="http://eyecon.ro/bootstrap-datepicker/css/datepicker.css"
+          th:href="@{/bootstrap/css/datepicker.css}"/>
+    <script src="http://eyecon.ro/bootstrap-datepicker/js/bootstrap-datepicker.js"
+            th:src="@{/bootstrap/js/bootstrap-datepicker.js}"></script>
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css"/>
     <!-- Ionicons -->
@@ -17,19 +25,23 @@
           th:href="@{/select2/select2.min.css}"/>
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
-    <header id="#SITE" style="margin: 0 auto; max-width: 1000px">
-        <nav layout:fragment="content"  style="margin: 20px;">
-            <ul class="nav nav-pills">
-                <li role="presentation" ><a href="showroom.html" th:href="@{/showroom}">Salony</a></li>
-                <li role="presentation" ><a href="worker.html" th:href="@{/worker}">Pracownicy</a></li>
-                <li role="presentation" ><a href="contracts.html" th:href="@{/contracts}">Sprzedaże</a></li>
-                <li role="presentation" ><a href="contractors.html" th:href="@{/contractors}">Klienci</a></li>
-                <li role="presentation" ><a href="invoices.html" th:href="@{/invoices}">Faktury</a> </li>
-                <li role="presentation" ><a href="cars.html" th:href="@{/cars}">Samochody</a> </li>
-            </ul>
-        </nav>
-        <hr/>
-    </header>
+<header id="#SITE" style="margin: 0 auto; max-width: 1000px">
+    <nav layout:fragment="content"  style="margin: 20px;">
+        <ul class="nav nav-pills">
+            <li role="presentation" ><a href="showroom.html" th:href="@{/showroom}">Salony</a></li>
+            <li role="presentation" ><a href="worker.html" th:href="@{/worker}">Pracownicy</a></li>
+            <li role="presentation" ><a href="contracts.html" th:href="@{/contracts}">Sprzedaże</a></li>
+            <li role="presentation" ><a href="contractors.html" th:href="@{/contractors}">Klienci</a></li>
+            <li role="presentation" ><a href="invoices.html" th:href="@{/invoices}">Faktury</a> </li>
+            <li role="presentation" ><a href="cars.html" th:href="@{/cars}">Samochody</a> </li>
+            <li role="presentation" ><a href="reports.html" th:href="@{/reports}">Raporty</a> </li>
+            <li role="presentation" ><a href="accessories.html" th:href="@{/accessories}">Akcesoria</a> </li>
+            <li role="presentation" ><a href="promotions.html" th:href="@{/promotions}">Promocje</a> </li>
+            <li role="presentation" ><a href="services.html" th:href="@{/services}">Serwis</a> </li>
+        </ul>
+    </nav>
+    <hr/>
+</header>
 <div layout:fragment="main"></div>
 
 </body>

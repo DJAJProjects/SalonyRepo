@@ -1,7 +1,7 @@
 package pl.polsl.model;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.sql.Date;
 import java.util.Set;
 
 /**
@@ -15,9 +15,26 @@ public class Promotion {
     private String name;
     private Date dateStart;
     private Date dateEnd;
-//    private Integer idAccessory;
+    //    private Integer idAccessory;
     private Set<Contract>contracts;
 
+    public Promotion() {
+    }
+
+    public Promotion(int percValue, String name, Date dateStart, Date dateEnd) {
+        this.percValue = percValue;
+        this.name = name;
+        this.dateStart = dateStart;
+        this.dateEnd = dateEnd;
+    }
+
+    public Promotion(int id, int percValue, String name, Date dateStart, Date dateEnd) {
+        this.id = id;
+        this.percValue = percValue;
+        this.name = name;
+        this.dateStart = dateStart;
+        this.dateEnd = dateEnd;
+    }
 
     @Id
     @GeneratedValue
