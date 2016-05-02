@@ -21,6 +21,14 @@ public class Dictionary {
     private Set<Accessory>accessory;
     private Set<Service> serviceType;
 
+    public Dictionary(){}
+
+    public Dictionary(int id, String type, String value, String value2) {
+        this.id = id;
+        this.type = type;
+        this.value = value;
+        this.value2 = value2;
+    }
 
     @Id
     @GeneratedValue

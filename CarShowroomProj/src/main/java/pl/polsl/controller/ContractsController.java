@@ -3,10 +3,9 @@ package pl.polsl.controller;
 import jersey.repackaged.com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import pl.polsl.Data;
 import pl.polsl.model.*;
-import pl.polsl.repository.AccessoriesRepository;
 import pl.polsl.repository.ContractsRepository;
-import pl.polsl.web.MainController;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -87,8 +86,8 @@ public class ContractsController {
 
         contract.setTotalCost(totalCost[0]);
         //TODO mokeup
-        MainController.worker= workersController.findOne(1);
-        contract.setWorker(MainController.worker);
+        Data.user= workersController.findOne(1);
+        contract.setWorker(Data.user);
 
         if(contract.getInvoice() != null) {
             Invoice invoice = invoiceController.findOne(contract.getInvoice().getId());

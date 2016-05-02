@@ -13,7 +13,7 @@ import javax.ws.rs.core.MediaType;
 import java.util.List;
 
 /**
- * Created by Aleksandra on 2016-04-07.
+ * Created by Dominika Błasiak on 2016-04-07.
  */
 @Component
 @Path("/dictionary")
@@ -62,5 +62,25 @@ public class DictionaryController {
 
     public List<Dictionary> findAllService() {
         return dictionaryRepository.findAllTheSameType("service_type");
+    }
+
+    public List<String> findAllTypes() { return dictionaryRepository.findAllTypes();
+    }
+
+    public Dictionary updateDictionaryValue(int id, String type, String value, String value2) {
+        Dictionary dictionaryValue = dictionaryRepository.findOne(id);
+        dictionaryValue.setType(type);
+        dictionaryValue.setValue(value);
+        dictionaryValue.setValue2(value2);
+        return dictionaryRepository.save(dictionaryValue);
+    }
+
+    public Dictionary addDictionaryValue(int id, String type, String value1, String value2) {
+        return dictionaryRepository.save(new Dictionary(id,type,value1,value2));
+    }
+
+    public void delete(int id) {
+        System.out.println(id);
+        dictionaryRepository.delete(id);
     }
 }
