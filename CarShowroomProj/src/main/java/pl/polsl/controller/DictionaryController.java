@@ -80,7 +80,6 @@ public class DictionaryController {
     }
 
     public void delete(int id) {
-        System.out.println(id);
         dictionaryRepository.delete(id);
     }
 }

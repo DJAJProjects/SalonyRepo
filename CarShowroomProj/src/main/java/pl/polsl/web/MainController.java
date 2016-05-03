@@ -10,8 +10,6 @@ import pl.polsl.Data;
 import pl.polsl.controller.DictionaryController;
 import pl.polsl.controller.WorkersController;
 
-import java.util.List;
-
 
 /**
  * Created by Dominika Błasiak on 2016-04-09.
@@ -25,8 +23,6 @@ public class MainController {
     @RequestMapping(value = "/")
     public String home(Model model){
         model.addAttribute("error",false);
-        List<String> typ = dictionaryController.findAllTypes();
-        System.out.println(typ.size());
         return "sign_in";
 
     }
@@ -39,8 +35,7 @@ public class MainController {
     public String signIn(Model model, @RequestParam(value = "login")String login, @RequestParam(value = "password")String password){
         Data.user = workersController.findOne(login,password);
         if(Data.user!=null){
-            System.out.println(Data.user.getId());
-            return "index";
+            return "menu";
         }
         else{
             model.addAttribute("error",true);

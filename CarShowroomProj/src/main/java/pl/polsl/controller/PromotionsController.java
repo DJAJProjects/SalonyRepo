@@ -3,10 +3,7 @@ package pl.polsl.controller;
 import jersey.repackaged.com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import pl.polsl.model.Car;
-import pl.polsl.model.Invoice;
 import pl.polsl.model.Promotion;
-import pl.polsl.repository.InvoiceRepository;
 import pl.polsl.repository.PromotionsRepository;
 
 import javax.ws.rs.GET;
@@ -47,7 +44,7 @@ public class PromotionsController {
                 properList.add(result.get());
         }
         boolean remo = promotions.removeAll(properList);
-        System.out.println(remo);
+
         return promotions;
     }
 
