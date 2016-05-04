@@ -1,5 +1,6 @@
 package pl.polsl.web;
 
+import org.apache.log4j.ConsoleAppender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +14,8 @@ import pl.polsl.controller.DictionaryController;
 import pl.polsl.controller.PrivilegesController;
 import pl.polsl.model.Contractor;
 import pl.polsl.model.Privileges;
+
+import java.io.Console;
 
 /**
  * Created by Kuba on 08.04.2016.
@@ -79,17 +82,11 @@ public class PrivilegesWebController {
     }
 
     @RequestMapping(value ="/acceptModifyPrivileges", method = RequestMethod.POST)
-    public String editContractor(   @RequestParam("id") int id,
-                                    @RequestParam("name") String name,
-                                    @RequestParam(value = "surname") String surname,
-                                    @RequestParam(value = "pesel") String pesel,
-                                    @RequestParam(value = "nip") String nip,
-                                    @RequestParam(value = "regon") String regon,
-                                    @RequestParam(value = "city") int city,
-                                    @RequestParam(value = "country") int country,
-                                    @RequestParam(value = "street") String street){
+    public String editContractor(   @RequestParam("privilegesGroup") Privileges privileges){
 
-       /* if(viewMode == ViewMode.INSERT){
+        String name  = privileges.getName();
+
+        /* if(viewMode == ViewMode.INSERT){
             Contractor contractor = contractorsController.addContractor(name,surname,pesel,nip,
                                                                         regon,city,country, street);
         }

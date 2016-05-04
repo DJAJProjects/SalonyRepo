@@ -122,13 +122,13 @@ public class ContractWebController {
     @RequestMapping(value ="/contracts", method = RequestMethod.GET)
     public String all(Model model){
         viewMode = ViewMode.DEFAULT;
-        carList.clear();
-        accessoryList.clear();
-        promotionList.clear();
+//        carList.clear();
+//        accessoryList.clear();
+//        promotionList.clear();
         model.addAttribute("contracts", contractsController.findAllContracts());
         model.addAttribute("carView",0);
-        model.addAttribute("disabledButtons", 0);
-        model.addAttribute("endingOperation",0);
+//        model.addAttribute("disabledButtons", 0);
+//        model.addAttribute("endingOperation",0);
         return "contracts";
     }
 
@@ -142,6 +142,7 @@ public class ContractWebController {
         if(contractId!=null)
             model.addAttribute("contract", contractId);
 
+
         model.addAttribute("contracts", contractsController.findAllContracts());
         model.addAttribute("contractors",contractorsController.findAllContractors());
 
@@ -154,6 +155,9 @@ public class ContractWebController {
             if(viewMode == ViewMode.VIEW_ALL)
                 model.addAttribute("disabledButtons", 1);
         }
+        else
+            model.addAttribute("disabledButtons", 0);
+
         model.addAttribute("carView",1);
 
         Set<Car>carsAvaliable = carsController.findCarAvaliable(carList);
@@ -200,6 +204,16 @@ public class ContractWebController {
         viewMode = ViewMode.EDIT;
         this.contract = contractsController.findOne(id);
 //        redirectAttributes.addAttribute("contract",contractsController.findOne(id));
+        return "redirect:/contactAdditions/";
+    }
+
+    @RequestMapping(value ="/addContract")
+    public String addContract(){
+        viewMode = ViewMode.INSERT;
+        carList.clear();
+        accessoryList.clear();
+        promotionList.clear();
+        contract = null;
         return "redirect:/contactAdditions/";
     }
 
