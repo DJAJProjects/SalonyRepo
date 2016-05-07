@@ -106,9 +106,15 @@ public class ContractorsWebController {
                                                                         regon,city,country, street);
         }
         else if(viewMode == ViewMode.EDIT){
-            Contractor contractor = contractorsController.updateShowroom( id,name,surname,pesel,nip,
+            Contractor contractor = contractorsController.updateContractor( id,name,surname,pesel,nip,
                                                                         regon,city,country,street);
         }
         return "redirect:/contractors/";
+    }
+
+    @RequestMapping(value = "/deleteContractor/{id}")
+    public String deleteContractor(@PathVariable("id")int id) {
+        contractorsController.deleteContractor(id);
+        return "redirect:/contractors";
     }
 }

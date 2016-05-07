@@ -52,7 +52,11 @@ public class ContractorsController {
                                                     dictionaryRepository.findOne(country), street));
     }
 
-    public Contractor updateShowroom(int id,
+    public void deleteContractor(int id){
+        contractorsRepository.delete(id);
+    }
+
+    public Contractor updateContractor(int id,
                                      String name,
                                      String surname,
                                      String pesel,

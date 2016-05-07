@@ -11,8 +11,9 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 
 /**
@@ -36,6 +37,9 @@ public class ReportsController {
     @Autowired
     private WorkersRepository workersRepository;
 
+    @Autowired
+    private InvoiceRepository invoiceRepository;
+
     @Transactional
     public Report findReport(int id){
         return reportsRepository.findOne(id);}
@@ -53,6 +57,10 @@ public class ReportsController {
         return reportsRepository.findOne(id);
     }
 
+    public void deleteReport(int id){
+        reportsRepository.delete(id);
+    }
+
     public Report addReport(String name,
                             int showroomId ,
                             String content,
@@ -62,13 +70,26 @@ public class ReportsController {
         Showroom targetShowroom = showroomsRepository.findOne(showroomId);
         List<Car> cars = carsRepository.findAllTheSameShowroom(targetShowroom);
         List<Worker> workers = workersRepository.findAllTheSameShowroom(targetShowroom);
+        Double income  = invoiceRepository.getIncomeForShowroom(targetShowroom, dateBeggining, dateEnd);
+        if(income == null) income = 0.0;
+        Double monthlyPayment = workersRepository.getMonthlyPaymentsFromSameShowroom(targetShowroom);
+        if(monthlyPayment == null)monthlyPayment = 0.0;
         String showroomName = targetShowroom.getName();
+
+        long datesDiff = dateEnd.getTime() - dateBeggining.getTime();
+        long days = TimeUnit.DAYS.convert(datesDiff, TimeUnit.MILLISECONDS);
+        int monthsWorked = (int)days/30;
+        Double outcome = monthlyPayment * monthsWorked;
+        Double profit = income - outcome;
 
         content = "";
         content += name + "\n";
         content += "Raport dotyczy: " + showroomName + "\n";
         content += "Ilość samochodów: " + cars.size() + "\n";
-        content += "Ilość pracowników: " + workers.size();
+        content += "Ilość pracowników: " + workers.size()+ "\n";
+        content += "Dochód: " + income + "\n";
+        content += "Wydatki: " + outcome + "\n";
+        content += "Zysk: " + profit;
 
         return reportsRepository.save(new Report(name, targetShowroom,content, dateBeggining, dateEnd));
     }
