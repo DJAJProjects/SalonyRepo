@@ -15,22 +15,24 @@ public class Worker {
     private String surname;
     private Dictionary position;
     private Showroom showroom;
-    private Integer payment;
+    private int payment;
     private Date dateHired;
     private Set<Contract> contractList;
     private String login;
     private String password;
 
-    public Worker() {
-    }
-
-    public Worker(String name, String surname, Dictionary position, Showroom showroom, String login, String password) {
-        this.name = name;
+    public Worker(String name, String surname, int payment, Dictionary position, Showroom showroom, String login, String password) {
+       this.name = name;
         this.surname = surname;
+        this.payment=payment;
         this.position = position;
         this.showroom = showroom;
         this.login = login;
         this.password = password;
+    }
+
+    public Worker() {
+
     }
 
     @Id
@@ -86,11 +88,11 @@ public class Worker {
 
     @Basic
     @Column(name = "payment")
-    public Integer getPayment() {
+    public int getPayment() {
         return payment;
     }
 
-    public void setPayment(Integer payment) {
+    public void setPayment(int payment) {
         this.payment = payment;
     }
 
@@ -113,7 +115,7 @@ public class Worker {
     }
 
     @Basic
-    @Column
+    @Column()
     public String getLogin() {
         return login;
     }
