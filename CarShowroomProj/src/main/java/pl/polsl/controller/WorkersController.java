@@ -53,14 +53,15 @@ public class WorkersController {
         return (List)workersRepository.findAllOneType(11);
     }
 
-    public Worker addShowroom(String name, String surname, int position, int showroom, String login, String password) {
-        return workersRepository.save(new Worker(name,surname,dictionaryController.findOne(position),showroomsController.findOne(showroom),login, password));
+    public Worker addShowroom(String name, String surname, int payment, int position, int showroom, String login, String password) {
+        return workersRepository.save(new Worker(name,surname,payment, dictionaryController.findOne(position),showroomsController.findOne(showroom),login, password));
     }
 
-    public Worker updateWorker(int id, String name, String surname, int position, int showroom) {
+    public Worker updateWorker(int id, String name, String surname, int payment, int position, int showroom) {
         Worker worker = workersRepository.findOne(id);
         worker.setName(name);
         worker.setSurname(surname);
+        worker.setPayment(payment);
         worker.setPosition(dictionaryController.findOne(position));
         worker.setShowroom(showroomsController.findOne(showroom));
         return workersRepository.save(worker);
@@ -69,4 +70,9 @@ public class WorkersController {
     public Worker findOne(String login, String password) {
         return workersRepository.findOne(login, password);
     }
+
+    public List<Worker> findAllServicemans() {
+        return (List)workersRepository.findAllOneType(12);
+    }
+
 }

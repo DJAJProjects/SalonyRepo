@@ -15,8 +15,11 @@ import java.util.List;
 @Repository
 @Transactional
 public interface DictionaryRepository extends PagingAndSortingRepository<Dictionary, Integer>{
-    @Query(value = "select dictionary from Dictionary dictionary where dictionary.type = :type")
+    @Query(value = "SELECT dictionary FROM Dictionary dictionary WHERE dictionary.type = :type")
     public List<Dictionary> findAllTheSameType(@Param("type")String type);
+
+    @Query(value = "SELECT DISTINCT type FROM Dictionary dictionary")
+    List<String> findAllTypes();
 
 //    @Query(value = "select types from AttachmentType types where types.type = :name")
 //    public AttachmentType findAttachmentType(@Param("name")String name);

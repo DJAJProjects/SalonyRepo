@@ -3,10 +3,8 @@ package pl.polsl.controller;
 import jersey.repackaged.com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import pl.polsl.model.Contract;
 import pl.polsl.model.Contractor;
 import pl.polsl.repository.ContractorsRepository;
-import pl.polsl.repository.ContractsRepository;
 import pl.polsl.repository.DictionaryRepository;
 
 import javax.ws.rs.GET;
@@ -54,7 +52,11 @@ public class ContractorsController {
                                                     dictionaryRepository.findOne(country), street));
     }
 
-    public Contractor updateShowroom(int id,
+    public void deleteContractor(int id){
+        contractorsRepository.delete(id);
+    }
+
+    public Contractor updateContractor(int id,
                                      String name,
                                      String surname,
                                      String pesel,

@@ -16,6 +16,7 @@ public class Invoice {
     private Dictionary paymentForm;
     private Dictionary invoiceType;
     private Contract contract;
+    private Boolean isPaid;
 
 
     public Invoice() {}
@@ -49,6 +50,16 @@ public class Invoice {
 
     public void setDateCreated(Date dateCreated) {
         this.dateCreated = dateCreated;
+    }
+
+    @Basic
+    @Column(name = "is_paid")
+    public Boolean getIsPaid() {
+        return isPaid;
+    }
+
+    public void setIsPaid(Boolean isPaid) {
+        this.isPaid = isPaid;
     }
 
     @Basic
@@ -96,6 +107,6 @@ public class Invoice {
     @OneToOne(mappedBy="invoice")
     public Contract getContract() {return contract;}
 
-    public void setContract(Contract contract){this.contract = contract;};
+    public void setContract(Contract contract){this.contract = contract;}
 
 }

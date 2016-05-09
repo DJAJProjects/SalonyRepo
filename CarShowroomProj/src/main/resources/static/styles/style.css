@@ -1,0 +1,124 @@
+.main-view{
+    height: 500px;
+    background-size: cover;
+    background: #ff0000 url(/image/bg.jpg) center center;
+    color:green;
+    /*background: url(../../templates/image/bg.jpg) center center;*/
+}
+#nav-menu{
+    box-sizing: border-box;
+    background-color: #000000;
+
+
+}
+#nav-menu a{
+    color: #ffffff;
+}
+#nav-menu a:hover{
+    color: #CF000F;
+    -webkit-transition: color 1000ms linear;
+    -moz-transition: color 1000ms linear;
+    -o-transition: color 1000ms linear;
+    -ms-transition: color 1000ms linear;
+    background-color: black;
+}
+hr{
+    min-height: 1px;
+    background-color: #CF000F;
+}
+.menuIndex li {
+    display: block;
+    width: 100px;
+    float: left;
+    background-color: #CF000F;
+    padding-top: 100px;
+    color: #2b542c;
+    margin-right: 15px;
+    background-size: 75% auto;
+    background-repeat: no-repeat;
+    background-position: top center;
+
+}
+#menuIndex2{
+    margin: 0 auto;
+}
+#menuIndex2 .circle{
+    border-radius: 50%;
+    background-color: #BFBFBF;
+    animation: background-color 2s linear infinite;
+
+}
+#menuIndex2 img{
+    width:100%;
+    padding:25px;
+}
+
+#menuIndex2 div.thumbnail {
+    text-align: center;
+    border: none;
+}
+#menuIndex2 div.thumbnail:hover>.caption{
+    color:#CF000F;
+}
+#menuIndex2 div.thumbnail:hover>.circle {
+    background-color: #CF000F;
+    -webkit-transition: background-color 1000ms linear;
+    -moz-transition: background-color 1000ms linear;
+    -o-transition: background-color 1000ms linear;
+    -ms-transition: background-color 1000ms linear;
+    transition: background-color 1000ms linear;
+}
+
+
+/*
+Panel logowania
+*/
+.main-login-view{
+
+    background-size: cover;
+    /*background-color: #ff0000 ;*/
+    background-attachment:fixed;
+    background-image: url(../image/volvo.jpg) ;
+    background-position:  center center;
+    background-repeat: no-repeat;
+    color:#CF000F;
+    /*z-index: -1;*/
+    /*background: url(../../templates/image/bg.jpg) center center;*/
+}
+.main-login-view .form-content{
+    background-color: rgba(255,255,255,0.8);
+    border-radius: 5%;
+    padding:20px;
+    /*z-index: 1;*/
+
+}
+.main-login-view .form-signin{
+    position: absolute;
+    float: right;
+    max-width:300px;
+    bottom: 10%;
+    right: 10%;
+}
+
+.main-login-view h2{
+    margin-top: 0;
+    padding-top: 0;
+    /*box-sizing: content-box;*/
+    text-align: center;
+}
+.main-login-view .btn{
+    background-color: #CF000F;
+}
+.main-login-view br{
+    margin:0;
+    padding: 0;
+    border: 0;
+    height: 5px;
+}
+
+.main-login-view .form-control:focus{
+    border-color: #CF000F;
+    outline: 0;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(207, 0, 15,.6);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(207, 0, 15,.6);
+}

@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import pl.polsl.ViewMode;
 import pl.polsl.controller.*;
-import pl.polsl.model.Contractor;
 import pl.polsl.model.Report;
 
 import java.sql.Date;
@@ -64,6 +63,12 @@ public class ReportsWebController {
         model.addAttribute("reports", reportsController.findAllRaports());
         model.addAttribute("showrooms", showroomsController.findAll());
         return "reports";
+    }
+
+    @RequestMapping(value = "/deleteReport/{id}")
+    public String deleteReport(@PathVariable("id")int id) {
+        reportsController.deleteReport(id);
+        return "redirect:/reports";
     }
 
     @RequestMapping(value ="/acceptModifyReport", method = RequestMethod.POST)

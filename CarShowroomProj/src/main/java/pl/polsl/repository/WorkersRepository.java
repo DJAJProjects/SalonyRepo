@@ -27,4 +27,15 @@ public interface WorkersRepository extends PagingAndSortingRepository<Worker, In
 
     @Query(value = "select worker from Worker worker where worker.showroom = :showroom ")
     public List<Worker> findAllTheSameShowroom (@Param("showroom")Showroom showroom);
+
+
+    /**
+     * @author Kuba
+     * Used in raports
+     * @return Sum of workers monthly payments in given showroom
+     */
+    @Query(value = "SELECT SUM(worker.payment) " +
+                   " FROM Worker worker " +
+                   " WHERE worker.showroom = :showroom ")
+    public Double getMonthlyPaymentsFromSameShowroom (@Param("showroom")Showroom showroom);
 }

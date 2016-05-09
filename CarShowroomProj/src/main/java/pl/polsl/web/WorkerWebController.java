@@ -99,15 +99,16 @@ public class WorkerWebController {
     public String editShowroom(@RequestParam("id") int id,
                                @RequestParam("name") String name,
                                @RequestParam(value = "surname") String surname,
+                               @RequestParam(value = "payment") int payment,
                                @RequestParam(value = "position")int position,
                                @RequestParam(value = "showroom")int showroom,
                                @RequestParam(value = "login")String login,
                                @RequestParam(value = "password")String password){
         if(viewMode == ViewMode.EDIT) {
-            Worker worker = workersController.updateWorker(id, name,surname,position,showroom);
+            Worker worker = workersController.updateWorker(id, name,surname,payment, position,showroom);
         }
         else if(viewMode==ViewMode.INSERT) {
-            Worker worker = workersController.addShowroom(name,surname,position, showroom, login,password);
+            Worker worker = workersController.addShowroom(name,surname,payment, position, showroom, login,password);
         }
         return "redirect:/worker/";
     }

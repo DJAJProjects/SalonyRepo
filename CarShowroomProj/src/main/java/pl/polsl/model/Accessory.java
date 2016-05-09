@@ -14,6 +14,27 @@ public class Accessory {
     private Integer cost;
 //    private Showroom showroom;
 
+    public Accessory() {
+    }
+
+    public Accessory(Dictionary accessory, Integer cost) {
+        this.accessory = accessory;
+        this.cost = cost;
+    }
+
+    public Accessory(int id, Dictionary accessory, Integer cost) {
+        this.id = id;
+        this.accessory = accessory;
+        this.cost = cost;
+    }
+
+    public Accessory(int id, Contract contract, Dictionary accessory, Integer cost) {
+        this.id = id;
+        this.contract = contract;
+        this.accessory = accessory;
+        this.cost = cost;
+    }
+
     @Id
     @GeneratedValue
     @Column(name = "id")
