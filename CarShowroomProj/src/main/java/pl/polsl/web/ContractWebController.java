@@ -137,11 +137,17 @@ public class ContractWebController {
      *
      */
     @RequestMapping(value = "/contactAdditions", method = RequestMethod.GET)
-    public String addAdditions(Model model, @RequestParam(value="contract", required = false)Contract contractId){
+    public String addAdditions(Model model, @RequestParam(value="contract", required = false)Contract contractId,  @RequestParam(value="carId", required = false)Integer carId){
 
         if(contractId!=null)
             model.addAttribute("contract", contractId);
 
+        //ZAMOWIENIA, powrot do sprzedazy z id nowego samochodu
+        if(carId != null) {
+            carList.add(carsController.findOne(carId));
+            viewMode = ViewMode.EDIT;
+            contract = carsController.findOne(carId).getContract();
+        }
 
         model.addAttribute("contracts", contractsController.findAllContracts());
         model.addAttribute("contractors",contractorsController.findAllContractors());
@@ -248,6 +254,13 @@ public class ContractWebController {
         carList.add(carsController.findOne(car));
         return "redirect:/contactAdditions";
     }
+
+    @RequestMapping(value ="/orderCar", method = RequestMethod.POST)
+    public String orderCar(RedirectAttributes redirectAttributes) {
+        redirectAttributes.addAttribute("contract",contractsController.addContract().getId());
+        return "redirect:/addNewCar";
+    }
+
 
     @RequestMapping(value ="/addPromotion", method = RequestMethod.POST)
     public String newPromotion(RedirectAttributes redirectAttributes, @RequestParam("promotion") int promotion) {

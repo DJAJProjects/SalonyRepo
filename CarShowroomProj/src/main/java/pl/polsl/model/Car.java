@@ -15,16 +15,20 @@ public class Car {
     private Dictionary carName;
     private Date prodDate;
     private Integer cost;
+    private Integer ordered;
     private Showroom showroom;
     private Contract contract;
 
+
     public Car() {}
 
-    public Car(Dictionary carName, Date prodDate, Showroom showroom, Integer cost) {
+    public Car(Dictionary carName, Date prodDate, Showroom showroom, Integer cost, Integer ordered, Contract contract) {
         this.carName = carName;
         this.prodDate = prodDate;
         this.showroom = showroom;
+        this.ordered = ordered;
         this.cost = cost;
+        this.contract = contract;
     }
 
     @Id
@@ -67,6 +71,17 @@ public class Car {
     public void setCost(Integer cost) {
         this.cost = cost;
     }
+
+    @Basic
+    @Column(name = "ordered")
+    public Integer getOrdered() {
+        return ordered;
+    }
+
+    public void setOrdered(Integer ordered) {
+        this.ordered = ordered;
+    }
+
 
     @JsonIgnore
     @Basic

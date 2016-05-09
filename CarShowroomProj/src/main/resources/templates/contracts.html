@@ -73,6 +73,10 @@
                 </div>
 
             </form>
+            <form class="form-horizontal" role="form" method="post" action="/orderCar">
+                <button th:disabled="${disabledButtons}" type="submit" class="btn btn-default">Zamów samochód</button>
+            </form>
+
             <br/>
             <!-- Add accessories-->
             <div th:if="${choosenAccessories}" class ="row">

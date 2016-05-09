@@ -5,11 +5,14 @@ import jersey.repackaged.com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import pl.polsl.Data;
 import pl.polsl.model.Car;
+import pl.polsl.model.Contract;
 import pl.polsl.model.Report;
 import pl.polsl.repository.CarsRepository;
 import pl.polsl.repository.DictionaryRepository;
 import pl.polsl.repository.ShowroomsRepository;
+import pl.polsl.web.MainController;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -57,18 +60,19 @@ public class CarsController {
         carsRepository.delete(id);
     }
 
-    public Car addCar(int name, Date dateProd, int showroom, int cost) {
+    public Car addCar(int name, Date dateProd, int showroom, int cost, int order, Contract contract) {
         return carsRepository.save(new Car(dictionaryRepository.findOne(name),dateProd,
-                showroomsRepository.findOne(showroom),cost));
+                showroomsRepository.findOne(showroom),cost, order, contract));
     }
 
-    public Car editCar(int id, int idName, Date prodDate, int showroom, int cost) {
+    public Car editCar(int id, int idName, Date prodDate, int showroom, int cost, int order) {
         Car car = carsRepository.findOne(id);
 
         car.setCarName(dictionaryRepository.findOne(idName));
         car.setProdDate(prodDate);
         car.setShowroom(showroomsRepository.findOne(showroom));
         car.setCost(cost);
+        car.setOrdered(order);
         //      car.setContract();        //??????????????????????? przypisuje przy sprzedazach
         return carsRepository.save(car);
     }
@@ -86,7 +90,9 @@ public class CarsController {
                 if(result.isPresent())
                     properList.add(result.get());
             }
-            carList.removeAll(properList);
+
+        carList.addAll(carList.stream().filter((Car car) -> car.getOrdered()==1).collect(Collectors.toSet()));
+        carList.removeAll(properList);
         return carList;
     }
 

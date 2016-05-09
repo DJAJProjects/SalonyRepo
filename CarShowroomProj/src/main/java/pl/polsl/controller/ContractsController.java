@@ -100,4 +100,11 @@ public class ContractsController {
         Contract contract= new Contract();
         return updateContract(contract, carList, accessoryList, promotionList, contractor);
     }
+    public Contract addContract() {
+        Contract contract= new Contract();
+        contract.setWorker(Data.user);
+        contract.setTotalCost(0);
+        return contractsRepository.save(contract);
+    }
+
 }
