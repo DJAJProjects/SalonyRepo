@@ -55,7 +55,7 @@ public class WorkerWebController {
     }
 
     @RequestMapping(value ="/viewWorker/{id}")
-    public String viewShowroom(Model model, @PathVariable("id")int id) {
+    public String displayWorker(Model model, @PathVariable("id")int id) {
 
         viewMode = ViewMode.VIEW_ALL;
 
@@ -79,7 +79,7 @@ public class WorkerWebController {
 //    }
 
     @RequestMapping(value ="/editWorker/{id}")
-    public String editShowroom(Model model, @PathVariable("id")int id){
+    public String editWorker(Model model, @PathVariable("id")int id){
         viewMode = ViewMode.EDIT;
         Worker worker = workersController.findOne(id);
 
@@ -96,7 +96,7 @@ public class WorkerWebController {
     }
 
     @RequestMapping(value ="/acceptModifyWorker", method = RequestMethod.POST)
-    public String editShowroom(@RequestParam("id") int id,
+    public String editWorker(@RequestParam("id") int id,
                                @RequestParam("name") String name,
                                @RequestParam(value = "surname") String surname,
                                @RequestParam(value = "payment") int payment,

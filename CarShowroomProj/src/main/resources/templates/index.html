@@ -24,6 +24,14 @@
     <link rel="stylesheet" href="../../select2/select2.min.css" th:href="@{/select2/select2.min.css}"/>
 
     <link rel="stylesheet" type="text/css" href="../static/styles/style.css" th:href="@{/../styles/style.css}"/>
+    <script type="text/javascript" src="../static/jquery/jquery.tablesorter.min.js"  th:src="@{/../jquery/jquery.tablesorter.min.js}"></script>
+    <script>
+        $(document).ready(function(){
+            $(function(){
+                $("#mytable").tablesorter();
+            });
+        });
+    </script>
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <header layout:fragment="content" id="nav-menu" style="padding-top: 20px;">
