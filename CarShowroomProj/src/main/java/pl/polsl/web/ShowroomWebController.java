@@ -46,7 +46,7 @@ public class ShowroomWebController {
         model.addAttribute("countryId", showroom.getCountry().getId());
         model.addAttribute("directorSurname",showroom.getDirector().getSurname());
         model.addAttribute("showroom", showroom);
-        model.addAttribute("directors", workersController.findAllFreeDirectors());
+        model.addAttribute("directors", workersController.findAllFreeDirectors().add(showroom.getDirector()));
         model.addAttribute("countries", dictionaryController.findAllCountries());
         model.addAttribute("cities", dictionaryController.findAllCities());
         model.addAttribute("showrooms", showroomsController.findAll());
