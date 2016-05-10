@@ -1,7 +1,6 @@
 package pl.polsl.model;
 
 import javax.persistence.*;
-import java.util.Set;
 
 /**
  * Created by Dominika Błasiak on 04.04.2016.
@@ -15,10 +14,6 @@ public class Showroom {
     private Dictionary city;
     private Dictionary country;
     private Worker director;
-//    private Set<Accessory> listOfAccesories;
-
-//    private Set<Worker> listOfWorkers;
-//    private Set<Car> listOfCars;
 
     public Showroom(){}
     public Showroom(String name, String street, Dictionary city, Dictionary country, Worker director) {
@@ -41,7 +36,7 @@ public class Showroom {
     }
 
     @ManyToOne()
-    @JoinColumn(name = "id_city")
+    @JoinColumn(name = "id_city",nullable = false)
     public Dictionary getCity() {
         return city;
     }
@@ -51,7 +46,7 @@ public class Showroom {
     }
 
     @Basic
-    @Column(name = "street")
+    @Column(name = "street", nullable = false)
     public String getStreet() {
         return street;
     }
@@ -61,7 +56,7 @@ public class Showroom {
     }
 
     @Basic
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     public String getName() {
         return name;
     }
@@ -72,7 +67,7 @@ public class Showroom {
 
     @Basic
     @ManyToOne
-    @JoinColumn(name = "id_country", nullable = true)
+    @JoinColumn(name = "id_country", nullable = false)
     public Dictionary getCountry() {
         return country;
     }
@@ -82,7 +77,7 @@ public class Showroom {
     }
 
     @ManyToOne
-    @JoinColumn(name = "id_director")
+    @JoinColumn(name = "id_director", nullable = false)
     public Worker getDirector() {
         return director;
     }
@@ -90,31 +85,4 @@ public class Showroom {
     public void setDirector(Worker director) {
         this.director = director;
     }
-
-//
-//    public Set<Worker> getListOfWorkers() {
-//        return listOfWorkers;
-//    }
-//
-//    public void setListOfWorkers(Set<Worker> listOfWorkers) {
-//        this.listOfWorkers = listOfWorkers;
-//    }
-
-//    @OneToMany (mappedBy="showroom")
-//    public Set<Car> getListOfCars() {
-//        return listOfCars;
-//    }
-//
-//    public void setListOfCars(Set<Car> listOfCars) {
-//        this.listOfCars = listOfCars;
-//    }
-
-//    @OneToMany (mappedBy="showroom")
-//    public Set<Accessory> getListOfAccesories() {
-//        return listOfAccesories;
-//    }
-//
-//    public void setListOfAccesories(Set<Accessory> listOfAccesories) {
-//        this.listOfAccesories = listOfAccesories;
-//    }
 }

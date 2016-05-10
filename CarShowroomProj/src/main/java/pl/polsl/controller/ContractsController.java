@@ -86,7 +86,6 @@ public class ContractsController {
 
         contract.setTotalCost(totalCost[0]);
         //TODO mokeup
-        Data.user= workersController.findOne(1);
         contract.setWorker(Data.user);
 
         if(contract.getInvoice() != null) {

@@ -57,7 +57,7 @@ public class Worker {
     }
 
     @Basic
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     public String getName() {
         return name;
     }
@@ -67,7 +67,7 @@ public class Worker {
     }
 
     @Basic
-    @Column(name = "surname")
+    @Column(name = "surname",nullable = false)
     public String getSurname() {
         return surname;
     }
@@ -87,7 +87,7 @@ public class Worker {
     }
 
     @Basic
-    @Column(name = "payment")
+    @Column(name = "payment",nullable = false)
     public int getPayment() {
         return payment;
     }
@@ -97,7 +97,7 @@ public class Worker {
     }
 
     @Basic
-    @Column(name = "date_hired")
+    @Column(name = "date_hired",nullable = false)
     public Date getDateHired() {
         return dateHired;
     }

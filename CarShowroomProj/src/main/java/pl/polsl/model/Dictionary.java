@@ -42,7 +42,7 @@ public class Dictionary {
     }
 
     @Basic
-    @Column(name = "type")
+    @Column(name = "type", nullable = false)
     public String getType() {
         return type;
     }
@@ -52,7 +52,7 @@ public class Dictionary {
     }
 
     @Basic
-    @Column(name = "value")
+    @Column(name = "value", nullable = false)
     public String getValue() {
         return value;
     }
