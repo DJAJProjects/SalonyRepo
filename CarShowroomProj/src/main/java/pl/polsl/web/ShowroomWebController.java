@@ -12,6 +12,9 @@ import pl.polsl.controller.DictionaryController;
 import pl.polsl.controller.ShowroomsController;
 import pl.polsl.controller.WorkersController;
 import pl.polsl.model.Showroom;
+import pl.polsl.model.Worker;
+
+import java.util.List;
 
 /**
  * Created by Dominika Błasiak on 08.04.2016.
@@ -46,7 +49,9 @@ public class ShowroomWebController {
         model.addAttribute("countryId", showroom.getCountry().getId());
         model.addAttribute("directorSurname",showroom.getDirector().getSurname());
         model.addAttribute("showroom", showroom);
-        model.addAttribute("directors", workersController.findAllFreeDirectors().add(showroom.getDirector()));
+        List<Worker> directors = workersController.findAllFreeDirectors();
+        directors.add((workersController.findOne(showroom.getDirector().getId())));
+        model.addAttribute("directors",directors);
         model.addAttribute("countries", dictionaryController.findAllCountries());
         model.addAttribute("cities", dictionaryController.findAllCities());
         model.addAttribute("showrooms", showroomsController.findAll());
