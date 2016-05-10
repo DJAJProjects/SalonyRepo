@@ -63,8 +63,8 @@
         <div class="form-group">
             <label class="control-label col-sm-2">Miasto:</label>
             <div class="col-sm-10">
-                <select th:disabled="${controlsDisabled}" name="city" class="form-control" aria-label="..." >
-                    <option th:value="-1" text="Wybierz miasto"></option>
+                <select th:disabled="${controlsDisabled}" name="city" class="form-control" aria-label="..." required="required">
+                    <option value="" text="Wybierz miasto"></option>
                     <option  th:each="c : ${cities}" th:value="${c.id}" th:text="${c.value}" th:selected="${c.id}==${cityId}"></option>
                 </select>
             </div>
@@ -72,8 +72,8 @@
         <div class="form-group">
             <label class="control-label col-sm-2">Państwo:</label>
             <div class="col-sm-10">
-                <select th:disabled="${controlsDisabled}" name="country" class="form-control" aria-label="..." >
-                    <option th:value="-1" text="Wybierz państwo"></option>
+                <select th:disabled="${controlsDisabled}" name="country" class="form-control" aria-label="..." required="required">
+                    <option value="" text="Wybierz państwo"></option>
                     <option th:each="c : ${countries}" th:value="${c.id}" th:text="${c.value}" th:selected="${c.id}==${countryId}"></option>
                 </select>
             </div>
@@ -81,8 +81,8 @@
         <div class="form-group">
             <label class="control-label col-sm-2">Kierownik:</label>
             <div class="col-sm-10">
-                <select th:disabled="${controlsDisabled}" name="director" class="form-control" aria-label="..." >
-                    <option th:value="-1" text="Wybierz kierownika"></option>
+                <select th:disabled="${controlsDisabled}" name="director" class="form-control" aria-label="..." required="required" >
+                    <option value="" text="Wybierz kierownika"></option>
                     <option th:each="d : ${directors}" th:value="${d.id}" th:text="${d.surname}" th:selected="${d.id}==${directorId}"></option>
                 </select>
             </div>

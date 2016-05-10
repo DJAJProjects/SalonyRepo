@@ -2,42 +2,15 @@
 <html xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml" layout:decorator="index">
 <head>
     <title>Pracownicy</title>
-<script>$(document).ready(function() {
-    $(".search").keyup(function () {
-        var searchTerm = $(".search").val();
-        var listItem = $('.results tbody').children('tr');
-        var searchSplit = searchTerm.replace(/ /g, "'):containsi('")
-
-        $.extend($.expr[':'], {'containsi': function(elem, i, match, array){
-            return (elem.textContent || elem.innerText || '').toLowerCase().indexOf((match[3] || "").toLowerCase()) >= 0;
-        }
-        });
-
-        $(".results tbody tr").not(":containsi('" + searchSplit + "')").each(function(e){
-            $(this).attr('visible','false');
-        });
-
-        $(".results tbody tr:containsi('" + searchSplit + "')").each(function(e){
-            $(this).attr('visible','true');
-        });
-
-        var jobCount = $('.results tbody tr[visible="true"]').length;
-        $('.counter').text(jobCount + ' item');
-
-        if(jobCount == '0') {$('.no-result').show();}
-        else {$('.no-result').hide();}
-    });
-});</script>
 </head>
 <body>
-
 <div layout:fragment="main" style="margin: 0 auto; max-width: 1000px;">
     <div class="btn-group" role="group" aria-label="..." style="margin: 20px 0;">
         <button type="button" class="btn btn-default"><a th:href="@{/addWorker}+'#anch'">Dodaj pracownika</a></button>
     </div>
     <div>
         <div class="form-group pull-right">
-            <input type="text" class="search form-control" placeholder="What you looking for?"/>
+            <input type="text" class="search form-control" placeholder="Wyszukaj w tabeli"/>
         </div>
         <span class="counter pull-right"></span>
 
@@ -114,14 +87,14 @@
         <div class="form-group">
             <label class="control-label col-sm-2">Płaca:</label>
             <div class="col-sm-10">
-                <input  th:disabled="${controlsDisabled}" th:field="*{payment}" name="payment" type="number" class="form-control" placeholder="Wprowadź kwotę"/>
+                <input  th:disabled="${controlsDisabled}" th:field="*{payment}" name="payment" type="number" min="0" class="form-control" placeholder="Wprowadź kwotę"/>
             </div>
         </div>
         <div class="form-group">
             <label class="control-label col-sm-2">Pozycja:</label>
             <div class="col-sm-10">
-                <select  th:disabled="${controlsDisabled}" name="position" class="form-control" aria-label="..." >
-                    <option th:value="-1" text="Wybierz pozycję"></option>
+                <select  th:disabled="${controlsDisabled}" name="position" class="form-control" aria-label="..." required="required">
+                    <option value="" text="Wybierz pozycję"></option>
                     <option  th:each="p : ${positions}" th:value="${p.id}" th:text="${p.value}" th:selected="${p.id}==${positionId}"></option>
                 </select>
             </div>
@@ -129,7 +102,7 @@
         <div class="form-group">
             <label class="control-label col-sm-2">Salon:</label>
             <div class="col-sm-10">
-                <select  th:disabled="${controlsDisabled}" name="showroom" class="form-control" aria-label="..." >
+                <select  th:disabled="${controlsDisabled}" name="showroom" class="form-control" aria-label="...">
                     <option th:value="-1" text="Wybierz salon"></option>
                     <option th:each="s : ${showrooms}" th:value="${s.id}" th:text="${s.name}" th:selected="${s.id}==${showroomId}"></option>
                 </select>

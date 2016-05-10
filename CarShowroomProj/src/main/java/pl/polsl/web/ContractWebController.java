@@ -1,6 +1,5 @@
 package pl.polsl.web;
 
-import com.sun.deploy.util.OrderedHashSet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -76,15 +75,15 @@ public class ContractWebController {
         Invoice invoice = invoiceController.addNew(contractsController.findOne(contractId),paymentFormId, invoiceTypeId);
         contractsController.findOne(contractId).setInvoice(invoice);
         if(date != "") {
-           System.out.println(date);
-           SimpleDateFormat sdf = new SimpleDateFormat("M/dd/yyyy");
-           try {
-               Date d = sdf.parse(date);
-               invoice.setPaymentDeadline(d);
-           } catch (ParseException e) {
-               e.printStackTrace();
-           }
-       }
+            System.out.println(date);
+            SimpleDateFormat sdf = new SimpleDateFormat("M/dd/yyyy");
+            try {
+                Date d = sdf.parse(date);
+                invoice.setPaymentDeadline(d);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
         contractsController.edit(contractsController.findOne(contractId));
         return "redirect:/contracts";
     }
@@ -94,7 +93,7 @@ public class ContractWebController {
      *
      */
     @RequestMapping(value ="/confirmContract", method = RequestMethod.POST)
-     public String addInvoice(RedirectAttributes redirectAttributes, @RequestParam("client") int clientId) {
+    public String addInvoice(RedirectAttributes redirectAttributes, @RequestParam("client") int clientId) {
 
         Contract con;
         if(viewMode == ViewMode.EDIT) {
@@ -191,7 +190,7 @@ public class ContractWebController {
      *
      */
     @RequestMapping(value ="/deleteContract/{id}")
-     public String deleteContract(@PathVariable("id")int id){
+    public String deleteContract(@PathVariable("id")int id){
         contractsController.delete(id);
         return "redirect:/contracts/";
     }
@@ -250,17 +249,15 @@ public class ContractWebController {
      *
      */
     @RequestMapping(value ="/addCar", method = RequestMethod.POST)
-     public String newCar(RedirectAttributes redirectAttributes, @RequestParam("car") int car) {
+    public String newCar(RedirectAttributes redirectAttributes, @RequestParam("car") int car) {
         carList.add(carsController.findOne(car));
         return "redirect:/contactAdditions";
     }
-
     @RequestMapping(value ="/orderCar", method = RequestMethod.POST)
     public String orderCar(RedirectAttributes redirectAttributes) {
-        redirectAttributes.addAttribute("contract",contractsController.addContract().getId());
+        redirectAttributes.addAttribute("contract",contractsController.addNew(carList, accessoryList, promotionList, 0).getId());
         return "redirect:/addNewCar";
     }
-
 
     @RequestMapping(value ="/addPromotion", method = RequestMethod.POST)
     public String newPromotion(RedirectAttributes redirectAttributes, @RequestParam("promotion") int promotion) {

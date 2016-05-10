@@ -115,7 +115,7 @@ public class Worker {
     }
 
     @Basic
-    @Column()
+    @Column(nullable = false)
     public String getLogin() {
         return login;
     }
@@ -125,7 +125,7 @@ public class Worker {
     }
 
     @Basic
-    @Column
+    @Column(nullable = false)
     public String getPassword() {
         return password;
     }

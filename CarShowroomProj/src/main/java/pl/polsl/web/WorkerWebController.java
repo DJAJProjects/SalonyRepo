@@ -36,7 +36,7 @@ public class WorkerWebController {
 
     @RequestMapping(value ="/deleteWorker/{id}")
     public String deleteWorker(@PathVariable("id")int id){
-        workersController.delete(id);
+        workersController.deleteOne(id);
         return "redirect:/worker/";
     }
 
@@ -44,7 +44,6 @@ public class WorkerWebController {
     public String addWorker(Model model){
         viewMode = ViewMode.INSERT;
         Worker worker = new Worker();
-
         model.addAttribute("controlsPanelVisible", true);
         model.addAttribute("controlsDisabled", false);
         model.addAttribute("worker", worker);
@@ -108,7 +107,7 @@ public class WorkerWebController {
             Worker worker = workersController.updateWorker(id, name,surname,payment, position,showroom);
         }
         else if(viewMode==ViewMode.INSERT) {
-            Worker worker = workersController.addShowroom(name,surname,payment, position, showroom, login,password);
+            Worker worker = workersController.addWorker(name,surname,payment, position, showroom, login,password);
         }
         return "redirect:/worker/";
     }

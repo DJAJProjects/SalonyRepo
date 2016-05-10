@@ -56,12 +56,14 @@ public class ContractsController {
         return contractsRepository.save(con);
     }
 
+    public void SetList(Contract contract) {
+
+    }
     public Contract updateContract(Contract contract, Set<Car>carList, Set<Accessory>accessoryList,Set<Promotion> promotionList, int contractor){
         final int[] totalCost = {0};
         contract.setCarList(carList);
         contract.setAccessoryList(accessoryList);
         contract.setPromotions(promotionList);
-        contract.setContractor(contractorsController.findOne(contractor));
         edit(contract);
         carList.stream().forEach((car) -> {
             car = carsController.findOne(car.getId());
@@ -93,17 +95,14 @@ public class ContractsController {
             contract.setInvoice(null);
             invoiceController.delete(invoice.getId());
         }
+        if(contractor != 0)
+            contract.setContractor(contractorsController.findOne(contractor));
+
         return contractsRepository.save(contract);
     }
     public Contract addNew(Set<Car>carList, Set<Accessory>accessoryList,Set<Promotion> promotionList, int contractor) {
         Contract contract= new Contract();
         return updateContract(contract, carList, accessoryList, promotionList, contractor);
-    }
-    public Contract addContract() {
-        Contract contract= new Contract();
-        contract.setWorker(Data.user);
-        contract.setTotalCost(0);
-        return contractsRepository.save(contract);
     }
 
 }
