@@ -91,6 +91,13 @@
             </div>
         </div>
         <div class="form-group">
+            <label class="control-label col-sm-2">Data przyjęcia:</label>
+            <div class="col-sm-10">
+                <!--PAMIETAJ O DODANIU SPR AKTUALNEJ DATY-->
+                <input  th:disabled="${controlsDisabled}" th:field="*{dateHired}" id="date" name="dateHired" type="date" class="form-control" min="1970-01-01" required="required"/>
+            </div>
+        </div>
+        <div class="form-group">
             <label class="control-label col-sm-2">Pozycja:</label>
             <div class="col-sm-10">
                 <select  th:disabled="${controlsDisabled}" name="position" class="form-control" aria-label="..." required="required">
@@ -108,16 +115,16 @@
                 </select>
             </div>
         </div>
-        <div class="form-group">
+        <div  th:if="${controlsLoginVisible}" class="form-group">
             <label class="control-label col-sm-2">Login:</label>
             <div class="col-sm-10">
-                <input   th:disabled="${controlsDisabled}" th:field="*{login}" name="login" type="text" class="form-control" placeholder="Wprowadź login" required="required"/>
+                <input th:disabled="${controlsDisabled}" th:field="*{login}" name="login" type="text" class="form-control" placeholder="Wprowadź login" required="required"/>
             </div>
         </div>
-        <div class="form-group">
+        <div th:if="${controlsPasswordVisible}" class="form-group">
             <label class="control-label col-sm-2">Hasło:</label>
             <div class="col-sm-10">
-                <input   th:disabled="${controlsDisabled}" th:field="*{password}" name="password" type="password" class="form-control" placeholder="Wprowadź hasło" required="required"/>
+                <input  th:disabled="${controlsDisabled}" th:field="*{password}" name="password" type="password" class="form-control" placeholder="Wprowadź hasło" required="required"/>
             </div>
         </div>
         <div class="form-group">

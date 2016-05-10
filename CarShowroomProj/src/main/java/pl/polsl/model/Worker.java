@@ -21,7 +21,7 @@ public class Worker {
     private String login;
     private String password;
 
-    public Worker(String name, String surname, int payment, Dictionary position, Showroom showroom, String login, String password) {
+    public Worker(String name, String surname, int payment, Date dateHired, Dictionary position, Showroom showroom, String login, String password) {
        this.name = name;
         this.surname = surname;
         this.payment=payment;
@@ -29,6 +29,7 @@ public class Worker {
         this.showroom = showroom;
         this.login = login;
         this.password = password;
+        this.dateHired = dateHired;
     }
 
     public Worker() {

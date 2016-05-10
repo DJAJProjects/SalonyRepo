@@ -12,6 +12,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.sql.Date;
 import java.util.List;
 
 
@@ -55,24 +56,25 @@ public class WorkersController {
         return (List)workersRepository.findAllOneType(11);
     }
 
-    public Worker addWorker(String name, String surname, int payment, int position, int showroom, String login, String password) {
+    public Worker addWorker(String name, String surname, int payment, Date dateHired, int position, int showroom, String login, String password) {
         MessageDigest md = null;
         try {
             md = MessageDigest.getInstance("SHA");
             String data = password;
             byte[] dataDigest = md.digest(data.getBytes());
-            return workersRepository.save(new Worker(name,surname,payment, dictionaryController.findOne(position),showroomsController.findOne(showroom),login, password));
+            return workersRepository.save(new Worker(name,surname,payment, dateHired,dictionaryController.findOne(position),showroomsController.findOne(showroom),login, password));
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
             return null;
         }
     }
 
-    public Worker updateWorker(int id, String name, String surname, int payment, int position, int showroom) {
+    public Worker updateWorker(int id, String name, String surname, int payment, Date dateHired, int position, int showroom) {
         Worker worker = workersRepository.findOne(id);
         worker.setName(name);
         worker.setSurname(surname);
         worker.setPayment(payment);
+        worker.setDateHired(dateHired);
         worker.setPosition(dictionaryController.findOne(position));
         worker.setShowroom(showroomsController.findOne(showroom));
         return workersRepository.save(worker);

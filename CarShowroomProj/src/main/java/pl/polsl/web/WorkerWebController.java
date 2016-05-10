@@ -13,6 +13,8 @@ import pl.polsl.controller.ShowroomsController;
 import pl.polsl.controller.WorkersController;
 import pl.polsl.model.Worker;
 
+import java.sql.Date;
+
 /**
  * Created by Dominika Błasiak on 09.04.2016.
  */
@@ -20,6 +22,8 @@ import pl.polsl.model.Worker;
 public class WorkerWebController {
 
     private ViewMode viewMode;
+    private boolean showLogin = false;
+    private boolean showPassword = false;
 
     @Autowired
     private ShowroomsController showroomsController;
@@ -50,6 +54,8 @@ public class WorkerWebController {
         model.addAttribute("workers", workersController.findAll());
         model.addAttribute("positions", dictionaryController.findAllPositions());
         model.addAttribute("showrooms", showroomsController.findAll());
+        model.addAttribute("controlsLoginVisible", true);
+        model.addAttribute("controlsPasswordVisible", true);
         return "worker";
     }
 
@@ -67,21 +73,15 @@ public class WorkerWebController {
         model.addAttribute("workers", workersController.findAll());
         model.addAttribute("positions", dictionaryController.findAllPositions());
         model.addAttribute("showrooms", showroomsController.findAll());
-
+        model.addAttribute("controlsLoginVisible", true);
+        model.addAttribute("controlsPasswordVisible", false);
         return "worker";
     }
-//    @RequestMapping(value ="/addWorker", method = RequestMethod.POST)
-//    public String addWorker(@RequestParam("name") String name, @RequestParam(value = "surname") String surname, @RequestParam(value = "position")int position, @RequestParam(value = "showroom")int showroom,@RequestParam(value = "login")String login, @RequestParam(value = "password")String password){
-//        Worker worker = workersController.addShowroom(name,surname,position, showroom, login,password);
-//        addVisible = false;
-//        return "redirect:/worker/";
-//    }
 
     @RequestMapping(value ="/editWorker/{id}")
     public String editWorker(Model model, @PathVariable("id")int id){
         viewMode = ViewMode.EDIT;
         Worker worker = workersController.findOne(id);
-
         model.addAttribute("controlsPanelVisible", true);
         model.addAttribute("controlsDisabled", false);
         model.addAttribute("positionId", worker.getPosition().getId());
@@ -90,6 +90,8 @@ public class WorkerWebController {
         model.addAttribute("workers", workersController.findAll());
         model.addAttribute("positions", dictionaryController.findAllPositions());
         model.addAttribute("showrooms", showroomsController.findAll());
+        model.addAttribute("controlsLoginVisible", false);
+        model.addAttribute("controlsPasswordVisible", false);
         return "worker";
 
     }
@@ -99,15 +101,16 @@ public class WorkerWebController {
                                @RequestParam("name") String name,
                                @RequestParam(value = "surname") String surname,
                                @RequestParam(value = "payment") int payment,
+                               @RequestParam(value="dateHired") Date dateHired,
                                @RequestParam(value = "position")int position,
                                @RequestParam(value = "showroom")int showroom,
                                @RequestParam(value = "login")String login,
                                @RequestParam(value = "password")String password){
         if(viewMode == ViewMode.EDIT) {
-            Worker worker = workersController.updateWorker(id, name,surname,payment, position,showroom);
+            Worker worker = workersController.updateWorker(id, name,surname,payment, dateHired, position,showroom);
         }
         else if(viewMode==ViewMode.INSERT) {
-            Worker worker = workersController.addWorker(name,surname,payment, position, showroom, login,password);
+            Worker worker = workersController.addWorker(name,surname,payment, dateHired, position, showroom, login,password);
         }
         return "redirect:/worker/";
     }
