@@ -79,8 +79,11 @@ public class ReportsWebController {
                              @RequestParam(value = "dateEnd") String dateEnd ){
         if(viewMode == ViewMode.INSERT){
             Report report = reportsController.addReport(name, showroom, content, Date.valueOf(dateBeggining),Date.valueOf(dateEnd));
+            return "redirect:/viewReport/"+report.getId();
         }
-        return "redirect:/reports/";
+        return "redirect:/reports";
+
+
     }
 
 }
