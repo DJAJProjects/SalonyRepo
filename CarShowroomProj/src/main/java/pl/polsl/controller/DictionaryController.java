@@ -2,7 +2,7 @@ package pl.polsl.controller;
 
 import jersey.repackaged.com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import pl.polsl.model.Dictionary;
 import pl.polsl.repository.DictionaryRepository;
 
@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * Created by Dominika Błasiak on 2016-04-07.
  */
-@Component
+@Service
 @Path("/dictionary")
 @Produces(MediaType.APPLICATION_JSON)
 

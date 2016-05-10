@@ -2,7 +2,7 @@ package pl.polsl.controller;
 
 import jersey.repackaged.com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import pl.polsl.model.Showroom;
 import pl.polsl.repository.ShowroomsRepository;
 
@@ -17,7 +17,7 @@ import java.util.List;
  * Created by Dominika Błasiak on 07.04.2016.
  */
 
-@Component
+@Service
 @Path("/showroom")
 @Produces(MediaType.APPLICATION_JSON)
 public class ShowroomsController {
