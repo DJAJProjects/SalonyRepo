@@ -3,6 +3,7 @@
       xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <title>Serwis</title>
+    <script type="text/javascript" src="../static/javascript/validation.js" th:src="@{/../javascript/validation.js}"></script>
 </head>
 <body>
 
@@ -52,7 +53,7 @@
                 <select type="text" name="type" list="serviceList" required="required" class="form-control" aria-label="...">
                     <datalist id="serviceList">
                         <option th:disabled="${controlsDisabled}"></option>
-                        <option th:disabled="${controlsDisabled}" th:each="type : ${types}" th:value="${type.id}" th:text="${type.value}" th:selected="${type.id}==${serviceType.id}"></option>
+                        <option th:disabled="${controlsDisabled}" th:each="type : ${types}" th:value="${type.id}" th:text="${type.value}" th:selected="${type}==${serviceType}"></option>
                     </datalist>
                 </select>
             </div>
@@ -63,7 +64,7 @@
                 <select type="text" name="idServiceman" placeholder="Wybierz serwisanta" list="servicemansList" required="required" class="form-control" aria-label="...">
                     <datalist id="servicemansList">
                         <option th:disabled="${controlsDisabled}"></option>
-                        <option th:disabled="${controlsDisabled}" th:each="serviceman : ${servicemans}" th:value="${serviceman.id}" th:text="${serviceman.surname}" th:selected="${serviceman.id}==${serviceServiceman.id}"></option>
+                        <option th:disabled="${controlsDisabled}" th:each="serviceman : ${servicemans}" th:value="${serviceman.id}" th:text="${serviceman.surname}" th:selected="${serviceman}==${serviceServiceman}"></option>
                     </datalist>
                 </select>
             </div>
@@ -74,7 +75,7 @@
                 <select type="text" name="idCar" placeholder="Wybierz samochód" list="carsList" required="required" class="form-control" aria-label="...">
                     <datalist id="carsList">
                         <option th:disabled="${controlsDisabled}"></option>
-                        <option th:disabled="${controlsDisabled}" th:each="car : ${cars}" th:value="${car.id}" th:text="${car.carName.value}" th:selected="${car.id}==${serviceCar.id}"></option>
+                        <option th:disabled="${controlsDisabled}" th:each="car : ${cars}" th:value="${car.id}" th:text="${car.carName.value}" th:selected="${car}==${serviceCar}"></option>
                     </datalist>
                 </select>
             </div>
@@ -85,7 +86,7 @@
                 <select type="text" name="idAccessory" placeholder="Wybierz część" list="partsList" required="required" class="form-control" aria-label="...">
                     <datalist id="partsList">
                         <option th:disabled="${controlsDisabled}"></option>
-                        <option th:disabled="${controlsDisabled}" th:each="accessory : ${accessories}" th:value="${accessory.id}" th:text="${accessory.accessory.value}" th:selected="${accessory.id}==${serviceAccessory.id}">></option>
+                        <option th:disabled="${controlsDisabled}" th:each="accessory : ${accessories}" th:value="${accessory.id}" th:text="${accessory.accessory.value}" th:selected="${accessory}==${serviceAccessory}">></option>
                     </datalist>
                 </select>
             </div>
@@ -100,8 +101,8 @@
         <div class="form-group">
             <label class="control-label col-sm-2">Data wykonania serwisu:</label>
             <div class="col-sm-10">
-                <!--PAMIETAJ O DODANIU SPR AKTUALNEJ DATY-->
-                <input th:disabled="${controlsDisabled}" th:field="*{dateConducted}" name="dateConducted" type="date" class="form-control" min="2000-01-01" max="2017-01-01" required="required"/>
+                <input id="date" onfocus="loadCurrentDate();" th:disabled="${controlsDisabled}" th:field="*{dateConducted}"
+                       name="dateConducted" type="date" class="form-control" min="2000-01-01" required="required"/>
             </div>
         </div>
         <div class="form-group">

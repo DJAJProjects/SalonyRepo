@@ -3,7 +3,29 @@
       xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <title>Samochody</title>
-    <script type="text/javascript" src="script.js"></script>
+    <!--<script type="text/javascript" src="../static/javascript/validation.js"></script>-->
+    <script type="text/javascript">
+        //<![CDATA[
+        function loadCurrentDate() {
+
+            var today = new Date();
+            var textToday = '' + today.getFullYear() + '-';
+
+            if (today.getMonth() < 9) {     //getMonth() 0..11
+                textToday += '0' + (today.getMonth() + 1) + '-';
+            } else {
+                textToday += (today.getMonth() + 1) + '-';
+            }
+            if(today.getDate() < 9) {
+                textToday += '0' + today.getDate();
+            } else {
+                textToday += today.getDate();
+            }
+
+            document.getElementById('date').max = textToday;
+        }
+        //]]>
+    </script>
 </head>
 <body>
 <div layout:fragment="main" style="margin: 0 auto; max-width: 1000px;">
@@ -21,6 +43,7 @@
                     <td class="col-md-2">Model</td>
                     <td class="col-md-2">Data produkcji</td>
                     <td class="con-md-2">Cena [PLN]</td>
+                    <td class="con-md-2">Status</td>
                     <td class="col-md-2">Salon</td>
                     <td class="col-md-2">Edytuj</td>
                     <td class="col-md-2">Usuń</td>
@@ -30,6 +53,8 @@
                     <td th:text="${car.carName.value}"></td>
                     <td th:text="${car.prodDate}"></td>
                     <td th:text="${car.cost}"></td>
+                    <div th:if="${car.ordered}"><td>Zamówiony</td></div>
+                    <div th:unless="${car.ordered}"><td>Dostępny w salonie</td></div>
                     <td th:text="${car.showroom.name}"></td>
                     <td><a href="cars.html" th:href="@{'/editCar/'+${car.id}}"><span class="glyphicon glyphicon-edit" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Edytuj"></span></a></td>
                     <td><a href="cars.html" th:href="@{'/deleteCar/'+${car.id}}"><span class="glyphicon glyphicon-remove" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Usuń"></span></a></td>
@@ -41,6 +66,7 @@
 
     <!--Modify car-->
     <form th:if="${controlsPanelVisible}" class="form-horizontal" role="form" method="post" action="/modifyCar" th:object="${car}">
+        <div th:if="${contract}"><input type="hidden" name="contract" th:value="${contract.id}"/></div>
         <input type="hidden" style="display: none;" name="id" th:field="*{id}"/>
         <div class="form-group">
             <label class="control-label col-sm-2">Model:</label>
@@ -57,13 +83,21 @@
             <label class="control-label col-sm-2">Data produkcji:</label>
             <div class="col-sm-10">
                 <!--PAMIETAJ O DODANIU SPR AKTUALNEJ DATY-->
-                <input  th:disabled="${controlsDisabled}" th:field="*{prodDate}" id="date" name="prodDate" type="date" class="form-control" min="2000-01-01" required="required"/>
+                <input id="date" onfocus="loadCurrentDate();" th:disabled="${controlsDisabled}" th:field="*{prodDate}" name="prodDate" type="date" class="form-control" min="2000-01-01" required="required"/>
             </div>
         </div>
         <div class="form-group">
             <label class="control-label col-sm-2">Cena [PLN]:</label>
             <div class="col-sm-10">
                 <input placeholder="Wprowadź cenę" th:disabled="${controlsDisabled}" th:field="*{cost}" name="cost" type="number" min="0" max="999999" class="form-control" required="required"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-2">Zamówienie:</label>
+            <div class="col-sm-10">
+                <div th:unless="${ordered}"><input  th:disabled="${controlsDisabled}" name="ordered" type="checkbox" th:value ="1"/></div>
+                <div th:if="${ordered}"><input th:disabled="${disabledOrdered}" name="ordered" type="checkbox" th:value ="1" th:checked ="1"/></div>
+
             </div>
         </div>
         <div class="form-group">
@@ -79,7 +113,7 @@
         </div>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
-                <button onclick="validateActualDate()" type="submit" th:disabled="${controlsDisabled}" class="btn btn-default" >Akceptuj</button>
+                <button type="submit" th:disabled="${controlsDisabled}" class="btn btn-default" >Akceptuj</button>
                 <button type="reset" th:disabled="${controlsDisabled}" class="btn btn-default">Anuluj zmiany</button>
             </div>
         </div>
