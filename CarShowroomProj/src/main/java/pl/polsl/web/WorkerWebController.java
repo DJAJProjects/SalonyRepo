@@ -85,7 +85,10 @@ public class WorkerWebController {
         model.addAttribute("controlsPanelVisible", true);
         model.addAttribute("controlsDisabled", false);
         model.addAttribute("positionId", worker.getPosition().getId());
-        model.addAttribute("showroomId", worker.getShowroom().getId());
+        if(worker.getShowroom()!=null)
+            model.addAttribute("showroomId", worker.getShowroom().getId());
+//        else
+//            model.addAttribute("showroomId", worker.getShowroom().getId());
         model.addAttribute("worker", worker);
         model.addAttribute("workers", workersController.findAll());
         model.addAttribute("positions", dictionaryController.findAllPositions());
