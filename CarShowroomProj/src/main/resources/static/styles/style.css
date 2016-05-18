@@ -8,8 +8,6 @@
 #nav-menu{
     box-sizing: border-box;
     background-color: #000000;
-
-
 }
 #nav-menu a{
     color: #ffffff;
@@ -116,7 +114,11 @@ Panel logowania
     height: 5px;
 }
 
-.main-login-view .form-control:focus{
+.form-control {
+    border-radius: 0;
+}
+
+.form-control:focus{
     border-color: #CF000F;
     outline: 0;
     -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(207, 0, 15,.6);
@@ -143,6 +145,37 @@ Panel logowania
 }
 
 .counter{
-    padding:8px;
-    color:#ccc;
+    padding: 0px 8px 8px;
+    color:#fff;
+}
+/*
+Koniec panelu logowania
+*/
+.panel-default>.panel-heading{
+    background-color:#CF000F; /*rgba(207, 0, 15,.6);*/
+    /*border-color:  */
+    color: white;
+
+}
+
+.panel-heading-34 {
+    line-height: 34px;
+}
+
+
+.panel {
+    /*margin-bottom: 20px;*/
+    /*background-color: #fff;*/
+    /*border: 1px solid transparent;*/
+    border-radius: 0px;
+    /*-webkit-box-shadow: 0 1px 1px rgba(0,0,0,.05);*/
+    /*box-shadow: 0 1px 1px rgba(0,0,0,.05);*/
+}
+
+.center-item{
+    text-align:center;
+}
+
+.table-hover>tbody>tr:hover {
+    background-color: #B7B7B7;
 }

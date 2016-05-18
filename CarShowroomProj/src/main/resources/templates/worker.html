@@ -2,6 +2,10 @@
 <html xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml" layout:decorator="index">
 <head>
     <title>Pracownicy</title>
+    <!-- Bootstrap -->
+    <link href="../static/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="../static/styles/style.css" th:href="@{/../styles/style.css}"/>
+    <meta charset="UTF-8"/>
 </head>
 <body>
 <div layout:fragment="main" style="margin: 0 auto; max-width: 1000px;">
@@ -9,14 +13,14 @@
         <button type="button" class="btn btn-default"><a th:href="@{/addWorker}+'#anch'">Dodaj pracownika</a></button>
     </div>
     <div>
-        <div class="form-group pull-right">
-            <input type="text" class="search form-control" placeholder="Wyszukaj w tabeli"/>
-        </div>
-        <span class="counter pull-right"></span>
-
         <div class="panel panel-default">
             <!-- Default panel contents -->
-            <div class="panel-heading">Lista pracowników</div>
+            <div class="panel-heading panel-heading-34">LISTA PRACOWNIKÓW
+                <div class="form-group pull-right">
+                    <input type="text" class="search form-control" placeholder="Wyszukaj w tabeli"/>
+                </div>
+                <span class="counter pull-right"></span>
+            </div>
 
             <!-- Table -->
             <table class="table tablesorter table-hover table-bordered results" id="mytable">
@@ -24,14 +28,14 @@
 
                <thead>
                    <tr style="font-weight: bold; margin: 0 auto;">
-                       <td class="col-md-1 change-on-hand">#</td>
+                       <td class="col-md-1 change-on-hand center-item">#</td>
                        <td class="col-md-2 change-on-hand">Imię</td>
                        <td class="col-md-2 change-on-hand">Nazwisko</td>
                        <td class="col-md-2 change-on-hand">Pozycja</td>
                        <td class="col-md-2 change-on-hand">Salon</td>
-                       <td class="col-md-1">Edytuj</td>
-                       <td class="col-md-1">Usuń</td>
-                       <td class="col-md-1">Podgląd</td>
+                       <td class="col-md-1 center-item">Edytuj</td>
+                       <td class="col-md-1 center-item">Usuń</td>
+                       <td class="col-md-1 center-item">Podgląd</td>
                    </tr>
                    <tr class="warning no-result">
                        <td colspan="8"><i class="fa fa-warning"></i> No result</td>
@@ -39,24 +43,24 @@
                </thead>
                 <tbody>
                     <tr th:each="worker : ${workers}">
-                        <td th:text="${worker.id}"></td>
+                        <td class="center-item" th:text="${worker.id}"></td>
                         <td th:text="${worker.name}"></td>
                         <td th:text="${worker.surname}"></td>
                         <td th:text="${worker.position.value}"></td>
                         <td th:if="${worker.showroom}" th:text="${worker.showroom.name}"></td>
                         <td th:unless="${worker.showroom}" >null</td>
-                        <td>
+                        <td class="center-item">
                             <a th:href="@{'/editWorker/'+${worker.id}+'#anch'}" >
                                 <span class="glyphicon glyphicon-pencil" aria-hidden="true" style="height:100%;width:100%">
                                 </span>
                             </a>
                         </td>
-                        <td>
+                        <td class="center-item">
                             <a th:href="@{'/deleteWorker/'+${worker.id}}">
                                 <span class="glyphicon glyphicon-remove" aria-hidden="true" style="height:100%;width:100%"></span>
                             </a>
                         </td>
-                        <td>
+                        <td class="center-item">
                             <a th:href="@{'/viewWorker/'+${worker.id}+'#anch'}">
                                 <span class="glyphicon glyphicon-eye-open" aria-hidden="true" style="height:100%;width:100%">
                                 </span>
