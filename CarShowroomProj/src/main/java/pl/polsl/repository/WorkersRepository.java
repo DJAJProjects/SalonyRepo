@@ -29,6 +29,9 @@ public interface WorkersRepository extends PagingAndSortingRepository<Worker, In
     public List<Worker> findAllTheSameShowroom (@Param("showroom")Showroom showroom);
 
 
+    @Query(value = "select serviceman from Worker serviceman where serviceman.position.id = :position")
+    public List<Worker> findAllServicemans(@Param("position")int position);
+
     /**
      * @author Kuba
      * Used in raports

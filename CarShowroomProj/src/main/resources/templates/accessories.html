@@ -8,34 +8,47 @@
 
 <div layout:fragment="main" style="margin: 0 auto; max-width: 1000px;">
     <div class="btn-group" role="group" aria-label="..." style="margin: 20px 0;">
-        <button type="button" class="btn btn-default"><a href="accessories.html" th:href="@{'/addNewAccessory'}">Dodaj akcesorium</a></button>
+        <button type="button" class="btn btn-default"><a href="accessories.html" th:href="@{'/addNewAccessory'}+'#anch'">Dodaj akcesorium</a></button>
     </div>
     <div>
         <div class="panel panel-default">
             <!-- Default panel contents -->
-            <div class="panel-heading">Dostępne akcesoria:</div>
+            <div class="panel-heading panel-heading-34">Dostępne akcesoria
+                <div class="form-group pull-right">
+                    <input type="text" class="search form-control" placeholder="Wyszukaj w tabeli"/>
+                </div>
+                <span class="counter pull-right"></span>
+            </div>
             <!-- Table -->
-            <table class="table">
+            <table class="table tablesorter table-hover table-bordered results" id="mytable">
                 <!-- head row -->
-                <tr style="font-weight: bold;">
-                    <td class="col-md-2">Nazwa</td>
-                    <td class="con-md-2">Cena [PLN]</td>
-                    <td class="col-md-2">Edytuj</td>
-                    <td class="col-md-2">Usuń</td>
-                    <td class="col-md-2">Podgląd</td>
-                </tr>
-                <tr th:each="accessory : ${accessories}">
-                    <td th:text="${accessory.accessory.value}"></td>
-                    <td th:text="${accessory.cost}"></td>
-                    <td><a href="accessories.html" th:href="@{'/editAccessory/'+${accessory.id}}"><span class="glyphicon glyphicon-edit" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Edytuj"></span></a></td>
-                    <td><a href="accessories.html" th:href="@{'/deleteAccessory/'+${accessory.id}}"><span class="glyphicon glyphicon-remove" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Usuń"></span></a></td>
-                    <td><a href="accessories.html" th:href="@{'/viewAccessory/'+${accessory.id}}"><span class="glyphicon glyphicon-eye-open" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Podgląd"></span></a></td>
-                </tr>
+                <thead>
+                    <tr style="font-weight: bold; margin: 0 auto;">
+                        <td class="col-md-5">Nazwa</td>
+                        <td class="con-md-5">Cena [PLN]</td>
+                        <td class="col-md-1 center-item">Edytuj</td>
+                        <td class="col-md-1 center-item">Usuń</td>
+                        <td class="col-md-1 center-item">Podgląd</td>
+                    </tr>
+                    <tr class="warning no-result">
+                        <td colspan="8"><i class="fa fa-warning"></i> No result</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="accessory : ${accessories}">
+                        <td th:text="${accessory.accessory.value}"></td>
+                        <td th:text="${accessory.cost}"></td>
+                        <td class="center-item"><a href="accessories.html" th:href="@{'/editAccessory/'+${accessory.id}+'#anch'}"><span class="glyphicon glyphicon-edit" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Edytuj"></span></a></td>
+                        <td class="center-item"><a href="accessories.html" th:href="@{'/deleteAccessory/'+${accessory.id}}"><span class="glyphicon glyphicon-remove" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Usuń"></span></a></td>
+                        <td class="center-item"><a href="accessories.html" th:href="@{'/viewAccessory/'+${accessory.id}+'#anch'}"><span class="glyphicon glyphicon-eye-open" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Podgląd"></span></a></td>
+                    </tr>
+                </tbody>
             </table>
         </div>
     </div>
 
     <!--Modify accessory-->
+    <a name="anch"></a>
     <form th:if="${controlsPanelVisible}" class="form-horizontal" role="form" method="post" action="/modifyAccessory" th:object="${accessory}">
         <input type="hidden" style="display: none;" name="id" th:field="*{id}"/>
         <div class="form-group">
