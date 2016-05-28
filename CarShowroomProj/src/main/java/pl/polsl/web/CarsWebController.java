@@ -14,7 +14,6 @@ import pl.polsl.controller.ContractsController;
 import pl.polsl.controller.DictionaryController;
 import pl.polsl.controller.ShowroomsController;
 import pl.polsl.model.Car;
-import pl.polsl.model.Contract;
 
 import java.sql.Date;
 
@@ -42,7 +41,7 @@ public class CarsWebController {
         return "cars";
     }
 
-    @RequestMapping(value ="/addNewCar")
+    @RequestMapping(value ="/addNewCar", method = RequestMethod.GET)
     public String addNewCar(Model model, @RequestParam(value="contract", required = false)Integer contract){
         Car car = new Car();
         viewMode = ViewMode.INSERT;
@@ -55,7 +54,7 @@ public class CarsWebController {
         model.addAttribute("disabledOrdered", 0);
         System.out.println("contract id: " + contract);
         if(contract != null){
-            model.addAttribute("contract", contractsController.findOne(contract));
+            model.addAttribute("contract",ContractWebController.contract.getId());
             model.addAttribute("ordered", 1);
             model.addAttribute("disabledOrdered", 1);
         }
@@ -115,8 +114,9 @@ public class CarsWebController {
     public String modifyCar(RedirectAttributes redirectAttributes, @RequestParam("id") int id, @RequestParam("name")int name, @RequestParam("prodDate")Date prodDate,
                             @RequestParam("showroom")int showroom, @RequestParam("cost")int cost, @RequestParam(value="ordered", required = false)Integer order, @RequestParam(value="contract", required = false)Integer contract) {
         if(contract !=null) {
-            Car car = carsController.addCar(name,prodDate,showroom,cost, 1, contractsController.findOne(contract));
-            redirectAttributes.addAttribute("carId", car.getId());
+            Car car = carsController.addCar(name,prodDate,showroom,cost, 1, null);
+            ContractWebController.contract.getCarList().add(car);
+            redirectAttributes.addAttribute("carId", contract);
             return "redirect:/contactAdditions";
         }
         if(viewMode == ViewMode.INSERT){
