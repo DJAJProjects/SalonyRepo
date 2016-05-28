@@ -60,6 +60,11 @@ public class DictionaryController {
         return dictionaryRepository.findAllTheSameType("accessory");
     }
 
+    public List<Dictionary> findAllModules() {
+        return dictionaryRepository.findAllTheSameType("module");
+    }
+
+
     public List<Dictionary> findAllService() {
         return dictionaryRepository.findAllTheSameType("service_type");
     }
