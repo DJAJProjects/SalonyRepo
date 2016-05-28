@@ -1,5 +1,5 @@
 //<![CDATA[
-function loadCurrentDate() {
+function loadCurrentDate(where) {
 
     var today = new Date();
     var textToday = '' + today.getFullYear() + '-';
@@ -9,12 +9,23 @@ function loadCurrentDate() {
     } else {
         textToday += (today.getMonth() + 1) + '-';
     }
-    if(today.getDate() < 9) {
+    if (today.getDate() < 9) {
         textToday += '0' + today.getDate();
     } else {
         textToday += today.getDate();
     }
 
-    document.getElementById('date').max = textToday;
+    if (where === 'min') {
+        document.getElementById('date').min = textToday;
+        alert(textToday);
+    } else if(where === 'max') {
+        document.getElementById('date').max = textToday;
+    }
+}
+
+function loadStartDate() {
+    var startDate = document.getElementById('date').value;
+    alert(startDate);
+    document.getElementById('date2').min = startDate;
 }
 //]]>

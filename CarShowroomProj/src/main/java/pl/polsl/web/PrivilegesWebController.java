@@ -27,6 +27,8 @@ public class PrivilegesWebController {
 
     @Autowired
     private PrivilegesController privilegesController;
+    @Autowired
+    private DictionaryController dictionaryController;
 
     @RequestMapping(value ="/privileges")
     public String getPrivileges(Model model){
@@ -47,6 +49,7 @@ public class PrivilegesWebController {
 
         model.addAttribute("privilegesGroups", privilegesController.findAll());
         model.addAttribute("privilegesGroup", privileges);
+        model.addAttribute("modules", dictionaryController.findAllModules());
         model.addAttribute("controlsPanelVisible", true);
         model.addAttribute("controlsDisabled", true);
         return "privileges";
@@ -60,7 +63,8 @@ public class PrivilegesWebController {
         Privileges privileges =  new Privileges();
 
         model.addAttribute("privilegesGroups", privilegesController.findAll());
-        model.addAttribute("privileges", privileges);
+        model.addAttribute("modules", dictionaryController.findAllModules());
+        model.addAttribute("privilegesGroup", privileges);
         model.addAttribute("controlsPanelVisible", true);
         model.addAttribute("controlsDisabled", false);
 
@@ -75,6 +79,7 @@ public class PrivilegesWebController {
         Privileges privileges = privilegesController.findOne(id);
 
         model.addAttribute("privilegesGroups", privilegesController.findAll());
+        model.addAttribute("modules", dictionaryController.findAllModules());
         model.addAttribute("privilegesGroup", privileges);
         model.addAttribute("controlsPanelVisible", true);
         model.addAttribute("controlsDisabled", false);
@@ -82,18 +87,25 @@ public class PrivilegesWebController {
     }
 
     @RequestMapping(value ="/acceptModifyPrivileges", method = RequestMethod.POST)
-    public String editContractor(   @RequestParam("privilegesGroup") Privileges privileges){
+    public String acceptModifyContractor(@RequestParam("id") int id,
+                                         @RequestParam(value = "name") String name,
+                                         @RequestParam(value = "description") String description,
+                                         @RequestParam(value = "module") int module,
+                                         @RequestParam(value = "read") boolean read,
+                                         @RequestParam(value = "insert") String insert,
+                                         @RequestParam(value = "update") int update,
+                                         @RequestParam(value = "delete") int delete){
 
-        String name  = privileges.getName();
+        //String name  = privileges.getName();
 
-        /* if(viewMode == ViewMode.INSERT){
-            Contractor contractor = contractorsController.addContractor(name,surname,pesel,nip,
-                                                                        regon,city,country, street);
+        if(viewMode == ViewMode.INSERT){
+           // Privileges privileges = privilegesController.addPrivilege(name,surname,pesel,nip,
+             //                                                           regon,city,country, street);
         }
         else if(viewMode == ViewMode.EDIT){
-            Contractor contractor = contractorsController.updateShowroom( id,name,surname,pesel,nip,
-                                                                        regon,city,country,street);
-        }*/
+           // Privileges privileges = privilegesController.updatePrivilege( id,name,surname,pesel,nip,
+             //                                                           regon,city,country,street);
+        }
         return "redirect:/privileges/";
     }
 }

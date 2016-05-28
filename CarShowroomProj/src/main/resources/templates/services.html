@@ -9,42 +9,52 @@
 
 <div layout:fragment="main" style="margin: 0 auto; max-width: 1000px;">
     <div class="btn-group" role="group" aria-label="..." style="margin: 20px 0;">
-        <button type="button" class="btn btn-default"><a href="services.html" th:href="@{/addNewService}">Dodaj serwis</a></button>
+        <button type="button" class="btn btn-default"><a href="services.html" th:href="@{/addNewService}+'#anch'">Dodaj serwis</a></button>
     </div>
     <div>
         <div class="panel panel-default">
             <!-- Default panel contents -->
-            <div class="panel-heading">Przeprowadzone serwisy:</div>
+            <div class="panel-heading panel-heading-34">Przeprowadzone serwisy
+                <div class="form-group pull-right">
+                    <input type="text" class="search form-control" placeholder="Wyszukaj w tabeli"/>
+                </div>
+                <span class="counter pull-right"></span>
+            </div>
             <!-- Table -->
-            <table class="table">
+            <table class="table tablesorter table-hover table-bordered results" id="mytable">
                 <!-- head row -->
-                <tr style="font-weight: bold;">
-                    <td class="col-md-2">Nazwa</td>
-                    <td class="col-md-2">Serwisant</td>
-                    <td class="col-md-2">Samochód</td>
-                    <td class="col-md-2">Akcesoria</td>
-                    <td class="con-md-2">Cena usługi [PLN]</td>
-                    <td class="con-md-2">Data wykonania</td>
-                    <td class="col-md-2">Edytuj</td>
-                    <td class="col-md-2">Usuń</td>
-                    <td class="col-md-2">Podgląd</td>
-                </tr>
-                <tr th:each="service : ${services}">
-                    <td th:text="${service.serviceType.value}"></td>
-                    <td th:text="${service.serviceman.surname}"></td>
-                    <td th:text="${service.car.carName.value}"></td>
-                    <td th:text="${service.accessory.accessory.value}"></td>
-                    <td th:text="${service.cost}"></td>
-                    <td th:text="${service.dateConducted}"></td>
-                    <td><a href="services.html" th:href="@{'/editService/'+${service.id}}"><span class="glyphicon glyphicon-edit" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Edytuj"></span></a></td>
-                    <td><a href="services.html" th:href="@{'/deleteService/'+${service.id}}"><span class="glyphicon glyphicon-remove" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Usuń"></span></a></td>
-                    <td><a href="services.html" th:href="@{'/viewService/'+${service.id}}"><span class="glyphicon glyphicon-eye-open" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Podgląd"></span></a></td>
-                </tr>
+                <thead>
+                    <tr style="font-weight: bold; margin: 0 auto;">
+                        <td class="col-md-2">Nazwa</td>
+                        <td class="col-md-2">Serwisant</td>
+                        <td class="col-md-2">Samochód</td>
+                        <td class="col-md-2">Akcesorium</td>
+                        <td class="con-md-2">Cena usługi [PLN]</td>
+                        <td class="con-md-2">Data wykonania</td>
+                        <td class="col-md-1 center-item">Edytuj</td>
+                        <td class="col-md-1 center-item">Usuń</td>
+                        <td class="col-md-1 center-item">Podgląd</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="service : ${services}">
+                        <td th:text="${service.serviceType.value}"></td>
+                        <td th:text="${service.serviceman.surname}"></td>
+                        <td th:text="${service.car.carName.value}"></td>
+                        <td th:text="${service.accessory.accessory.value}"></td>
+                        <td th:text="${service.cost}"></td>
+                        <td th:text="${service.dateConducted}"></td>
+                        <td class="center-item"><a href="services.html" th:href="@{'/editService/'+${service.id}+'#anch'}"><span class="glyphicon glyphicon-edit" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Edytuj"></span></a></td>
+                        <td class="center-item"><a href="services.html" th:href="@{'/deleteService/'+${service.id}}"><span class="glyphicon glyphicon-remove" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Usuń"></span></a></td>
+                        <td class="center-item"><a href="services.html" th:href="@{'/viewService/'+${service.id}+'#anch'}"><span class="glyphicon glyphicon-eye-open" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Podgląd"></span></a></td>
+                    </tr>
+                </tbody>
             </table>
         </div>
     </div>
 
     <!--Modify service-->
+    <a name="anch"></a>
     <form th:if="${controlsPanelVisible}" class="form-horizontal" role="form" method="post" action="/modifyService" th:object="${service}">
         <input type="hidden" style="display: none;" name="id" th:field="*{id}"/>
         <div class="form-group">

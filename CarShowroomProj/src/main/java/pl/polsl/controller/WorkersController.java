@@ -85,7 +85,7 @@ public class WorkersController {
     }
 
     public List<Worker> findAllServicemans() {
-        return (List)workersRepository.findAllOneType(12);
+        return (List)workersRepository.findAllServicemans(12);
     }
 
 }

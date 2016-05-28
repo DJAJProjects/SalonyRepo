@@ -7,31 +7,41 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import pl.polsl.Data;
 import pl.polsl.ViewMode;
 import pl.polsl.controller.ContractorsController;
 import pl.polsl.controller.DictionaryController;
+import pl.polsl.controller.PrivilegesController;
 import pl.polsl.model.Contractor;
 
 /**
  * Created by Kuba on 08.04.2016.
  */
 @Controller
-public class ContractorsWebController {
+public class ContractorsWebController extends BaseWebController {
 
     private ViewMode viewMode;
+
 
     @Autowired
     private ContractorsController contractorsController;
     @Autowired
     private DictionaryController dictionaryController;
 
+
     @RequestMapping(value ="/contractors")
     public String getContractors(Model model){
+
+        analisePrivileges("Klienci");
 
         viewMode = ViewMode.DEFAULT;
 
         model.addAttribute("contractors", contractorsController.findAllContractors());
         model.addAttribute("controlsPanelVisible", false);
+        model.addAttribute("insertEnabled", insertEnabled);
+        model.addAttribute("updateEnabled", updateEnabled);
+        model.addAttribute("deleteEnabled", deleteEnabled);
+
         return "contractors";
     }
 
@@ -50,6 +60,9 @@ public class ContractorsWebController {
         model.addAttribute("cities", dictionaryController.findAllCities());
         model.addAttribute("countries", dictionaryController.findAllCountries());
         model.addAttribute("contractors", contractorsController.findAllContractors());
+        model.addAttribute("insertEnabled", insertEnabled);
+        model.addAttribute("updateEnabled", updateEnabled);
+        model.addAttribute("deleteEnabled", deleteEnabled);
 
         return "contractors";
     }
@@ -67,6 +80,9 @@ public class ContractorsWebController {
         model.addAttribute("cities", dictionaryController.findAllCities());
         model.addAttribute("countries", dictionaryController.findAllCountries());
         model.addAttribute("contractors", contractorsController.findAllContractors());
+        model.addAttribute("insertEnabled", insertEnabled);
+        model.addAttribute("updateEnabled", updateEnabled);
+        model.addAttribute("deleteEnabled", deleteEnabled);
 
         return "contractors";
     }
@@ -86,6 +102,9 @@ public class ContractorsWebController {
         model.addAttribute("cities", dictionaryController.findAllCities());
         model.addAttribute("countries", dictionaryController.findAllCountries());
         model.addAttribute("contractors", contractorsController.findAllContractors());
+        model.addAttribute("insertEnabled", insertEnabled);
+        model.addAttribute("updateEnabled", updateEnabled);
+        model.addAttribute("deleteEnabled", deleteEnabled);
 
         return "contractors";
     }
@@ -117,4 +136,6 @@ public class ContractorsWebController {
         contractorsController.deleteContractor(id);
         return "redirect:/contractors";
     }
+
+
 }
