@@ -21,7 +21,7 @@ import java.util.*;
  * Created by Aleksandra on 2016-04-07.
  */
 @Controller
-public class ContractWebController {
+public class ContractWebController extends BaseWebController{
     @Autowired
     private ContractsController contractsController;
     @Autowired
@@ -61,7 +61,10 @@ public class ContractWebController {
             model.addAttribute("paymentForm", invoice.getPaymentForm());
             model.addAttribute("invoiceType", invoice.getInvoiceType());
             if(invoice.getPaymentDeadline()!=null){
-                model.addAttribute("paymentDeadline", invoice.getPaymentDeadline().toString());
+                model.addAttribute("paymentDeadline", invoice.getPaymentDeadline());
+            }
+            if(invoice.getDateSold() !=null) {
+                model.addAttribute("dataSold", invoice.getDateSold());
             }
             model.addAttribute("disabledButtons", 1);
         }
@@ -73,18 +76,26 @@ public class ContractWebController {
      *
      */
     @RequestMapping(value ="/generateNew", method = RequestMethod.POST)
-    public String newInvoice(RedirectAttributes redirectAttributes, @RequestParam("contract_id") int contractId, @RequestParam("paymentForm") int paymentFormId, @RequestParam("invoiceType") int invoiceTypeId, @RequestParam(value="date", required = false)String date) {
+    public String newInvoice(RedirectAttributes redirectAttributes, @RequestParam("contract_id") int contractId, @RequestParam("paymentForm") int paymentFormId, @RequestParam("invoiceType") int invoiceTypeId, @RequestParam(value="date", required = false)String date,  @RequestParam(value="dateSold", required = false)String dateSold) {
         Invoice invoice = invoiceController.addNew(contractsController.findOne(contractId),paymentFormId, invoiceTypeId);
         contractsController.findOne(contractId).setInvoice(invoice);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
+
         if(date != "") {
             System.out.println(date);
-            SimpleDateFormat sdf = new SimpleDateFormat("M/dd/yyyy");
             try {
                 Date d = sdf.parse(date);
                 invoice.setPaymentDeadline(d);
             } catch (ParseException e) {
                 e.printStackTrace();
             }
+        }
+        if(dateSold != null)
+        try {
+            Date ds = sdf.parse(dateSold);
+            invoice.setPaymentDeadline(ds);
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
         contractsController.edit(contractsController.findOne(contractId));
         return "redirect:/contracts";
