@@ -68,7 +68,6 @@ public class ContractWebController extends BaseWebController{
             }
             model.addAttribute("disabledButtons", 1);
         }
-        refreshMenuPrivileges(model);
         return "invoice_generate";
     }
 
@@ -138,6 +137,7 @@ public class ContractWebController extends BaseWebController{
         contract = null;
         model.addAttribute("contracts", contractsController.findAllContracts());
         model.addAttribute("carView",0);
+        refreshMenuPrivileges(model);
         return "contracts";
     }
 
