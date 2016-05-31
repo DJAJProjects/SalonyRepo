@@ -42,7 +42,7 @@ public class MainController {
             model.addAttribute("workersVisible", privilegesController.getReadPriv("Pracownicy", Data.user));
             model.addAttribute("showroomsVisible", privilegesController.getReadPriv("Salony", Data.user));
             model.addAttribute("contractsVisible", privilegesController.getReadPriv("Sprzedaże", Data.user));
-            model.addAttribute("clientsVisible", privilegesController.getReadPriv("Klienci", Data.user));
+            model.addAttribute("contractorsVisible", privilegesController.getReadPriv("Klienci", Data.user));
             model.addAttribute("invoicesVisible", privilegesController.getReadPriv("Faktury", Data.user));
             model.addAttribute("reportsVisible", privilegesController.getReadPriv("Raporty", Data.user));
             model.addAttribute("accessoriesVisible", privilegesController.getReadPriv("Akcesoria", Data.user));
@@ -50,6 +50,7 @@ public class MainController {
             model.addAttribute("servicesVisible", privilegesController.getReadPriv("Serwisy", Data.user));
             model.addAttribute("dictionaryVisible", privilegesController.getReadPriv("Słownik", Data.user));
             model.addAttribute("privilegesVisible", privilegesController.getReadPriv("Uprawnienia", Data.user));
+            model.addAttribute("carsVisible", privilegesController.getReadPriv("Samochody", Data.user));
 
             return "menu";
         }
