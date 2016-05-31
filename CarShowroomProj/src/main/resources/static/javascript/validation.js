@@ -28,4 +28,11 @@ function loadStartDate() {
     alert(startDate);
     document.getElementById('date2').min = startDate;
 }
+
+function disableShowroom(){
+    var value = document.menuForm.position.option[document.menuForm.position.selectedIndex].value;
+    if(value == "Dyrektor"){
+    document.write("JUHU lalala");
+    }
+}
 //]]>

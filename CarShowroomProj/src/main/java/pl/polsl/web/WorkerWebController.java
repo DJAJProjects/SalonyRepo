@@ -11,9 +11,12 @@ import pl.polsl.ViewMode;
 import pl.polsl.controller.DictionaryController;
 import pl.polsl.controller.ShowroomsController;
 import pl.polsl.controller.WorkersController;
+import pl.polsl.model.Dictionary;
 import pl.polsl.model.Worker;
 
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Dominika Błasiak on 09.04.2016.
@@ -52,7 +55,9 @@ public class WorkerWebController {
         model.addAttribute("controlsDisabled", false);
         model.addAttribute("worker", worker);
         model.addAttribute("workers", workersController.findAll());
-        model.addAttribute("positions", dictionaryController.findAllPositions());
+        List<Dictionary> positions = dictionaryController.findAllPositions();
+        positions.remove(0);
+        model.addAttribute("positions", positions);
         model.addAttribute("showrooms", showroomsController.findAll());
         model.addAttribute("controlsLoginVisible", true);
         model.addAttribute("controlsPasswordVisible", true);
@@ -89,9 +94,12 @@ public class WorkerWebController {
             model.addAttribute("showroomId", worker.getShowroom().getId());
 //        else
 //            model.addAttribute("showroomId", worker.getShowroom().getId());
+
         model.addAttribute("worker", worker);
         model.addAttribute("workers", workersController.findAll());
-        model.addAttribute("positions", dictionaryController.findAllPositions());
+        List<Dictionary> positions = dictionaryController.findAllPositions();
+        positions.remove(0);
+        model.addAttribute("positions", positions);
         model.addAttribute("showrooms", showroomsController.findAll());
         model.addAttribute("controlsLoginVisible", false);
         model.addAttribute("controlsPasswordVisible", false);

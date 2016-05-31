@@ -17,13 +17,12 @@
     <script src="http://eyecon.ro/bootstrap-datepicker/js/bootstrap-datepicker.js"
             th:src="@{/bootstrap/js/bootstrap-datepicker.js}"></script>
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css"/>
+    <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css"/>-->
     <!-- Ionicons -->
-    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css"/>
-    <!-- Select2 -->
-    <link rel="stylesheet" href="../../select2/select2.min.css" th:href="@{/select2/select2.min.css}"/>
+    <!--<link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css"/>-->
 
     <link rel="stylesheet" type="text/css" href="../static/styles/style.css" th:href="@{/../styles/style.css}"/>
+    <link rel="stylesheet" type="text/css" href="../static/styles/bootstrap_style.css" th:href="@{/../styles/bootstrap_style.css}"/>
     <script type="text/javascript" src="../static/javascript/validation.js" th:src="@{/../javascript/validation.js}"></script>
     <script type="text/javascript" src="../static/jquery/jquery.tablesorter.min.js"  th:src="@{/../jquery/jquery.tablesorter.min.js}"></script>
     <script>
@@ -61,40 +60,28 @@
     });</script>
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
-<header layout:fragment="content" id="nav-menu" style="padding-top: 20px;">
-    <nav style="margin: 0 auto; max-width: 1000px" >
-        <ul class="nav nav-pills">
-            <li role="presentation" ><a href="showroom.html" th:href="@{/showroom}">Salony</a></li>
-            <li role="presentation" ><a href="worker.html" th:href="@{/worker}">Pracownicy</a></li>
-            <li role="presentation" ><a href="contracts.html" th:href="@{/contracts}">Sprzedaże</a></li>
-            <li role="presentation" ><a href="contractors.html" th:href="@{/contractors}">Klienci</a></li>
-            <li role="presentation" ><a href="invoices.html" th:href="@{/invoices}">Faktury</a> </li>
-            <li role="presentation" ><a href="cars.html" th:href="@{/cars}">Samochody</a> </li>
-            <li role="presentation" ><a href="reports.html" th:href="@{/reports}">Raporty</a> </li>
-            <li role="presentation" ><a href="accessories.html" th:href="@{/accessories}">Akcesoria</a> </li>
-            <li role="presentation" ><a href="promotions.html" th:href="@{/promotions}">Promocje</a> </li>
-            <li role="presentation" ><a href="services.html" th:href="@{/services}">Serwis</a> </li>
-            <li role="presentation" ><a href="dictionary.html" th:href="@{/dictionary}">Słownik</a> </li>
-            <li role="presentation" ><a href="privileges.html" th:href="@{/privileges}">Grupy uprawnień</a> </li>
+<header layout:fragment="content" id="nav-menu" >
+    <nav >
+        <ul style="margin: 0 auto;  max-width:1260px;">
+            <a href="showroom.html" th:href="@{/showroom}"><li role="presentation" >SALONY</li></a>
+            <a href="worker.html" th:href="@{/worker}"><li role="presentation" >PRACOWNICY</li></a>
+            <a href="contracts.html" th:href="@{/contracts}"><li role="presentation" >SPRZEDAŻE</li></a>
+            <a href="contractors.html" th:href="@{/contractors}"><li role="presentation" >Klienci</li></a>
+            <a href="invoices.html" th:href="@{/invoices}"><li role="presentation" >Faktury</li></a>
+            <a href="cars.html" th:href="@{/cars}"><li role="presentation" >Samochody</li></a>
+            <a href="reports.html" th:href="@{/reports}"><li role="presentation" >Raporty</li></a>
+            <a href="accessories.html" th:href="@{/accessories}"><li role="presentation" >Akcesoria</li></a>
+            <a href="promotions.html" th:href="@{/promotions}"><li role="presentation" >Promocje</li></a>
+            <a href="services.html" th:href="@{/services}"><li role="presentation" >Serwis</li></a>
+            <a href="dictionary.html" th:href="@{/dictionary}"><li role="presentation" >Słownik</li></a>
+            <a href="privileges.html" th:href="@{/privileges}"><li role="presentation" >Uprawnienia</li></a>
         </ul>
+        <div class="my-block"></div>
+        <hr/>
     </nav>
-    <hr/>
+    <div class="empty"></div>
 </header>
-<!--<nav class="menuIndex">-->
-    <!--<ul >-->
-        <!--<li role="presentation" style="background-image: url(/image/png/calendar.png);" ><a th:href="@{/showroom}">Salony</a></li>-->
-        <!--<li role="presentation" ><a th:href="@{/worker}">Pracownicy</a></li>-->
-        <!--<li role="presentation" ><a th:href="@{/contracts}">Sprzedaże</a></li>-->
-        <!--<li role="presentation" ><a th:href="@{/contractors}">Klienci</a></li>-->
-        <!--<li role="presentation" ><a th:href="@{/invoices}">Faktury</a> </li>-->
-        <!--<li role="presentation" ><a th:href="@{/cars}">Samochody</a> </li>-->
-        <!--<li role="presentation" ><a th:href="@{/reports}">Raporty</a> </li>-->
-        <!--<li role="presentation" ><a th:href="@{/accessories}">Akcesoria</a> </li>-->
-        <!--<li role="presentation" ><a th:href="@{/promotions}">Promocje</a> </li>-->
-        <!--<li role="presentation" ><a th:href="@{/services}">Serwis</a> </li>-->
-        <!--<li role="presentation" ><a th:href="@{/dictionary}">Słownik</a> </li>-->
-    <!--</ul>-->
-<!--</nav>-->
+
 <div layout:fragment="main">
 
 </div>

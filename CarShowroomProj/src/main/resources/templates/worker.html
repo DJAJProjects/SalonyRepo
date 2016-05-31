@@ -5,17 +5,18 @@
     <!-- Bootstrap -->
     <link href="../static/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
     <link rel="stylesheet" type="text/css" href="../static/styles/style.css" th:href="@{/../styles/style.css}"/>
+    <link rel="stylesheet" type="text/css" href="../static/styles/bootstrap_style.css" th:href="@{/../styles/bootstrap_style.css}"/>
     <meta charset="UTF-8"/>
 </head>
 <body>
 <div layout:fragment="main" style="margin: 0 auto; max-width: 1000px;">
     <div class="btn-group" role="group" aria-label="..." style="margin: 20px 0;">
-        <button type="button" class="btn btn-default"><a th:href="@{/addWorker}+'#anch'">Dodaj pracownika</a></button>
+        <a th:href="@{/addWorker}+'#anch'"><button type="button" class="btn ">Dodaj pracownika</button></a>
     </div>
     <div>
-        <div class="panel panel-default">
+        <div class="panel">
             <!-- Default panel contents -->
-            <div class="panel-heading panel-heading-34">LISTA PRACOWNIKÓW
+            <div class="panel-heading"><b>LISTA PRACOWNIKÓW</b>
                 <div class="form-group pull-right">
                     <input type="text" class="search form-control" placeholder="Wyszukaj w tabeli"/>
                 </div>
@@ -38,7 +39,7 @@
                        <td class="col-md-1 center-item">Podgląd</td>
                    </tr>
                    <tr class="warning no-result">
-                       <td colspan="8"><i class="fa fa-warning"></i> No result</td>
+                       <td colspan="8"><i class="fa fa-warning"></i> Brak wyników</td>
                    </tr>
                </thead>
                 <tbody>
@@ -74,65 +75,65 @@
     <!--Add worker-->
     <a name="anch"></a>
     <!--Edit worker-->
-    <form th:if="${controlsPanelVisible}" class="form-horizontal" role="form" method="post" action="/acceptModifyWorker" th:object="${worker}">
+    <form th:if="${controlsPanelVisible}" id="menuForm"  name="menuForm" class="form-horizontal" role="form" method="post" action="/acceptModifyWorker" th:object="${worker}">
         <input type="hidden" style="display: none;" name="id" th:field="*{id}"/>
         <div class="form-group">
-            <label class="control-label col-sm-2">Imię:</label>
-            <div class="col-sm-10">
-                <input   th:disabled="${controlsDisabled}" th:field="*{name}" name="name" type="text" class="form-control" placeholder="Wprowadź imię" required="required"/>
+            <label class="control-label col-sm-offset-2 col-sm-2">Imię:</label>
+            <div class="col-sm-4">
+                <input th:disabled="${controlsDisabled}" th:field="*{name}" name="name" type="text" class="form-control" placeholder="Wprowadź imię" required="required"/>
             </div>
         </div>
         <div class="form-group">
-            <label class="control-label col-sm-2">Nazwisko:</label>
-            <div class="col-sm-10">
+            <label class="control-label col-sm-offset-2 col-sm-2">Nazwisko:</label>
+            <div class="col-sm-4">
                 <input  th:disabled="${controlsDisabled}" th:field="*{surname}" name="surname" type="text" class="form-control" placeholder="Wprowadź nazwisko" required="required"/>
             </div>
         </div>
         <div class="form-group">
-            <label class="control-label col-sm-2">Płaca:</label>
-            <div class="col-sm-10">
+            <label class="control-label col-sm-offset-2 col-sm-2">Płaca:</label>
+            <div class="col-sm-4">
                 <input  th:disabled="${controlsDisabled}" th:field="*{payment}" name="payment" type="number" min="0" class="form-control" placeholder="Wprowadź kwotę"/>
             </div>
         </div>
         <div class="form-group">
-            <label class="control-label col-sm-2">Data przyjęcia:</label>
-            <div class="col-sm-10">
+            <label class="control-label col-sm-offset-2 col-sm-2">Data przyjęcia:</label>
+            <div class="col-sm-4">
                 <!--PAMIETAJ O DODANIU SPR AKTUALNEJ DATY-->
                 <input  id="date" onfocus="loadCurrentDate('max');" th:disabled="${controlsDisabled}" th:field="*{dateHired}" name="dateHired" type="date" class="form-control" min="1970-01-01" required="required"/>
             </div>
         </div>
         <div class="form-group">
-            <label class="control-label col-sm-2">Pozycja:</label>
-            <div class="col-sm-10">
-                <select  th:disabled="${controlsDisabled}" name="position" class="form-control" aria-label="..." required="required">
+            <label class="control-label col-sm-offset-2 col-sm-2">Pozycja:</label>
+            <div class="col-sm-4">
+                <select  th:disabled="${controlsDisabled}" onchange="disableShowroom()" id ="position" name="position" class="form-control" aria-label="..." required="required">
                     <option value="" text="Wybierz pozycję"></option>
-                    <option  th:each="p : ${positions}" th:value="${p.id}" th:text="${p.value}" th:selected="${p.id}==${positionId}"></option>
+                    <option  th:each="p : ${positions}" th:value="${p.id}" th:text="${p.value}" value ="Dyrektor" th:selected="${p.id}==${positionId}"></option>
                 </select>
             </div>
         </div>
         <div class="form-group">
-            <label class="control-label col-sm-2">Salon:</label>
-            <div class="col-sm-10">
-                <select  th:disabled="${controlsDisabled}" name="showroom" class="form-control" aria-label="...">
+            <label class="control-label col-sm-offset-2 col-sm-2">Salon:</label>
+            <div class="col-sm-4">
+                <select  th:disabled="${controlsDisabled}" name="showroom" id="showroom" class="form-control" aria-label="...">
                     <option th:value="-1" text="Wybierz salon"></option>
                     <option th:each="s : ${showrooms}" th:value="${s.id}" th:text="${s.name}" th:selected="${s.id}==${showroomId}"></option>
                 </select>
             </div>
         </div>
         <div  th:if="${controlsLoginVisible}" class="form-group">
-            <label class="control-label col-sm-2">Login:</label>
-            <div class="col-sm-10">
+            <label class="control-label col-sm-offset-2 col-sm-2">Login:</label>
+            <div class="col-sm-4">
                 <input th:disabled="${controlsDisabled}" th:field="*{login}" name="login" type="text" class="form-control" placeholder="Wprowadź login" required="required"/>
             </div>
         </div>
         <div th:if="${controlsPasswordVisible}" class="form-group">
-            <label class="control-label col-sm-2">Hasło:</label>
-            <div class="col-sm-10">
+            <label class="control-label col-sm-offset-2 col-sm-2">Hasło:</label>
+            <div class="col-sm-4">
                 <input  th:disabled="${controlsDisabled}" th:field="*{password}" name="password" type="password" class="form-control" placeholder="Wprowadź hasło" required="required"/>
             </div>
         </div>
         <div class="form-group">
-            <div class="col-sm-offset-2 col-sm-10">
+            <div class="col-sm-offset-4 col-sm-10">
                 <button onclick="validateActualDate()" type="submit" th:disabled="${controlsDisabled}" class="btn btn-default" >Akceptuj</button>
                 <button type="reset" th:disabled="${controlsDisabled}" class="btn btn-default">Anuluj zmiany</button>
             </div>
