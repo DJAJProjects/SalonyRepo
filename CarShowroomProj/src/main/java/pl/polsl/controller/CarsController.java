@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import pl.polsl.Data;
-import pl.polsl.model.Accessory;
 import pl.polsl.model.Car;
 import pl.polsl.model.Contract;
 import pl.polsl.model.Report;
@@ -61,9 +60,9 @@ public class CarsController {
         carsRepository.delete(id);
     }
 
-    public Car addCar(int name, Date dateProd, int showroom, int cost, int order, Contract contract,Set<Accessory> accessoryList) {
+    public Car addCar(int name, Date dateProd, int showroom, int cost, int order, Contract contract) {
         return carsRepository.save(new Car(dictionaryRepository.findOne(name),dateProd,
-                showroomsRepository.findOne(showroom),cost, order, contract,accessoryList));
+                showroomsRepository.findOne(showroom),cost, order, contract));
     }
 
     public Car editCar(int id, int idName, Date prodDate, int showroom, int cost, int order) {
@@ -74,6 +73,7 @@ public class CarsController {
         car.setShowroom(showroomsRepository.findOne(showroom));
         car.setCost(cost);
         car.setOrdered(order);
+        //      car.setContract();        //??????????????????????? przypisuje przy sprzedazach
         return carsRepository.save(car);
     }
 
