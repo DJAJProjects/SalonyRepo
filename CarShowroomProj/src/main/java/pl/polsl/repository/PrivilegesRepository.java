@@ -43,4 +43,12 @@ import java.util.List;
             " AND wp.privileges.module.value = :moduleName")
     public List<WorkersPrivileges> getDeletePriv(@Param("moduleName")String moduleName,
                                                  @Param("worker")Worker worker);
+
+    @Query(value = "SELECT wp " +
+            " FROM WorkersPrivileges wp" +
+            " WHERE wp.privileges.readPriv = true" +
+            " AND wp.worker = :worker " +
+            " AND wp.privileges.module.value = :moduleName")
+    public List<WorkersPrivileges> getReadPriv(@Param("moduleName")String moduleName,
+                                                 @Param("worker")Worker worker);
 }

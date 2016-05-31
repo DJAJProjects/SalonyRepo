@@ -1,6 +1,7 @@
 package pl.polsl.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -18,6 +19,17 @@ public class Privileges {
     private Boolean insertPriv;
     private Boolean deletePriv;
     private Boolean updatePriv;
+
+    public Privileges(){};
+
+    public Privileges(String name, Dictionary module, boolean readPriv, boolean insertPriv, boolean deletePriv, boolean updatePriv){
+        this.name = name;
+        this.module = module;
+        this.readPriv = readPriv;
+        this.insertPriv = insertPriv;
+        this.deletePriv = deletePriv;
+        this.updatePriv = updatePriv;
+    }
 
 
     @Id

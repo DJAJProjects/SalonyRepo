@@ -11,6 +11,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import java.sql.Date;
 import java.util.List;
 
 /**
@@ -21,6 +22,10 @@ import java.util.List;
 @Produces(MediaType.APPLICATION_JSON)
 
 public class PrivilegesController {
+
+    @Autowired
+    private DictionaryController dictionaryController;
+
     @Autowired
     private PrivilegesRepository privilegesRepository;
 
@@ -36,6 +41,24 @@ public class PrivilegesController {
     public Privileges findOne(int id){
         return privilegesRepository.findOne(id);}
 
+    public Privileges addPrivilege(String name, int module, boolean read,
+                                boolean insert, boolean update, boolean delete) {
+        return privilegesRepository.save(new Privileges(name,dictionaryController.findOne(module),
+                                                        read, insert, update, delete));
+    }
+
+    public Privileges updatePrivilege(int id, String name, int module, boolean read,
+                                   boolean insert, boolean update, boolean delete) {
+        Privileges priv = privilegesRepository.findOne(id);
+        priv.setName(name);
+        priv.setModule(dictionaryController.findOne(module));
+        priv.setReadPriv(read);
+        priv.setInsertPriv(insert);
+        priv.setUpdatePriv(update);
+        priv.setDeletePriv(delete);
+        return privilegesRepository.save(priv);
+    }
+
     public boolean getInsertPriv(String moduleName, Worker worker){
         List<WorkersPrivileges> result = privilegesRepository.getInsertPriv(moduleName, worker);
         if(result == null || result.size() == 0) return false;
@@ -50,6 +73,12 @@ public class PrivilegesController {
 
     public boolean getUpdatePriv(String moduleName, Worker worker){
         List<WorkersPrivileges> result = privilegesRepository.getUpdatePriv(moduleName, worker);
+        if(result == null || result.size() == 0) return false;
+        else return true;
+    }
+
+    public boolean getReadPriv(String moduleName, Worker worker){
+        List<WorkersPrivileges> result = privilegesRepository.getReadPriv(moduleName, worker);
         if(result == null || result.size() == 0) return false;
         else return true;
     }

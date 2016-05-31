@@ -89,22 +89,21 @@ public class PrivilegesWebController {
     @RequestMapping(value ="/acceptModifyPrivileges", method = RequestMethod.POST)
     public String acceptModifyContractor(@RequestParam("id") int id,
                                          @RequestParam(value = "name") String name,
-                                         @RequestParam(value = "description") String description,
                                          @RequestParam(value = "module") int module,
                                          @RequestParam(value = "read") boolean read,
-                                         @RequestParam(value = "insert") String insert,
-                                         @RequestParam(value = "update") int update,
-                                         @RequestParam(value = "delete") int delete){
+                                         @RequestParam(value = "insert") boolean insert,
+                                         @RequestParam(value = "update") boolean update,
+                                         @RequestParam(value = "delete") boolean delete){
 
         //String name  = privileges.getName();
 
         if(viewMode == ViewMode.INSERT){
-           // Privileges privileges = privilegesController.addPrivilege(name,surname,pesel,nip,
-             //                                                           regon,city,country, street);
+            Privileges privileges = privilegesController.addPrivilege(name,module,read,
+                    insert,update,delete);
         }
         else if(viewMode == ViewMode.EDIT){
-           // Privileges privileges = privilegesController.updatePrivilege( id,name,surname,pesel,nip,
-             //                                                           regon,city,country,street);
+            Privileges privileges = privilegesController.updatePrivilege( id,name,module,read,
+                    insert,update,delete);
         }
         return "redirect:/privileges/";
     }

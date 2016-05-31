@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import pl.polsl.Data;
 import pl.polsl.controller.DictionaryController;
+import pl.polsl.controller.PrivilegesController;
 import pl.polsl.controller.WorkersController;
 
 
@@ -19,6 +20,9 @@ public class MainController {
 
     @Autowired
     DictionaryController dictionaryController;
+
+    @Autowired
+    PrivilegesController privilegesController;
 
     @RequestMapping(value = "/")
     public String home(Model model){
@@ -35,6 +39,18 @@ public class MainController {
     public String signIn(Model model, @RequestParam(value = "login")String login, @RequestParam(value = "password")String password){
         Data.user = workersController.findOne(login,password);
         if(Data.user!=null){
+            model.addAttribute("workersVisible", privilegesController.getReadPriv("Pracownicy", Data.user));
+            model.addAttribute("showroomsVisible", privilegesController.getReadPriv("Salony", Data.user));
+            model.addAttribute("contractsVisible", privilegesController.getReadPriv("Sprzedaże", Data.user));
+            model.addAttribute("clientsVisible", privilegesController.getReadPriv("Klienci", Data.user));
+            model.addAttribute("invoicesVisible", privilegesController.getReadPriv("Faktury", Data.user));
+            model.addAttribute("reportsVisible", privilegesController.getReadPriv("Raporty", Data.user));
+            model.addAttribute("accessoriesVisible", privilegesController.getReadPriv("Akcesoria", Data.user));
+            model.addAttribute("promotionsVisible", privilegesController.getReadPriv("Promocje", Data.user));
+            model.addAttribute("servicesVisible", privilegesController.getReadPriv("Serwisy", Data.user));
+            model.addAttribute("dictionaryVisible", privilegesController.getReadPriv("Słownik", Data.user));
+            model.addAttribute("privilegesVisible", privilegesController.getReadPriv("Uprawnienia", Data.user));
+
             return "menu";
         }
         else{
