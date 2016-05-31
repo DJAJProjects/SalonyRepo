@@ -41,6 +41,7 @@ public class ContractorsWebController extends BaseWebController {
         model.addAttribute("insertEnabled", insertEnabled);
         model.addAttribute("updateEnabled", updateEnabled);
         model.addAttribute("deleteEnabled", deleteEnabled);
+        refreshMenuPrivileges(model);
 
         return "contractors";
     }

@@ -21,7 +21,7 @@ import java.sql.Date;
  * Created by Julia on 2016-04-13.
  */
 @Controller
-public class CarsWebController {
+public class CarsWebController extends BaseWebController{
 
     @Autowired
     CarsController carsController;
@@ -38,6 +38,7 @@ public class CarsWebController {
     public String getCars(Model model) {
         model.addAttribute("cars",carsController.findAllCars());
         model.addAttribute("controlsPanelVisible", false);
+        refreshMenuPrivileges(model);
         return "cars";
     }
 

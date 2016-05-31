@@ -15,7 +15,7 @@ import pl.polsl.model.Dictionary;
  * Created by Dominika Błasiak on 02.05.2016.
  */
 @Controller
-public class DictionaryWebController {
+public class DictionaryWebController extends BaseWebController{
     private ViewMode viewMode;
     @Autowired
     private DictionaryController dictionaryController;
@@ -24,6 +24,7 @@ public class DictionaryWebController {
     public String getDictionaries(Model model){
         model.addAttribute("dictionaries", dictionaryController.findAll());
         model.addAttribute("controlsPanelVisible", false);
+        refreshMenuPrivileges(model);
         return "dictionary";
     }
 

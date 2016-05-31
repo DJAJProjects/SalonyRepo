@@ -16,7 +16,7 @@ import pl.polsl.model.Accessory;
  * Created by Julia on 2016-04-28.
  */
 @Controller
-public class AccessoriesWebController {
+public class AccessoriesWebController extends  BaseWebController {
 
     @Autowired
     AccessoriesController accessoriesController;
@@ -30,6 +30,7 @@ public class AccessoriesWebController {
         viewMode = ViewMode.DEFAULT;
         model.addAttribute("accessories",accessoriesController.findAll());
         model.addAttribute("controlsPanelVisible", false);
+        refreshMenuPrivileges(model);
         return "accessories";
     }
 

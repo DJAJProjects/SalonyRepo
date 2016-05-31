@@ -68,6 +68,7 @@ public class ContractWebController extends BaseWebController{
             }
             model.addAttribute("disabledButtons", 1);
         }
+        refreshMenuPrivileges(model);
         return "invoice_generate";
     }
 

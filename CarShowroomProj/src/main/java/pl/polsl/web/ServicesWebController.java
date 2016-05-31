@@ -18,7 +18,7 @@ import java.sql.Date;
  * Created by Julia on 2016-04-28.
  */
 @Controller
-public class ServicesWebController {
+public class ServicesWebController extends BaseWebController {
 
     @Autowired
     ServicesController servicesController;
@@ -37,6 +37,7 @@ public class ServicesWebController {
     public String getServices(Model model) {
         model.addAttribute("services",servicesController.findAll());
         model.addAttribute("controlsPanelVisible", false);
+        refreshMenuPrivileges(model);
         return "services";
     }
 

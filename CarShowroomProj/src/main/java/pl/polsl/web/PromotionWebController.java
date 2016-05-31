@@ -18,7 +18,7 @@ import java.sql.Date;
  * Created by Julia on 2016-04-28.
  */
 @Controller
-public class PromotionWebController {
+public class PromotionWebController extends BaseWebController {
 
     @Autowired
     PromotionsController promotionsController;
@@ -29,6 +29,7 @@ public class PromotionWebController {
     public String getAccessories(Model model) {
         model.addAttribute("promotions",promotionsController.findAll());
         model.addAttribute("controlsPanelVisible", false);
+        refreshMenuPrivileges(model);
         return "promotions";
     }
 

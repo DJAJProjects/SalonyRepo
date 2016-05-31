@@ -21,7 +21,7 @@ import java.io.Console;
  * Created by Kuba on 08.04.2016.
  */
 @Controller
-public class PrivilegesWebController {
+public class PrivilegesWebController extends BaseWebController{
 
     private ViewMode viewMode;
 
@@ -37,6 +37,7 @@ public class PrivilegesWebController {
 
         model.addAttribute("privilegesGroups", privilegesController.findAll());
         model.addAttribute("controlsPanelVisible", false);
+        refreshMenuPrivileges(model);
         return "privileges";
     }
 

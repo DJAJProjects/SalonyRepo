@@ -16,7 +16,7 @@ import pl.polsl.controller.WorkersController;
  * Created by Dominika Błasiak on 2016-04-09.
  */
 @Controller
-public class MainController {
+public class MainController extends BaseWebController {
 
     @Autowired
     DictionaryController dictionaryController;
@@ -39,18 +39,7 @@ public class MainController {
     public String signIn(Model model, @RequestParam(value = "login")String login, @RequestParam(value = "password")String password){
         Data.user = workersController.findOne(login,password);
         if(Data.user!=null){
-            model.addAttribute("workersVisible", privilegesController.getReadPriv("Pracownicy", Data.user));
-            model.addAttribute("showroomsVisible", privilegesController.getReadPriv("Salony", Data.user));
-            model.addAttribute("contractsVisible", privilegesController.getReadPriv("Sprzedaże", Data.user));
-            model.addAttribute("contractorsVisible", privilegesController.getReadPriv("Klienci", Data.user));
-            model.addAttribute("invoicesVisible", privilegesController.getReadPriv("Faktury", Data.user));
-            model.addAttribute("reportsVisible", privilegesController.getReadPriv("Raporty", Data.user));
-            model.addAttribute("accessoriesVisible", privilegesController.getReadPriv("Akcesoria", Data.user));
-            model.addAttribute("promotionsVisible", privilegesController.getReadPriv("Promocje", Data.user));
-            model.addAttribute("servicesVisible", privilegesController.getReadPriv("Serwisy", Data.user));
-            model.addAttribute("dictionaryVisible", privilegesController.getReadPriv("Słownik", Data.user));
-            model.addAttribute("privilegesVisible", privilegesController.getReadPriv("Uprawnienia", Data.user));
-            model.addAttribute("carsVisible", privilegesController.getReadPriv("Samochody", Data.user));
+            refreshMenuPrivileges(model);
 
             return "menu";
         }

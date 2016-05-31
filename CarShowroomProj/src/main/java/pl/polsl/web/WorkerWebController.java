@@ -22,7 +22,7 @@ import java.util.List;
  * Created by Dominika Błasiak on 09.04.2016.
  */
 @Controller
-public class WorkerWebController {
+public class WorkerWebController extends  BaseWebController {
 
     private ViewMode viewMode;
     private boolean showLogin = false;
@@ -38,6 +38,7 @@ public class WorkerWebController {
     @RequestMapping(value ="/worker")
     public String getWorkers(Model model){
         model.addAttribute("workers", workersController.findAll());
+        refreshMenuPrivileges(model);
         return "worker";
     }
 

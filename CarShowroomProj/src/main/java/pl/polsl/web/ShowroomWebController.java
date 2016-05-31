@@ -20,7 +20,7 @@ import java.util.List;
  * Created by Dominika Błasiak on 08.04.2016.
  */
 @Controller
-public class ShowroomWebController {
+public class ShowroomWebController extends  BaseWebController {
     private ViewMode viewMode;
 
     @Autowired
@@ -35,6 +35,7 @@ public class ShowroomWebController {
     public String getShowrooms(Model model){
         model.addAttribute("showrooms", showroomsController.findAll());
         model.addAttribute("controlsPanelVisible", false);
+        refreshMenuPrivileges(model);
         return "showroom";
     }
 

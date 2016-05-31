@@ -17,7 +17,7 @@ import java.sql.Date;
  * Created by Kuba on 20.04.2016.
  */
 @Controller
-public class ReportsWebController {
+public class ReportsWebController extends BaseWebController {
 
     private ViewMode viewMode;
 
@@ -30,6 +30,7 @@ public class ReportsWebController {
     @RequestMapping(value ="/reports")
     public String getReports(Model model){
         model.addAttribute("reports", reportsController.findAllRaports());
+        refreshMenuPrivileges(model);
         return "reports";
     }
 

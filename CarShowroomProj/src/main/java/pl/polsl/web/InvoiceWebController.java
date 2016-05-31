@@ -17,7 +17,7 @@ import java.io.Console;
  * Created by Julia on 2016-04-12.
  */
 @Controller
-public class InvoiceWebController {
+public class InvoiceWebController extends  BaseWebController{
 
     @Autowired
     private InvoiceController invoiceController;
@@ -26,6 +26,7 @@ public class InvoiceWebController {
     @RequestMapping(value = "/invoices", method = RequestMethod.GET)
     public String getInvoices(Model model) {
         model.addAttribute("invoices",invoiceController.findAll());
+        refreshMenuPrivileges(model);
         return "invoices";
     }
 
