@@ -42,7 +42,8 @@ public class Contract {
         this.worker = worker;
     }
 
-    @OneToOne
+    @JsonIgnore
+    @OneToOne()
     @JoinColumn(name = "id_invoice")
     public Invoice getInvoice() {
         return invoice;

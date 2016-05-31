@@ -105,4 +105,13 @@ public class ContractsController {
         return updateContract(contract, carList, accessoryList, promotionList, contractor);
     }
 
+    public Contract makeTemporaryContract(Set<Car>carList,Set<Promotion>promotionList, Set<Accessory>accessoryList) {
+        Contract contract = new Contract();
+        contract.setId(findAllContracts().size() + 1);
+        contract.setCarList(carList);
+        contract.setAccessoryList(accessoryList);
+        contract.setPromotions(promotionList);
+        return contract;
+    }
+
 }

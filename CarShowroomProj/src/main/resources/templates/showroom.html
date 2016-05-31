@@ -6,13 +6,12 @@
 <body>
 <div layout:fragment="main" style="margin: 0 auto; max-width: 1000px;">
     <div class="btn-group" role="group" aria-label="..." style="margin: 20px 0;">
-        <button type="button" class="btn btn-default"><a th:href="@{/addShowroom#anch}">Dodaj salon</a></button>
+        <a th:href="@{/addShowroom#anch}"><button type="button" class="btn ">Dodaj salon</button></a>
     </div>
     <div>
-        <div class="panel panel-default">
+        <div class="panel">
             <!-- Default panel contents -->
-            <div class="panel-heading module-title">Lista salonów</div>
-
+            <div class="panel-heading">Lista salonów</div>
             <!-- Table -->
             <table class="table">
                 <!-- head row -->
@@ -89,8 +88,8 @@
         </div>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
-                <button type="submit" th:disabled="${controlsDisabled}" class="btn btn-default" >Akceptuj</button>
-                <button type="reset" th:disabled="${controlsDisabled}" class="btn btn-default">Anuluj zmiany</button>
+                <button type="submit" th:disabled="${controlsDisabled}" class="btn" >Akceptuj</button>
+                <button type="reset" th:disabled="${controlsDisabled}" class="btn">Anuluj zmiany</button>
             </div>
         </div>
     </form>

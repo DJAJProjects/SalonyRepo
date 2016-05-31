@@ -1,5 +1,7 @@
 package pl.polsl.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.Set;
 
@@ -71,6 +73,7 @@ public class Dictionary {
         this.value2 = value2;
     }
 
+    @JsonIgnore
     @OneToMany (mappedBy="country")
     public Set<Showroom> getCountry() {
         return country;

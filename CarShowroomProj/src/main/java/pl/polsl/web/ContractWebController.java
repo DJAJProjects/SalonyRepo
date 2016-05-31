@@ -21,7 +21,7 @@ import java.util.*;
  * Created by Aleksandra on 2016-04-07.
  */
 @Controller
-public class ContractWebController {
+public class ContractWebController extends BaseWebController{
     @Autowired
     private ContractsController contractsController;
     @Autowired
@@ -39,8 +39,10 @@ public class ContractWebController {
     private Set<Car> carList = new LinkedHashSet<Car>();
     private Set<Accessory> accessoryList = new LinkedHashSet<Accessory>();
     private Set<Promotion>promotionList = new LinkedHashSet<Promotion>();
-    private Contract contract;
     private ViewMode viewMode;
+
+    public static Contract contract;
+
 
     /**
      * INVOICE MAIN VIEW
@@ -59,7 +61,10 @@ public class ContractWebController {
             model.addAttribute("paymentForm", invoice.getPaymentForm());
             model.addAttribute("invoiceType", invoice.getInvoiceType());
             if(invoice.getPaymentDeadline()!=null){
-                model.addAttribute("paymentDeadline", invoice.getPaymentDeadline().toString());
+                model.addAttribute("paymentDeadline", invoice.getPaymentDeadline());
+            }
+            if(invoice.getDateSold() !=null) {
+                model.addAttribute("dataSold", invoice.getDateSold());
             }
             model.addAttribute("disabledButtons", 1);
         }
@@ -71,18 +76,26 @@ public class ContractWebController {
      *
      */
     @RequestMapping(value ="/generateNew", method = RequestMethod.POST)
-    public String newInvoice(RedirectAttributes redirectAttributes, @RequestParam("contract_id") int contractId, @RequestParam("paymentForm") int paymentFormId, @RequestParam("invoiceType") int invoiceTypeId, @RequestParam(value="date", required = false)String date) {
+    public String newInvoice(RedirectAttributes redirectAttributes, @RequestParam("contract_id") int contractId, @RequestParam("paymentForm") int paymentFormId, @RequestParam("invoiceType") int invoiceTypeId, @RequestParam(value="date", required = false)String date,  @RequestParam(value="dateSold", required = false)String dateSold) {
         Invoice invoice = invoiceController.addNew(contractsController.findOne(contractId),paymentFormId, invoiceTypeId);
         contractsController.findOne(contractId).setInvoice(invoice);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
+
         if(date != "") {
             System.out.println(date);
-            SimpleDateFormat sdf = new SimpleDateFormat("M/dd/yyyy");
             try {
                 Date d = sdf.parse(date);
                 invoice.setPaymentDeadline(d);
             } catch (ParseException e) {
                 e.printStackTrace();
             }
+        }
+        if(dateSold != null)
+        try {
+            Date ds = sdf.parse(dateSold);
+            invoice.setPaymentDeadline(ds);
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
         contractsController.edit(contractsController.findOne(contractId));
         return "redirect:/contracts";
@@ -121,13 +134,9 @@ public class ContractWebController {
     @RequestMapping(value ="/contracts", method = RequestMethod.GET)
     public String all(Model model){
         viewMode = ViewMode.DEFAULT;
-//        carList.clear();
-//        accessoryList.clear();
-//        promotionList.clear();
+        contract = null;
         model.addAttribute("contracts", contractsController.findAllContracts());
         model.addAttribute("carView",0);
-//        model.addAttribute("disabledButtons", 0);
-//        model.addAttribute("endingOperation",0);
         return "contracts";
     }
 
@@ -136,16 +145,17 @@ public class ContractWebController {
      *
      */
     @RequestMapping(value = "/contactAdditions", method = RequestMethod.GET)
-    public String addAdditions(Model model, @RequestParam(value="contract", required = false)Contract contractId,  @RequestParam(value="carId", required = false)Integer carId){
+    public String addAdditions(Model model, @RequestParam(value="contract", required = false)Contract contractId,  @RequestParam(value="carId", required = false)Integer orderCarContract){
 
         if(contractId!=null)
             model.addAttribute("contract", contractId);
 
         //ZAMOWIENIA, powrot do sprzedazy z id nowego samochodu
-        if(carId != null) {
-            carList.add(carsController.findOne(carId));
-            viewMode = ViewMode.EDIT;
-            contract = carsController.findOne(carId).getContract();
+        if(orderCarContract != null) {
+            carList.addAll(contract.getCarList());
+            accessoryList.addAll(contract.getAccessoryList());
+            promotionList.addAll(contract.getPromotions());
+            viewMode = ViewMode.INSERT;
         }
 
         model.addAttribute("contracts", contractsController.findAllContracts());
@@ -199,7 +209,6 @@ public class ContractWebController {
     public String displayContract(RedirectAttributes redirectAttributes, @PathVariable("id")int id){
         viewMode = ViewMode.VIEW_ALL;
         this.contract = contractsController.findOne(id);
-        System.out.println("Wchodzi do widoku");
 //        redirectAttributes.addAttribute("contract",contractsController.findOne(id));
         return "redirect:/contactAdditions/";
     }
@@ -255,7 +264,8 @@ public class ContractWebController {
     }
     @RequestMapping(value ="/orderCar", method = RequestMethod.POST)
     public String orderCar(RedirectAttributes redirectAttributes) {
-        redirectAttributes.addAttribute("contract",contractsController.addNew(carList, accessoryList, promotionList, 0).getId());
+        this.contract = contractsController.makeTemporaryContract(carList, promotionList, accessoryList);
+        redirectAttributes.addAttribute("contract",1);
         return "redirect:/addNewCar";
     }
 

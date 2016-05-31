@@ -1,49 +1,58 @@
-.main-view{
-    height: 500px;
-    background-size: cover;
-    background: #ff0000 url(/image/bg.jpg) center center;
-    color:green;
-    /*background: url(../../templates/image/bg.jpg) center center;*/
-}
 #nav-menu{
     box-sizing: border-box;
-    background-color: #000000;
+    width:100%;
+    background-color: #3F5765/*#EFEFEF*/;
+    display: inline-block;
+}
+#nav-menu ul{
+    padding: 20px 0px;
+}
+/* Jasny blok pod menu*/
+.my-block{
+    clear: both;
+    height:10px;
+    width:100%;
+    background-color: #EFEFEF;
 }
 #nav-menu a{
-    color: #ffffff;
-}
-#nav-menu a:hover{
-    color: #CF000F;
-    -webkit-transition: color 1000ms linear;
-    -moz-transition: color 1000ms linear;
-    -o-transition: color 1000ms linear;
-    -ms-transition: color 1000ms linear;
-    background-color: black;
-}
-hr{
-    min-height: 1px;
-    background-color: #CF000F;
-}
-.menuIndex li {
-    display: block;
-    width: 100px;
+    text-align: center;
+    display: inline;
     float: left;
-    background-color: #CF000F;
-    padding-top: 100px;
-    color: #2b542c;
-    margin-right: 15px;
-    background-size: 75% auto;
-    background-repeat: no-repeat;
-    background-position: top center;
-
+    color:#EFEFEF;
+    line-height: 50px;
+    padding: 0px 12px;
+    text-transform: uppercase;
+    list-style: none;
 }
+
+#nav-menu a:hover{
+    color: #FF530D;
+    text-decoration: none;
+    -webkit-transition: color 500ms linear;
+    -moz-transition: color 500ms linear;
+    -o-transition: color 500ms linear;
+    -ms-transition: color 500ms linear;
+    background-color: #EFEFEF;
+}
+
+hr{
+    margin: 0;
+    padding: 0;
+    height: 2px;
+    background-color: #FF530D;
+}
+.btn-group{
+    color: #EFEFEF;
+}
+
 #menuIndex2{
-    margin: 0 auto;
+    margin: 20px auto;
 }
 #menuIndex2 .circle{
     border-radius: 50%;
-    background-color: #BFBFBF;
-    animation: background-color 2s linear infinite;
+    background-color: #3F5765;
+    color:#EFEFEF;
+    animation: background-color 1s linear infinite;
 
 }
 #menuIndex2 img{
@@ -55,74 +64,18 @@ hr{
     text-align: center;
     border: none;
 }
-#menuIndex2 div.thumbnail:hover>.caption{
-    color:#CF000F;
+
+#menuIndex2 div.thumbnail:hover>.caption {
+    color: #FF530D;
 }
 #menuIndex2 div.thumbnail:hover>.circle {
-    background-color: #CF000F;
-    -webkit-transition: background-color 1000ms linear;
-    -moz-transition: background-color 1000ms linear;
-    -o-transition: background-color 1000ms linear;
-    -ms-transition: background-color 1000ms linear;
-    transition: background-color 1000ms linear;
-}
-
-
-/*
-Panel logowania
-*/
-.main-login-view{
-
-    background-size: cover;
-    /*background-color: #ff0000 ;*/
-    background-attachment:fixed;
-    background-image: url(../image/volvo.jpg) ;
-    background-position:  center center;
-    background-repeat: no-repeat;
-    color:#CF000F;
-    /*z-index: -1;*/
-    /*background: url(../../templates/image/bg.jpg) center center;*/
-}
-.main-login-view .form-content{
-    background-color: rgba(255,255,255,0.8);
-    border-radius: 5%;
-    padding:20px;
-    /*z-index: 1;*/
-
-}
-.main-login-view .form-signin{
-    position: absolute;
-    float: right;
-    max-width:300px;
-    bottom: 10%;
-    right: 10%;
-}
-
-.main-login-view h2{
-    margin-top: 0;
-    padding-top: 0;
-    /*box-sizing: content-box;*/
-    text-align: center;
-}
-.main-login-view .btn{
-    background-color: #CF000F;
-}
-.main-login-view br{
-    margin:0;
-    padding: 0;
-    border: 0;
-    height: 5px;
-}
-
-.form-control {
-    border-radius: 0;
-}
-
-.form-control:focus{
-    border-color: #CF000F;
-    outline: 0;
-    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(207, 0, 15,.6);
-    box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(207, 0, 15,.6);
+    color:#EFEFEF;
+    background-color: #FF530D;
+    -webkit-transition: background-color 500ms linear;
+    -moz-transition: background-color 500ms linear;
+    -o-transition: background-color 500ms linear;
+    -ms-transition: background-color 500ms linear;
+    transition: background-color 500ms linear;
 }
 
 /*
@@ -135,6 +88,7 @@ Panel logowania
     cursor: pointer;
 }
 
+/* Wyszukiwanie */
 .results tr[visible='false'],
 .no-result{
     display:none;
@@ -143,33 +97,17 @@ Panel logowania
 .results tr[visible='true']{
     display:table-row;
 }
-
 .counter{
     padding: 0px 8px 8px;
     color:#fff;
 }
-/*
-Koniec panelu logowania
-*/
-.panel-default>.panel-heading{
-    background-color:#CF000F; /*rgba(207, 0, 15,.6);*/
-    /*border-color:  */
-    color: white;
-
+/* Koniec wyszukiwania */
+.glyphicon{
+    color:#2B3A42;
 }
-
-.panel-heading-34 {
-    line-height: 34px;
-}
-
-
 .panel {
-    /*margin-bottom: 20px;*/
-    /*background-color: #fff;*/
-    /*border: 1px solid transparent;*/
+    border: 1px solid #3F5765;
     border-radius: 0px;
-    /*-webkit-box-shadow: 0 1px 1px rgba(0,0,0,.05);*/
-    /*box-shadow: 0 1px 1px rgba(0,0,0,.05);*/
 }
 
 .center-item{
@@ -177,5 +115,9 @@ Koniec panelu logowania
 }
 
 .table-hover>tbody>tr:hover {
-    background-color: #B7B7B7;
+    background-color: #BDD4DE;
+}
+.empty{
+    width:100%;
+    heigth: 20px;
 }
