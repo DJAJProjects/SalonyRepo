@@ -14,6 +14,8 @@ import pl.polsl.controller.DictionaryController;
 import pl.polsl.controller.PrivilegesController;
 import pl.polsl.model.Contractor;
 
+import java.util.List;
+
 /**
  * Created by Kuba on 08.04.2016.
  */
@@ -36,7 +38,7 @@ public class ContractorsWebController extends BaseWebController {
 
         viewMode = ViewMode.DEFAULT;
 
-        model.addAttribute("contractors", contractorsController.findAllContractors());
+        model.addAttribute("contractors", contractorsController.findContractorsRelatedToWorker(Data.user));
         model.addAttribute("controlsPanelVisible", false);
         model.addAttribute("insertEnabled", insertEnabled);
         model.addAttribute("updateEnabled", updateEnabled);
@@ -137,6 +139,8 @@ public class ContractorsWebController extends BaseWebController {
         contractorsController.deleteContractor(id);
         return "redirect:/contractors";
     }
+
+
 
 
 }

@@ -15,10 +15,17 @@ import java.util.List;
 @Repository
 @Transactional
 public interface ContractorsRepository extends PagingAndSortingRepository<Contractor, Integer>{
+
+
+    /**
+     * @return List of clients related to director by contract model that was
+     * created by worker who works i directors showroom.
+     */
+
     @Query(value = "select contractor from Contractor contractor " +
                          "where exists (select contract from Contract contract  " +
                             " where contract.contractor = contractor " +
-                            " and contract.worker.showroom.director = director )")
+                            " and contract.worker.showroom.director = :director )")
     public List<Contractor> findRelatedToDirector ( @Param("director")Worker director);
 
 
@@ -27,7 +34,7 @@ public interface ContractorsRepository extends PagingAndSortingRepository<Contra
      */
     @Query(value = "select contractor from Contractor contractor " +
             "where exists (select contract from Contract contract  " +
-                "where contract.contractor = contractor" +
+                "where contract.contractor = contractor " +
                 "and contract.worker = :salesman) ")
     public List<Contractor> findRelatedToSalesman( @Param("salesman")Worker salesman);
 
@@ -35,10 +42,24 @@ public interface ContractorsRepository extends PagingAndSortingRepository<Contra
      * @return List of clients related to serviceman by car model:
      * Model of car servised by serviceman and related by contract model with client.
      */
-    @Query(value = "select contractor from Contractor contractor " +
-            "where exists (select service from Service service  " +
-            "where service.serviceman = :serviceman" +
-            "and contract.worker = :salesman) ")
+    @Query(value = " select contractor from Contractor contractor " +
+                   " where exists " +
+                        " (select service from Service service  " +
+                        " where service.serviceman = :serviceman " +
+                        " and exists" +
+                            " (select contract from Contract contract"+
+                            " where contract.contractor = contractor"+
+                            " and (exists"+
+                                " (select car from Car car "+
+                                " where car.contract = contract"+
+                                " and (service.car = car " +
+                                " or exists"+
+                                    " (select accessory from Accessory accessory"+
+                                    " where accessory.car = car )))"+
+                            " or exists"+
+                                " (select accessory from Accessory accessory "+
+                                " where accessory.contract = contract"+
+                                " and service.accessory = accessory ))))")
     public List<Contractor> findRelatedToServiceman( @Param("serviceman")Worker serviceman);
 }
 
