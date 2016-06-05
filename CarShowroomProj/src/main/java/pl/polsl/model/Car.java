@@ -108,14 +108,13 @@ public class Car {
         this.contract = contract;
     }
 
-
-    @OneToMany (mappedBy="car", fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name="cars_accessories",
+            joinColumns=@JoinColumn(name="id_cars", referencedColumnName="id"),
+            inverseJoinColumns=@JoinColumn(name="id_accessories", referencedColumnName="id"))
     public Set<Accessory> getAccessories() {
         return accessoryList;
     }
-
-    public void setAccessories(Set<Accessory> accessoryList) {
-        this.accessoryList = accessoryList;
-    }
-
+    public void setAccessories(Set<Accessory>accessoryList) {this.accessoryList = accessoryList;}
 }
