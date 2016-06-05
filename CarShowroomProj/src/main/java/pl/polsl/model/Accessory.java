@@ -12,6 +12,7 @@ public class Accessory {
     private Contract contract;
     private Dictionary accessory;
     private Integer cost;
+    private Car car;
 //    private Showroom showroom;
 
     public Accessory() {
@@ -75,6 +76,17 @@ public class Accessory {
     public void setCost(Integer cost) {
         this.cost = cost;
     }
+
+    @ManyToOne()
+    @JoinColumn(name = "id_car")
+    public Car getCar() {
+        return this.car;
+    }
+
+    public void setCar(Car car) {
+        this.car = car;
+    }
+
 
 //    @Basic
 //    @ManyToOne
