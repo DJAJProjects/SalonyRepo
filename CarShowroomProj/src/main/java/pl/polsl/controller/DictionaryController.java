@@ -3,6 +3,7 @@ package pl.polsl.controller;
 import jersey.repackaged.com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pl.polsl.Data;
 import pl.polsl.model.Dictionary;
 import pl.polsl.repository.DictionaryRepository;
 
@@ -86,5 +87,13 @@ public class DictionaryController {
 
     public void delete(int id) {
         dictionaryRepository.delete(id);
+    }
+
+    public int findAdmin() {
+        return dictionaryRepository.findPositionId(Data.adminValue);
+    }
+
+    public int findDirector() {
+        return dictionaryRepository.findPositionId(Data.directorValue);
     }
 }

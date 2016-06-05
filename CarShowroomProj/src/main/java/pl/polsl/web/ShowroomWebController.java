@@ -51,7 +51,7 @@ public class ShowroomWebController extends  BaseWebController {
         redirectAttributes.addFlashAttribute("directorSurname",showroom.getDirector().getSurname());
         redirectAttributes.addFlashAttribute("showroom", showroom);
         List<Worker> directors = workersController.findAllFreeDirectors();
-        directors.add((workersController.findOne(showroom.getDirector().getId())));
+        directors.add(workersController.findOne(showroom.getDirector().getId()));
         redirectAttributes.addFlashAttribute("directors",directors);
         redirectAttributes.addFlashAttribute("countries", dictionaryController.findAllCountries());
         redirectAttributes.addFlashAttribute("cities", dictionaryController.findAllCities());
@@ -88,7 +88,12 @@ public class ShowroomWebController extends  BaseWebController {
                                @RequestParam(value = "city")int city,
                                @RequestParam(value = "country")int country,
                                @RequestParam(value = "director")int director){
-        if(viewMode == ViewMode.EDIT) {
+        if(viewMode == ViewMode.EDIT){
+            Showroom oldShowroom = showroomsController.findOne(id);
+            if(oldShowroom.getDirector().getId()!=director) {
+                workersController.updateWorker(oldShowroom.getDirector().getId(), -1);
+                workersController.updateWorker(director, id);
+            }
             Showroom showroom = showroomsController.updateShowroom(id, name, street, city, country, director);
         }
         else if(viewMode==ViewMode.INSERT) {

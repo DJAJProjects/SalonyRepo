@@ -24,6 +24,9 @@ public class MainController extends BaseWebController {
     @Autowired
     PrivilegesController privilegesController;
 
+    @Autowired
+    private WorkersController workersController;
+
     @RequestMapping(value = "/")
     public String home(Model model){
         model.addAttribute("error",false);
@@ -31,22 +34,18 @@ public class MainController extends BaseWebController {
 
     }
 
-    @Autowired
-    private WorkersController workersController;
-
-
     @RequestMapping(value = "signIn", method= RequestMethod.POST)
     public String signIn(Model model, @RequestParam(value = "login")String login, @RequestParam(value = "password")String password){
         Data.user = workersController.findOne(login,password);
         if(Data.user!=null){
             refreshMenuPrivileges(model);
-
+            Data.adminId = dictionaryController.findAdmin();
+            Data.directorId = dictionaryController.findDirector();
             return "menu";
         }
         else{
             model.addAttribute("error",true);
         }
         return "sign_in";
-
     }
 }

@@ -19,6 +19,7 @@ import pl.polsl.model.Worker;
 
 import java.sql.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by Dominika Błasiak on 09.04.2016.
@@ -27,7 +28,6 @@ import java.util.List;
 public class WorkerWebController extends  BaseWebController {
 
     private ViewMode viewMode;
-
     @Autowired
     private ShowroomsController showroomsController;
     @Autowired
@@ -39,36 +39,49 @@ public class WorkerWebController extends  BaseWebController {
 
     @RequestMapping(value ="/worker")
     public String getWorkers(Model model){
-        if(Data.user == null){
-            model.asMap().clear();
-            model.addAttribute("userNotLoggedIn", true);
-        }else if(!privilegesController.getReadPriv("Pracownicy", Data.user)){
-            model.asMap().clear();
-            model.addAttribute("forbiddenAccess", true);
-        }
-        else{
-            model.addAttribute("workers", workersController.findAll());
-        }
-        refreshMenuPrivileges(model);
-        return "worker";
+            if (Data.user == null) {
+                model.asMap().clear();
+                model.addAttribute("userNotLoggedIn", true);
+            } else if (!privilegesController.getReadPriv("Pracownicy", Data.user)) {
+                model.asMap().clear();
+                model.addAttribute("forbiddenAccess", true);
+            } else {
+                model.addAttribute("workers", workersController.findAll());
+            }
+            refreshMenuPrivileges(model);
+            if(!model.containsAttribute("deleteDirector"))
+                model.addAttribute("deleteDirector", false);
+            return "worker";
+
     }
 
     @RequestMapping(value ="/deleteWorker/{id}")
-    public String deleteWorker(@PathVariable("id")int id){
-        workersController.deleteOne(id);
+    public String deleteWorker(RedirectAttributes redirectAttributes,@PathVariable("id")int id){
+        Worker worker = workersController.findOne(id);
+        if(worker.getPosition().getId()==Data.directorId && worker.getShowroom()!=null)
+            redirectAttributes.addFlashAttribute("deleteDirector", true);
+        else
+            workersController.deleteOne(id);
         return "redirect:/worker/";
     }
 
     @RequestMapping(value ="/addWorker")
-    public String addWorker(RedirectAttributes redirectAttributes){
+    public String addWorker(RedirectAttributes redirectAttributes, Model model){
         viewMode = ViewMode.INSERT;
-        Worker worker = new Worker();
+        Worker worker;
+        if(!model.containsAttribute("error"))
+           worker = new Worker();
+        else{
+            System.out.println("error przy dodawaniu");
+            worker = (Worker)model.asMap().get("worker");
+            redirectAttributes.addFlashAttribute("positionId", worker.getPosition().getId());
+            redirectAttributes.addFlashAttribute("error", model.asMap().get("error"));
+        }
         redirectAttributes.addFlashAttribute("controlsPanelVisible", true);
         redirectAttributes.addFlashAttribute("controlsDisabled", false);
         redirectAttributes.addFlashAttribute("worker", worker);
-        List<Dictionary> positions = dictionaryController.findAllPositions();
-        positions.remove(0);
-        redirectAttributes.addFlashAttribute("positions", positions);
+        redirectAttributes.addFlashAttribute("positions", dictionaryController.findAllPositions().stream()
+                .filter(dictionary -> dictionary.getId()!=Data.adminId).collect(Collectors.toList()));
         redirectAttributes.addFlashAttribute("showrooms", showroomsController.findAll());
         redirectAttributes.addFlashAttribute("controlsLoginVisible", true);
         redirectAttributes.addFlashAttribute("controlsPasswordVisible", true);
@@ -77,14 +90,13 @@ public class WorkerWebController extends  BaseWebController {
 
     @RequestMapping(value ="/viewWorker/{id}")
     public String displayWorker(RedirectAttributes redirectAttributes, @PathVariable("id")int id) {
-
         viewMode = ViewMode.VIEW_ALL;
-
         Worker worker = workersController.findOne(id);
         redirectAttributes.addFlashAttribute("worker", worker);
         redirectAttributes.addFlashAttribute("controlsPanelVisible", true);
         redirectAttributes.addFlashAttribute("controlsDisabled", true);
         redirectAttributes.addFlashAttribute("positionId", worker.getPosition().getId());
+        if(worker.getShowroom()!=null)
         redirectAttributes.addFlashAttribute("showroomId", worker.getShowroom().getId());
         redirectAttributes.addFlashAttribute("positions", dictionaryController.findAllPositions());
         redirectAttributes.addFlashAttribute("showrooms", showroomsController.findAll());
@@ -94,27 +106,35 @@ public class WorkerWebController extends  BaseWebController {
     }
 
     @RequestMapping(value ="/editWorker/{id}")
-    public String editWorker(RedirectAttributes redirectAttributes, @PathVariable("id")int id){
+    public String editWorker(RedirectAttributes redirectAttributes, Model model, @PathVariable("id")int id){
         viewMode = ViewMode.EDIT;
-        Worker worker = workersController.findOne(id);
+
+        Worker worker;
+        if(!model.containsAttribute("error"))
+            worker = workersController.findOne(id);
+        else{
+            worker = (Worker)model.asMap().get("worker");
+        }
         redirectAttributes.addFlashAttribute("controlsPanelVisible", true);
         redirectAttributes.addFlashAttribute("controlsDisabled", false);
         redirectAttributes.addFlashAttribute("positionId", worker.getPosition().getId());
         if(worker.getShowroom()!=null)
             redirectAttributes.addFlashAttribute("showroomId", worker.getShowroom().getId());
         redirectAttributes.addFlashAttribute("worker", worker);
-        List<Dictionary> positions = dictionaryController.findAllPositions();
-        positions.remove(0);
-        redirectAttributes.addFlashAttribute("positions", positions);
+        redirectAttributes.addFlashAttribute("positions",  dictionaryController.findAllPositions().stream()
+                .filter(dictionary -> dictionary.getId() != Data.adminId).collect(Collectors.toList()));
         redirectAttributes.addFlashAttribute("showrooms", showroomsController.findAll());
         redirectAttributes.addFlashAttribute("controlsLoginVisible", false);
         redirectAttributes.addFlashAttribute("controlsPasswordVisible", false);
+        if(worker.getPosition().getId() == Data.directorId && worker.getShowroom()!=null){
+            redirectAttributes.addFlashAttribute("positionDisabled", true);
+        }
         return "redirect:/worker";
 
     }
 
     @RequestMapping(value ="/acceptModifyWorker", method = RequestMethod.POST)
-    public String editWorker(@RequestParam("id") int id,
+    public String editWorker(RedirectAttributes redirectAttributes, @RequestParam("id") int id,
                                @RequestParam("name") String name,
                                @RequestParam(value = "surname") String surname,
                                @RequestParam(value = "payment") int payment,
@@ -122,12 +142,40 @@ public class WorkerWebController extends  BaseWebController {
                                @RequestParam(value = "position")int position,
                                @RequestParam(value = "showroom")int showroom,
                                @RequestParam(value = "login")String login,
-                               @RequestParam(value = "password")String password){
-        if(viewMode == ViewMode.EDIT) {
-            Worker worker = workersController.updateWorker(id, name,surname,payment, dateHired, position,showroom);
-        }
-        else if(viewMode==ViewMode.INSERT) {
-            Worker worker = workersController.addWorker(name,surname,payment, dateHired, position, showroom, login,password);
+                               @RequestParam(value = "password")String password) {
+        if (viewMode == ViewMode.EDIT) {
+            Worker worker = workersController.updateWorker(false, id, name, surname, payment, dateHired, position, showroom);
+            if (worker != null)
+                return "redirect:/worker/";
+            else {
+                redirectAttributes.addFlashAttribute("error", "Niestety nie udało się edytować użytkownika");
+                worker = workersController.updateWorker(true, id, name, surname, payment, dateHired, position, showroom);
+                redirectAttributes.addFlashAttribute("worker", worker);
+                return "redirect:/editWorker/";
+            }
+
+        } else if (viewMode == ViewMode.INSERT) {
+            String error = null;
+            Worker worker;
+            if (!workersController.checkIfLoginIsUnique(login)) {
+                error = "Niestety podany login już istnieje w bazie";
+            } else if (login.length() < 4) {
+                error = "Login powinien zawierać co najmniej 4 znaki";
+            } else if (password.length() < 4) {
+                error = "Hasło powninno zawierać co najmniej 4 znaki";
+            } else if (dictionaryController.findOne(position).getValue().equals("Dyrektor") && (showroom != -1)) {
+                error = "Dodawany dyrektor nie powinien mieć przypisanego salonu";
+            } else {
+                worker = workersController.addWorker(false, name, surname, payment, dateHired, position, showroom, login, password);
+                if (worker != null)
+                    return "redirect:/worker/";
+                else
+                    error = "Niestety nie udało się dodać użytkownika do bazy";
+            }
+            worker = workersController.addWorker(true, name, surname, payment, dateHired, position, showroom, login, password);
+            redirectAttributes.addFlashAttribute("error", error);
+            redirectAttributes.addFlashAttribute("worker", worker);
+            return "redirect:/addWorker/";
         }
         return "redirect:/worker/";
     }

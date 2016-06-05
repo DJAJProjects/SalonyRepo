@@ -116,7 +116,7 @@ public class Worker {
     }
 
     @Basic
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     public String getLogin() {
         return login;
     }

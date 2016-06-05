@@ -18,18 +18,25 @@ import java.util.List;
 @Repository
 @Transactional
 public interface WorkersRepository extends PagingAndSortingRepository<Worker, Integer> {
-    @Query(value = "select worker from Worker worker where worker.login = :login AND worker.password = :password")
+    @Query(value = "SELECT worker " +
+                   "FROM Worker worker " +
+                   "WHERE worker.login = :login AND worker.password = :password")
     public Worker findOne(@Param("login")String login, @Param("password")String password);
-//    @Query(value = "select worker from Workers worker where worker.login = :login")
-//    public Worker findOne(@Param("login")String login, @Param("password")String password);
-    @Query(value = "select director from Worker director where director.position.id = :position AND director.showroom=null")
+
+    @Query(value = "SELECT director " +
+                   "FROM Worker director " +
+                   "WHERE director.position.id = :position AND director.showroom = null")
     public List<Worker> findAllOneType(@Param("position")int position);
 
-    @Query(value = "select worker from Worker worker where worker.showroom = :showroom ")
+    @Query(value = "SELECT worker " +
+                   "FROM Worker worker " +
+                   "WHERE worker.showroom = :showroom ")
     public List<Worker> findAllTheSameShowroom (@Param("showroom")Showroom showroom);
 
 
-    @Query(value = "select serviceman from Worker serviceman where serviceman.position.id = :position")
+    @Query(value = "SELECT serviceman " +
+                   "FROM Worker serviceman " +
+                   "WHERE serviceman.position.id = :position")
     public List<Worker> findAllServicemans(@Param("position")int position);
 
     /**
@@ -41,4 +48,9 @@ public interface WorkersRepository extends PagingAndSortingRepository<Worker, In
                    " FROM Worker worker " +
                    " WHERE worker.showroom = :showroom ")
     public Double getMonthlyPaymentsFromSameShowroom (@Param("showroom")Showroom showroom);
+
+    @Query(value = "SELECT worker " +
+                   "FROM Worker worker " +
+                   "WHERE worker.login = :login")
+    public Worker getWorkerByLogin(@Param("login")String login);
 }

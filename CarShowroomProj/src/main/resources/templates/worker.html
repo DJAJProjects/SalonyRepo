@@ -2,11 +2,26 @@
 <html xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml" layout:decorator="index">
 <head>
     <title>Pracownicy</title>
+    <script type="text/javascript">
+        function confirm_delete(node) {
+            return confirm("Usunięcie pracownika spowoduje wstawienie null w wszystkich jego odwołaniach. Kliknij okej, by kontynuować");
+        }
+    </script>
+    <script type="text/javascript">
+        function print_error() {
+            alert("Pracownik jest dyrektorem salonu. Nie można go usunąć");
+        }
+    </script>
+    <script>
+        function mymessage() {
+            alert("This message was triggered from the onload event");
+        }
+    </script>
 </head>
-<body>
+<body th:attr="onload=${deleteDirector ? 'print_error()' : null}">
 <div layout:fragment="main" style="margin: 0 auto; max-width: 1000px;">
     <div class="btn-group" role="group" aria-label="..." style="margin: 20px 0;">
-        <a th:href="@{/addWorker}+'#anch'"><button type="button" class="btn ">Dodaj pracownika</button></a>
+        <a th:href="@{/addWorker#anch}"><button type="button" class="btn ">Dodaj pracownika</button></a>
     </div>
     <div>
         <div class="panel">
@@ -44,7 +59,7 @@
                         <td th:text="${worker.surname}"></td>
                         <td th:text="${worker.position.value}"></td>
                         <td th:if="${worker.showroom}" th:text="${worker.showroom.name}"></td>
-                        <td th:unless="${worker.showroom}" >null</td>
+                        <td th:unless="${worker.showroom}" >brak</td>
                         <td class="center-item">
                             <a th:href="@{'/editWorker/'+${worker.id}+'#anch'}" >
                                 <span class="glyphicon glyphicon-pencil" aria-hidden="true" style="height:100%;width:100%">
@@ -52,7 +67,7 @@
                             </a>
                         </td>
                         <td class="center-item">
-                            <a th:href="@{'/deleteWorker/'+${worker.id}}">
+                            <a th:href="@{'/deleteWorker/'+${worker.id}}" onclick="return confirm_delete(this);">
                                 <span class="glyphicon glyphicon-remove" aria-hidden="true" style="height:100%;width:100%"></span>
                             </a>
                         </td>
@@ -68,9 +83,9 @@
         </div>
     </div>
     <!--Add worker-->
-    <a name="anch"></a>
+    <a th:if="${controlsPanelVisible}" name="anch"></a>
     <!--Edit worker-->
-    <form th:if="${controlsPanelVisible}" id="menuForm"  name="menuForm" class="form-horizontal" role="form" method="post" action="/acceptModifyWorker" th:object="${worker}">
+    <form th:if="${controlsPanelVisible}" id="menuForm"  name="menuForm" class="form-horizontal" role="form" method="post" action="/acceptModifyWorker#anch" th:object="${worker}">
         <input type="hidden" style="display: none;" name="id" th:field="*{id}"/>
         <div class="form-group">
             <label class="control-label col-sm-offset-2 col-sm-2">Imię:</label>
@@ -100,39 +115,44 @@
         <div class="form-group">
             <label class="control-label col-sm-offset-2 col-sm-2">Pozycja:</label>
             <div class="col-sm-4">
-                <select  th:disabled="${controlsDisabled}" onchange="disableShowroom()" id ="position" name="position" class="form-control" aria-label="..." required="required">
+                <select  th:disabled="${controlsDisabled==true || positionDisabled==true}" onchange="disableShowroom()" id ="position" name="position" class="form-control" aria-label="..." required="required">
                     <option value="" text="Wybierz pozycję"></option>
                     <option  th:each="p : ${positions}" th:value="${p.id}" th:text="${p.value}" value ="Dyrektor" th:selected="${p.id}==${positionId}"></option>
                 </select>
+                <input th:if="${positionDisabled}" type="hidden" th:field="*{position}" name="position" class="form-control" />
             </div>
         </div>
         <div class="form-group">
             <label class="control-label col-sm-offset-2 col-sm-2">Salon:</label>
             <div class="col-sm-4">
-                <select  th:disabled="${controlsDisabled}" name="showroom" id="showroom" class="form-control" aria-label="...">
+                <select  th:disabled="${controlsDisabled==true || positionDisabled==true}" name="showroom" id="showroom" class="form-control" aria-label="...">
                     <option th:value="-1" text="Wybierz salon"></option>
                     <option th:each="s : ${showrooms}" th:value="${s.id}" th:text="${s.name}" th:selected="${s.id}==${showroomId}"></option>
                 </select>
+                <input th:if="${positionDisabled}" type="hidden" th:field="*{showroom}" name="showroom" class="form-control"/>
             </div>
         </div>
-        <div  th:if="${controlsLoginVisible}" class="form-group">
+        <div  th:if="${controlsLoginVisible}" class="form-group" >
             <label class="control-label col-sm-offset-2 col-sm-2">Login:</label>
             <div class="col-sm-4">
                 <input th:disabled="${controlsDisabled}" th:field="*{login}" name="login" type="text" class="form-control" placeholder="Wprowadź login" required="required"/>
             </div>
         </div>
+        <input th:unless="${controlsLoginVisible}"  th:field="*{login}" name="login" type="hidden" class="form-control" placeholder="Wprowadź login" required="required"/>
         <div th:if="${controlsPasswordVisible}" class="form-group">
             <label class="control-label col-sm-offset-2 col-sm-2">Hasło:</label>
             <div class="col-sm-4">
                 <input  th:disabled="${controlsDisabled}" th:field="*{password}" name="password" type="password" class="form-control" placeholder="Wprowadź hasło" required="required"/>
             </div>
         </div>
+        <input th:unless="${controlsPasswordVisible}" type="hidden" th:field="*{password}" name="password" class="form-control" placeholder="Wprowadź hasło" required="required"/>
         <div class="form-group">
             <div class="col-sm-offset-4 col-sm-10">
                 <button onclick="validateActualDate()" type="submit" th:disabled="${controlsDisabled}" class="btn btn-default" >Akceptuj</button>
                 <button type="reset" th:disabled="${controlsDisabled}" class="btn btn-default">Anuluj zmiany</button>
             </div>
         </div>
+        <div th:text="${error != null} ? ${error}" class="label label-danger"></div>
     </form>
     <br/>
 </div>

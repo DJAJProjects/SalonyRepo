@@ -56,20 +56,24 @@ public class WorkersController {
         return (List)workersRepository.findAllOneType(11);
     }
 
-    public Worker addWorker(String name, String surname, int payment, Date dateHired, int position, int showroom, String login, String password) {
+    public Worker addWorker(boolean error, String name, String surname, int payment, Date dateHired, int position, int showroom, String login, String password) {
         MessageDigest md = null;
         try {
             md = MessageDigest.getInstance("SHA");
             String data = password;
             byte[] dataDigest = md.digest(data.getBytes());
-            return workersRepository.save(new Worker(name,surname,payment, dateHired,dictionaryController.findOne(position),showroomsController.findOne(showroom),login, password));
+            Worker worker = new Worker(name,surname,payment, dateHired,dictionaryController.findOne(position),showroomsController.findOne(showroom),login, password);
+            if(error)
+                return worker;
+            else
+                return workersRepository.save(worker);
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
             return null;
         }
     }
 
-    public Worker updateWorker(int id, String name, String surname, int payment, Date dateHired, int position, int showroom) {
+    public Worker updateWorker(boolean error, int id, String name, String surname, int payment, Date dateHired, int position, int showroom) {
         Worker worker = workersRepository.findOne(id);
         worker.setName(name);
         worker.setSurname(surname);
@@ -77,6 +81,8 @@ public class WorkersController {
         worker.setDateHired(dateHired);
         worker.setPosition(dictionaryController.findOne(position));
         worker.setShowroom(showroomsController.findOne(showroom));
+        if(error)
+            return worker;
         return workersRepository.save(worker);
     }
 
@@ -88,4 +94,15 @@ public class WorkersController {
         return (List)workersRepository.findAllServicemans(12);
     }
 
+    public boolean checkIfLoginIsUnique(String login) {
+        return workersRepository.getWorkerByLogin(login)==null;
+    }
+
+    public Worker updateWorker(int idWorker, int idShowroom) {
+        Worker worker = workersRepository.findOne(idWorker);
+        worker.setShowroom(showroomsController.findOne(idShowroom));
+//        if(error)
+//            return worker;
+        return workersRepository.save(worker);
+    }
 }

@@ -1,6 +1,7 @@
 package pl.polsl.model;
 
 import javax.persistence.*;
+import java.util.Set;
 
 /**
  * Created by Dominika Błasiak on 04.04.2016.
@@ -14,6 +15,7 @@ public class Showroom {
     private Dictionary city;
     private Dictionary country;
     private Worker director;
+    private Set<Worker> workers;
 
     public Showroom(){}
     public Showroom(String name, String street, Dictionary city, Dictionary country, Worker director) {
@@ -76,7 +78,7 @@ public class Showroom {
         this.country = country;
     }
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "id_director", nullable = false)
     public Worker getDirector() {
         return director;
@@ -84,5 +86,14 @@ public class Showroom {
 
     public void setDirector(Worker director) {
         this.director = director;
+    }
+
+    @OneToMany(mappedBy="showroom")
+    public Set<Worker> getWorkers() {
+        return workers;
+    }
+
+    public void setWorkers(Set<Worker> workers) {
+        this.workers = workers;
     }
 }
