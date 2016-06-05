@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.util.Set;
 
 /**
  * Created by Kuba on 04.04.2016.
@@ -18,17 +19,18 @@ public class Car {
     private Integer ordered;
     private Showroom showroom;
     private Contract contract;
-
+    private Set<Accessory> accessoryList;
 
     public Car() {}
 
-    public Car(Dictionary carName, Date prodDate, Showroom showroom, Integer cost, Integer ordered, Contract contract) {
+    public Car(Dictionary carName, Date prodDate, Showroom showroom, Integer cost, Integer ordered, Contract contract, Set<Accessory> accessoryList) {
         this.carName = carName;
         this.prodDate = prodDate;
         this.showroom = showroom;
         this.ordered = ordered;
         this.cost = cost;
         this.contract = contract;
+        this.accessoryList = accessoryList;
     }
 
     @Id
@@ -82,7 +84,6 @@ public class Car {
         this.ordered = ordered;
     }
 
-
     @JsonIgnore
     @Basic
     @ManyToOne
@@ -106,4 +107,15 @@ public class Car {
     public void setContract(Contract contract) {
         this.contract = contract;
     }
+
+
+    @OneToMany (mappedBy="car", fetch = FetchType.EAGER)
+    public Set<Accessory> getAccessories() {
+        return accessoryList;
+    }
+
+    public void setAccessories(Set<Accessory> accessoryList) {
+        this.accessoryList = accessoryList;
+    }
+
 }
