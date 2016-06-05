@@ -4,6 +4,7 @@ import jersey.repackaged.com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import pl.polsl.model.Contractor;
+import pl.polsl.model.Worker;
 import pl.polsl.repository.ContractorsRepository;
 import pl.polsl.repository.DictionaryRepository;
 
@@ -11,6 +12,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -76,4 +78,23 @@ public class ContractorsController {
         contractor.setCountry(dictionaryRepository.findOne(country));
         return  contractorsRepository.save(contractor);
     }
+
+    public List<Contractor> findContractorsRelatedToWorker(Worker worker){
+        List<Contractor> retList;
+        int positionId = worker.getPosition().getId();
+        if( positionId == 11)
+            retList = contractorsRepository.findRelatedToDirector(worker);
+        else if(positionId == 12)
+            retList = contractorsRepository.findRelatedToServiceman(worker);
+        else if(positionId == 10)
+            retList = contractorsRepository.findRelatedToSalesman(worker);
+        else
+            retList =  findAllContractors();
+
+        if(retList == null)retList = new ArrayList<Contractor>();
+
+        return retList;
+    }
+
+
 }
