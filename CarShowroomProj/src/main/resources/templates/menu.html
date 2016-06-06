@@ -4,10 +4,15 @@
       xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <title>Menu</title>
+    <style>
+        a:hover{
+            text-decoration: none;
+        }
+    </style>
 </head>
 <body>
 <div layout:fragment="main" class="row " id="menuIndex2" style="max-width: 960px;" >
-    <div th:if="${showroomsVisible}" class="col-sm-6
+    <a href="showroom.html"  th:href="@{/showroom}" th:if="${showroomsVisible}" class="col-sm-6
         col-md-2">
         <div class="thumbnail">
             <div class="circle">
@@ -17,7 +22,7 @@
                 <h3>Salony</h3>
             </div>
         </div>
-    </div>
+    </a>
     <div th:if="${carsVisible}" class="col-sm-6
         col-md-2">
         <div class="thumbnail">
