@@ -3,6 +3,8 @@ package pl.polsl.controller;
 import jersey.repackaged.com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pl.polsl.Data;
+import pl.polsl.model.Contractor;
 import pl.polsl.model.Worker;
 import pl.polsl.repository.WorkersRepository;
 
@@ -13,7 +15,9 @@ import javax.ws.rs.core.MediaType;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 /**
@@ -104,5 +108,17 @@ public class WorkersController {
 //        if(error)
 //            return worker;
         return workersRepository.save(worker);
+    }
+
+    public List<Worker> findContractorsRelatedToWorker(Worker worker){
+        List<Worker> retList = null;
+        if( worker.getPosition().getId() == Data.directorId)
+            retList = workersRepository.findRelatedToDirector(worker.getShowroom());
+        else if(worker.getPosition().getId() == Data.adminId)
+            retList =  findAll().stream().filter(worker1 -> worker1.getPosition().getId()!=Data.adminId).collect(Collectors.toList());
+
+        if(retList == null)retList = new ArrayList<Worker>();
+
+        return retList;
     }
 }

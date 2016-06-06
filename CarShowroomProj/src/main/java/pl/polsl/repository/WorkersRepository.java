@@ -31,7 +31,7 @@ public interface WorkersRepository extends PagingAndSortingRepository<Worker, In
     @Query(value = "SELECT worker " +
                    "FROM Worker worker " +
                    "WHERE worker.showroom = :showroom ")
-    public List<Worker> findAllTheSameShowroom (@Param("showroom")Showroom showroom);
+    public List<Worker> findAllFromTheSameShowroom (@Param("showroom")Showroom showroom);
 
 
     @Query(value = "SELECT serviceman " +
@@ -53,4 +53,9 @@ public interface WorkersRepository extends PagingAndSortingRepository<Worker, In
                    "FROM Worker worker " +
                    "WHERE worker.login = :login")
     public Worker getWorkerByLogin(@Param("login")String login);
+
+    @Query(value = "SELECT worker " +
+            "FROM Worker worker " +
+            "WHERE worker.showroom = :showroom")
+    List<Worker> findRelatedToDirector(@Param("showroom") Showroom showroom);
 }

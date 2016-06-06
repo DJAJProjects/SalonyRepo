@@ -19,5 +19,5 @@ import java.util.List;
     public interface CarsRepository extends PagingAndSortingRepository<Car, Integer> {
 
     @Query(value = "select car from Car car where car.showroom = :showroom ")
-    public List<Car> findAllTheSameShowroom ( @Param("showroom")Showroom showroom);
+    public List<Car> findAllFromTheSameShowroom ( @Param("showroom")Showroom showroom);
 }

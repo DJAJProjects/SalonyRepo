@@ -28,6 +28,7 @@ import java.util.stream.Collectors;
 public class WorkerWebController extends  BaseWebController {
 
     private ViewMode viewMode;
+
     @Autowired
     private ShowroomsController showroomsController;
     @Autowired
@@ -46,7 +47,7 @@ public class WorkerWebController extends  BaseWebController {
                 model.asMap().clear();
                 model.addAttribute("forbiddenAccess", true);
             } else {
-                model.addAttribute("workers", workersController.findAll());
+                model.addAttribute("workers", workersController.findContractorsRelatedToWorker(Data.user));
             }
             refreshMenuPrivileges(model);
             if(!model.containsAttribute("deleteDirector"))

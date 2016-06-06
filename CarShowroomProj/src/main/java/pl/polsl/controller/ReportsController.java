@@ -68,8 +68,8 @@ public class ReportsController {
                             Date dateEnd
                             ) {
         Showroom targetShowroom = showroomsRepository.findOne(showroomId);
-        List<Car> cars = carsRepository.findAllTheSameShowroom(targetShowroom);
-        List<Worker> workers = workersRepository.findAllTheSameShowroom(targetShowroom);
+        List<Car> cars = carsRepository.findAllFromTheSameShowroom(targetShowroom);
+        List<Worker> workers = workersRepository.findAllFromTheSameShowroom(targetShowroom);
         Double income  = invoiceRepository.getIncomeForShowroom(targetShowroom, dateBeggining, dateEnd);
         if(income == null) income = 0.0;
         Double monthlyPayment = workersRepository.getMonthlyPaymentsFromSameShowroom(targetShowroom);
