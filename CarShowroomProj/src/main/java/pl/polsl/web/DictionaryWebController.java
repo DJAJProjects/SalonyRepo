@@ -31,22 +31,22 @@ public class DictionaryWebController extends BaseWebController{
     @RequestMapping(value ="/editDictionary/{id}")
     public String editDictionary(RedirectAttributes redirectAttributes, @PathVariable("id")int id){
         viewMode = ViewMode.EDIT;
-        redirectAttributes.addAttribute("controlsPanelVisible", true);
-        redirectAttributes.addAttribute("controlsDisabled", false);
-        redirectAttributes.addAttribute("dictionary", dictionaryController.findOne(id));
-        redirectAttributes.addAttribute("dictionaries", dictionaryController.findAll());
-        redirectAttributes.addAttribute("types", dictionaryController.findAllTypes());
+        redirectAttributes.addFlashAttribute("controlsPanelVisible", true);
+        redirectAttributes.addFlashAttribute("controlsDisabled", false);
+        redirectAttributes.addFlashAttribute("dictionary", dictionaryController.findOne(id));
+        redirectAttributes.addFlashAttribute("dictionaries", dictionaryController.findAll());
+        redirectAttributes.addFlashAttribute("types", dictionaryController.findAllTypes());
         return "redirect:/dictionary/";
     }
 
     @RequestMapping(value ="/viewDictionary/{id}")
     public String viewDictionary(RedirectAttributes redirectAttributes, @PathVariable("id")int id) {
         viewMode = ViewMode.VIEW_ALL;
-        redirectAttributes.addAttribute("controlsPanelVisible", true);
-        redirectAttributes.addAttribute("controlsDisabled", true);
-        redirectAttributes.addAttribute("dictionary", dictionaryController.findOne(id));
-        redirectAttributes.addAttribute("dictionaries", dictionaryController.findAll());
-        redirectAttributes.addAttribute("types", dictionaryController.findAllTypes());
+        redirectAttributes.addFlashAttribute("controlsPanelVisible", true);
+        redirectAttributes.addFlashAttribute("controlsDisabled", true);
+        redirectAttributes.addFlashAttribute("dictionary", dictionaryController.findOne(id));
+        redirectAttributes.addFlashAttribute("dictionaries", dictionaryController.findAll());
+        redirectAttributes.addFlashAttribute("types", dictionaryController.findAllTypes());
         return "redirect:/dictionary/";
     }
 
@@ -67,11 +67,11 @@ public class DictionaryWebController extends BaseWebController{
     @RequestMapping(value ="/addDictionary")
     public String addDictionary(RedirectAttributes redirectAttributes){
         viewMode = ViewMode.INSERT;
-        redirectAttributes.addAttribute("controlsPanelVisible", true);
-        redirectAttributes.addAttribute("controlsDisabled", false);
-        redirectAttributes.addAttribute("dictionary", new Dictionary());
-        redirectAttributes.addAttribute("dictionaries", dictionaryController.findAll());
-        redirectAttributes.addAttribute("types", dictionaryController.findAllTypes());
+        redirectAttributes.addFlashAttribute("controlsPanelVisible", true);
+        redirectAttributes.addFlashAttribute("controlsDisabled", false);
+        redirectAttributes.addFlashAttribute("dictionary", new Dictionary());
+        redirectAttributes.addFlashAttribute("dictionaries", dictionaryController.findAll());
+        redirectAttributes.addFlashAttribute("types", dictionaryController.findAllTypes());
         return "redirect:/dictionary/";
     }
 

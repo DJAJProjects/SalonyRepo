@@ -82,7 +82,7 @@ public class Dictionary {
     public void setCountry(Set<Showroom> country) {
         this.country = country;
     }
-    @OneToMany
+    @OneToMany(mappedBy="city")
     public Set<Showroom> getCity() {
         return city;
     }
@@ -109,7 +109,7 @@ public class Dictionary {
         this.paymentForm = paymentForm;
     }
 
-    @OneToMany (mappedBy="carName",cascade = CascadeType.REMOVE, orphanRemoval = false)
+    @OneToMany (mappedBy="carName")
     public Set<Car> getCarName() {
         return carName;
     }
@@ -127,7 +127,7 @@ public class Dictionary {
         this.accessory = accessory;
     }
 
-    @OneToMany()
+    @OneToMany(mappedBy="serviceType")
     public Set<Service> getServices() {
         return serviceType;
     }

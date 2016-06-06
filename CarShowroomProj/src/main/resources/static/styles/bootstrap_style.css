@@ -2,7 +2,7 @@
 .btn{
     color:  #EFEFEF;
     background-color: #FF530D;
-    border-radius: 0%;
+    /*border-radius: 0%;*/
 }
 .btn:hover{
     background-color: #3F5765;

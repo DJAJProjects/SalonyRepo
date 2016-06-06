@@ -15,4 +15,7 @@ public class Data {
     public static int directorId;
     public static String adminValue = "Admininstrator";
     public static String directorValue = "Dyrektor";
+    public static String workerModuleValue = "Pracownicy";
+    public static String showroomModuleValue = "Salony";
+
 }

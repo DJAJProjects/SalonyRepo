@@ -43,7 +43,7 @@ public class WorkerWebController extends  BaseWebController {
             if (Data.user == null) {
                 model.asMap().clear();
                 model.addAttribute("userNotLoggedIn", true);
-            } else if (!privilegesController.getReadPriv("Pracownicy", Data.user)) {
+            } else if (!privilegesController.getReadPriv(Data.workerModuleValue, Data.user)) {
                 model.asMap().clear();
                 model.addAttribute("forbiddenAccess", true);
             } else {

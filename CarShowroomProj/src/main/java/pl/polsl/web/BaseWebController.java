@@ -24,8 +24,8 @@ public class BaseWebController {
     }
 
     protected void refreshMenuPrivileges(Model model){
-        model.addAttribute("workersVisible", privilegesController.getReadPriv("Pracownicy", Data.user));
-        model.addAttribute("showroomsVisible", privilegesController.getReadPriv("Salony", Data.user));
+        model.addAttribute("workersVisible", privilegesController.getReadPriv(Data.workerModuleValue, Data.user));
+        model.addAttribute("showroomsVisible", privilegesController.getReadPriv(Data.showroomModuleValue, Data.user));
         model.addAttribute("contractsVisible", privilegesController.getReadPriv("Sprzedaże", Data.user));
         model.addAttribute("contractorsVisible", privilegesController.getReadPriv("Klienci", Data.user));
         model.addAttribute("invoicesVisible", privilegesController.getReadPriv("Faktury", Data.user));
