@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.polsl.Data;
 import pl.polsl.model.Contractor;
+import pl.polsl.model.Privileges;
 import pl.polsl.model.Worker;
 import pl.polsl.repository.WorkersRepository;
 
@@ -31,6 +32,12 @@ public class WorkersController {
 
     @Autowired
     private WorkersRepository workersRepository;
+
+    @Autowired
+    private PrivilegesController privilegesController;
+
+    @Autowired
+    private WorkersPrivilegesController workersPrivilegesController;
 
     @Autowired
     private DictionaryController dictionaryController;
@@ -62,19 +69,41 @@ public class WorkersController {
 
     public Worker addWorker(boolean error, String name, String surname, int payment, Date dateHired, int position, int showroom, String login, String password) {
         MessageDigest md = null;
+        Worker retWorker = null;
         try {
             md = MessageDigest.getInstance("SHA");
             String data = password;
             byte[] dataDigest = md.digest(data.getBytes());
             Worker worker = new Worker(name,surname,payment, dateHired,dictionaryController.findOne(position),showroomsController.findOne(showroom),login, password);
             if(error)
-                return worker;
+                retWorker = worker;
             else
-                return workersRepository.save(worker);
+                retWorker = workersRepository.save(worker);
+
+            //Dodawanie domyslnych uprawnien
+            Integer[] privKeys = null;
+            String posValue = retWorker.getPosition().getValue();
+
+            if( posValue.equals(Data.servicemanValue))
+                privKeys = Data.defServicemanPrivKeys;
+            else if( posValue.equals(Data.salesmanValue))
+                privKeys = Data.defSalesmanPrivKeys;
+            else if( posValue.equals(Data.directorValue))
+                privKeys = Data.defDirectorPrivKeys;
+            else if( posValue.equals(Data.adminValue))
+                privKeys = Data.defAdminPrivKeys;
+            else return retWorker;
+
+            for(int privKey : privKeys){
+                Privileges priv = privilegesController.findOne(privKey);
+                workersPrivilegesController.addWorkersPrivileges(retWorker, priv);
+            }
+
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
             return null;
         }
+        return retWorker;
     }
 
     public Worker updateWorker(boolean error, int id, String name, String surname, int payment, Date dateHired, int position, int showroom) {
