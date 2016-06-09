@@ -54,17 +54,12 @@ public class CarsWebController extends BaseWebController {
     @RequestMapping(value = "/carsDetails", method = RequestMethod.GET)
     public String carsDetails(Model model) {
 
-        System.out.println("carDetails");
-
         model.addAttribute("controlsPanelVisible", true);
         model.addAttribute("cars",carsController.findAllCars());
         model.addAttribute("carNames", dictionaryController.findAllCarName());
         model.addAttribute("showrooms", showroomsController.findAll());
-        model.addAttribute("accessory", accessoriesController.findAll());
+        model.addAttribute("accessory", accessoriesController.findFreeAccessories());
         model.addAttribute("chosenAccessories",accessorySet);
-
-        //GDY TRUE TO WYWALA NIE MOŻNA POBRAĆ COST
-        //PAMIĘTAJ TO JAKOŚ OBEJŚĆ ŻEBY USER NIE MÓGŁ EDYTOWAĆ A WARTOŚĆ BYŁA POBIERANA
         model.addAttribute("editCostDisabled",false);
 
         if(viewMode == ViewMode.INSERT) {
@@ -78,7 +73,6 @@ public class CarsWebController extends BaseWebController {
             }
         } else if(viewMode == ViewMode.EDIT) {
             model.addAttribute("controlsDisabled", false);
-            model.addAttribute("controlsCostDisabled",false);
             model.addAttribute("disabledOrdered", 0);
         } else if(viewMode == ViewMode.VIEW_ALL) {
             model.addAttribute("controlsDisabled", true);
@@ -87,6 +81,13 @@ public class CarsWebController extends BaseWebController {
         }
 
         model.addAttribute("car",car);
+        if(viewMode == ViewMode.INSERT || (viewMode == ViewMode.EDIT && flag)) {
+            model.addAttribute("controlsDisabledPart1", true);
+        } else if(viewMode == ViewMode.EDIT &&  !flag) {
+            model.addAttribute("controlsCostDisabled",true);
+        } else if(viewMode == ViewMode.VIEW_ALL) {
+            model.addAttribute("controlsDisabledPart1", true);
+        }
         System.out.println("order:" + car.getOrdered());
         model.addAttribute("carNameId",car.getCarName().getId());
         model.addAttribute("showroomId",car.getShowroom().getId());
@@ -145,14 +146,13 @@ public class CarsWebController extends BaseWebController {
     }
 
     @RequestMapping(value = "/modifyCar1", method = RequestMethod.POST)
-    public String modifyCar1(Model model, RedirectAttributes redirectAttributes, @RequestParam("name")int name,
+    public String modifyCar1(RedirectAttributes redirectAttributes, @RequestParam("name")int name,
                              @RequestParam("prodDate")Date prodDate,@RequestParam("showroom")int showroom) {
         car.setCarName(dictionaryController.findOne(name));
         car.setProdDate(prodDate);
         car.setShowroom(showroomsController.findOne(showroom));
         car.setCost(Integer.parseInt(dictionaryController.findOne(name).getValue2()));
         flag = true;
-        model.addAttribute("controlsCostDisabled",false);
 
         return "redirect:/carsDetails";
     }

@@ -70,6 +70,10 @@ public class DictionaryController {
         return dictionaryRepository.findAllTheSameType("service_type");
     }
 
+    public List<Dictionary> findAllSubservice() {
+        return dictionaryRepository.findAllTheSameType("subservice_type");
+    }
+
     public List<String> findAllTypes() { return dictionaryRepository.findAllTypes();
     }
 

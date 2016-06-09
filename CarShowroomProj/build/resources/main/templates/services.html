@@ -3,47 +3,58 @@
       xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <title>Serwis</title>
+    <script type="text/javascript" src="../static/javascript/validation.js" th:src="@{/../javascript/validation.js}"></script>
 </head>
 <body>
 
 <div layout:fragment="main" style="margin: 0 auto; max-width: 1000px;">
     <div class="btn-group" role="group" aria-label="..." style="margin: 20px 0;">
-        <button type="button" class="btn btn-default"><a href="services.html" th:href="@{/addNewService}">Dodaj serwis</a></button>
+        <button type="button" class="btn btn-default"><a href="services.html" th:href="@{/addNewService}+'#anch'">Dodaj serwis</a></button>
     </div>
     <div>
         <div class="panel panel-default">
             <!-- Default panel contents -->
-            <div class="panel-heading">Przeprowadzone serwisy:</div>
+            <div class="panel-heading panel-heading-34">Przeprowadzone serwisy
+                <div class="form-group pull-right">
+                    <input type="text" class="search form-control" placeholder="Wyszukaj w tabeli"/>
+                </div>
+                <span class="counter pull-right"></span>
+            </div>
             <!-- Table -->
-            <table class="table">
+            <table class="table tablesorter table-hover table-bordered results" id="mytable">
                 <!-- head row -->
-                <tr style="font-weight: bold;">
-                    <td class="col-md-2">Nazwa</td>
-                    <td class="col-md-2">Serwisant</td>
-                    <td class="col-md-2">Samochód</td>
-                    <td class="col-md-2">Akcesoria</td>
-                    <td class="con-md-2">Cena usługi [PLN]</td>
-                    <td class="con-md-2">Data wykonania</td>
-                    <td class="col-md-2">Edytuj</td>
-                    <td class="col-md-2">Usuń</td>
-                    <td class="col-md-2">Podgląd</td>
-                </tr>
-                <tr th:each="service : ${services}">
-                    <td th:text="${service.serviceType.value}"></td>
-                    <td th:text="${service.serviceman.surname}"></td>
-                    <td th:text="${service.car.carName.value}"></td>
-                    <td th:text="${service.accessory.accessory.value}"></td>
-                    <td th:text="${service.cost}"></td>
-                    <td th:text="${service.dateConducted}"></td>
-                    <td><a href="services.html" th:href="@{'/editService/'+${service.id}}"><span class="glyphicon glyphicon-edit" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Edytuj"></span></a></td>
-                    <td><a href="services.html" th:href="@{'/deleteService/'+${service.id}}"><span class="glyphicon glyphicon-remove" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Usuń"></span></a></td>
-                    <td><a href="services.html" th:href="@{'/viewService/'+${service.id}}"><span class="glyphicon glyphicon-eye-open" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Podgląd"></span></a></td>
-                </tr>
+                <thead>
+                    <tr style="font-weight: bold; margin: 0 auto;">
+                        <td class="col-md-2">Nazwa</td>
+                        <td class="col-md-2">Serwisant</td>
+                        <td class="col-md-2">Samochód</td>
+                        <td class="col-md-2">Akcesorium</td>
+                        <td class="con-md-2">Cena usługi [PLN]</td>
+                        <td class="con-md-2">Data wykonania</td>
+                        <td class="col-md-1 center-item">Edytuj</td>
+                        <td class="col-md-1 center-item">Usuń</td>
+                        <td class="col-md-1 center-item">Podgląd</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="service : ${services}">
+                        <td th:text="${service.serviceType.value}"></td>
+                        <td th:text="${service.serviceman.surname}"></td>
+                        <td th:text="${service.car.carName.value}"></td>
+                        <td th:text="${service.accessory.accessory.value}"></td>
+                        <td th:text="${service.cost}"></td>
+                        <td th:text="${service.dateConducted}"></td>
+                        <td class="center-item"><a href="services.html" th:href="@{'/editService/'+${service.id}+'#anch'}"><span class="glyphicon glyphicon-edit" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Edytuj"></span></a></td>
+                        <td class="center-item"><a href="services.html" th:href="@{'/deleteService/'+${service.id}}"><span class="glyphicon glyphicon-remove" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Usuń"></span></a></td>
+                        <td class="center-item"><a href="services.html" th:href="@{'/viewService/'+${service.id}+'#anch'}"><span class="glyphicon glyphicon-eye-open" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Podgląd"></span></a></td>
+                    </tr>
+                </tbody>
             </table>
         </div>
     </div>
 
     <!--Modify service-->
+    <a name="anch"></a>
     <form th:if="${controlsPanelVisible}" class="form-horizontal" role="form" method="post" action="/modifyService" th:object="${service}">
         <input type="hidden" style="display: none;" name="id" th:field="*{id}"/>
         <div class="form-group">
@@ -52,7 +63,7 @@
                 <select type="text" name="type" list="serviceList" required="required" class="form-control" aria-label="...">
                     <datalist id="serviceList">
                         <option th:disabled="${controlsDisabled}"></option>
-                        <option th:disabled="${controlsDisabled}" th:each="type : ${types}" th:value="${type.id}" th:text="${type.value}" th:selected="${type.id}==${serviceType.id}"></option>
+                        <option th:disabled="${controlsDisabled}" th:each="type : ${types}" th:value="${type.id}" th:text="${type.value}" th:selected="${type}==${serviceType}"></option>
                     </datalist>
                 </select>
             </div>
@@ -63,7 +74,7 @@
                 <select type="text" name="idServiceman" placeholder="Wybierz serwisanta" list="servicemansList" required="required" class="form-control" aria-label="...">
                     <datalist id="servicemansList">
                         <option th:disabled="${controlsDisabled}"></option>
-                        <option th:disabled="${controlsDisabled}" th:each="serviceman : ${servicemans}" th:value="${serviceman.id}" th:text="${serviceman.surname}" th:selected="${serviceman.id}==${serviceServiceman.id}"></option>
+                        <option th:disabled="${controlsDisabled}" th:each="serviceman : ${servicemans}" th:value="${serviceman.id}" th:text="${serviceman.surname}" th:selected="${serviceman}==${serviceServiceman}"></option>
                     </datalist>
                 </select>
             </div>
@@ -74,7 +85,7 @@
                 <select type="text" name="idCar" placeholder="Wybierz samochód" list="carsList" required="required" class="form-control" aria-label="...">
                     <datalist id="carsList">
                         <option th:disabled="${controlsDisabled}"></option>
-                        <option th:disabled="${controlsDisabled}" th:each="car : ${cars}" th:value="${car.id}" th:text="${car.carName.value}" th:selected="${car.id}==${serviceCar.id}"></option>
+                        <option th:disabled="${controlsDisabled}" th:each="car : ${cars}" th:value="${car.id}" th:text="${car.carName.value}" th:selected="${car}==${serviceCar}"></option>
                     </datalist>
                 </select>
             </div>
@@ -85,7 +96,7 @@
                 <select type="text" name="idAccessory" placeholder="Wybierz część" list="partsList" required="required" class="form-control" aria-label="...">
                     <datalist id="partsList">
                         <option th:disabled="${controlsDisabled}"></option>
-                        <option th:disabled="${controlsDisabled}" th:each="accessory : ${accessories}" th:value="${accessory.id}" th:text="${accessory.accessory.value}" th:selected="${accessory.id}==${serviceAccessory.id}">></option>
+                        <option th:disabled="${controlsDisabled}" th:each="accessory : ${accessories}" th:value="${accessory.id}" th:text="${accessory.accessory.value}" th:selected="${accessory}==${serviceAccessory}">></option>
                     </datalist>
                 </select>
             </div>
@@ -100,8 +111,8 @@
         <div class="form-group">
             <label class="control-label col-sm-2">Data wykonania serwisu:</label>
             <div class="col-sm-10">
-                <!--PAMIETAJ O DODANIU SPR AKTUALNEJ DATY-->
-                <input th:disabled="${controlsDisabled}" th:field="*{dateConducted}" name="dateConducted" type="date" class="form-control" min="2000-01-01" max="2017-01-01" required="required"/>
+                <input id="date" onfocus="loadCurrentDate();" th:disabled="${controlsDisabled}" th:field="*{dateConducted}"
+                       name="dateConducted" type="date" class="form-control" min="2000-01-01" required="required"/>
             </div>
         </div>
         <div class="form-group">

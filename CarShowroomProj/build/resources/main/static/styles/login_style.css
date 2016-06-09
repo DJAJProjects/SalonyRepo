@@ -1,0 +1,42 @@
+/*
+Panel logowania
+*/
+/*Tło panelu */
+.main-login-view{
+    margin: 0 auto;
+    background-size: cover;
+    background-attachment:fixed;
+    background-image: url(../image/volvo.jpg) ;
+    background-position:  center center;
+    background-repeat: no-repeat;
+    color:#3F5765;
+}
+
+/* Okienko do logowania */
+.main-login-view .form-content{
+    background-color: rgba(255,255,255,0.8);
+    border: 1px solid #2B3A42;
+    padding: 40px 30px;
+}
+/* Pozycja okienka do logowania */
+.main-login-view .form-signin{
+    position: absolute;
+    float: right;
+    max-width:300px;
+    bottom: 10%;
+    right: 10%;
+}
+/* Nagłówek */
+.main-login-view h2{
+    margin-top: 0;
+    padding-top: 0;
+    padding-bottom: 10px;
+    text-align: center;
+}
+/* Pusta linia */
+.main-login-view br{
+    margin:0;
+    padding: 0;
+    border: 0;
+    height: 5px;
+}

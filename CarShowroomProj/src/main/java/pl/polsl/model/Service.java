@@ -19,6 +19,7 @@ public class Service {
     private Accessory accessory;
     private Integer cost;
     private Date dateConducted;
+    private Dictionary subserviceType;
 
     public Service() {
     }
@@ -38,6 +39,25 @@ public class Service {
         this.serviceman = serviceman;
         this.car = car;
         this.accessory = accessory;
+        this.cost = cost;
+        this.dateConducted = dateConducted;
+    }
+
+    public Service(int id, Dictionary type, Worker serviceman, Car car, Dictionary subservice, int cost, Date dateConducted) {
+        this.id = id;
+        this.serviceType = type;
+        this.serviceman = serviceman;
+        this.car = car;
+        this.subserviceType = subservice;
+        this.cost = cost;
+        this.dateConducted = dateConducted;
+    }
+
+    public Service(Dictionary type, Worker serviceman, Car car, Dictionary subservice, int cost, Date dateConducted) {
+        this.serviceType = type;
+        this.serviceman = serviceman;
+        this.car = car;
+        this.subserviceType = subservice;
         this.cost = cost;
         this.dateConducted = dateConducted;
     }
@@ -64,7 +84,7 @@ public class Service {
     }
 
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn (name = "id_accessory")
     public Accessory getAccessory() {
         return accessory;
@@ -115,6 +135,17 @@ public class Service {
 
     public void setCost(Integer cost) {
         this.cost = cost;
+    }
+
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn (name = "id_subtype")
+    public Dictionary getSubserviceType() {
+        return subserviceType;
+    }
+
+    public void setSubserviceType(Dictionary type) {
+        this.subserviceType = type;
     }
 
 }

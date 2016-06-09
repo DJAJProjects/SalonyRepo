@@ -13,6 +13,7 @@ public class Accessory {
     private Dictionary accessory;
     private Integer cost;
     private Car car;
+    private Integer assemblyCost;
 //    private Showroom showroom;
 
     public Accessory() {
@@ -29,11 +30,25 @@ public class Accessory {
         this.cost = cost;
     }
 
+    public Accessory(Dictionary accessory, Integer cost, Integer assemblyCost) {
+        this.accessory = accessory;
+        this.cost = cost;
+        this.assemblyCost = assemblyCost;
+    }
+
     public Accessory(int id, Contract contract, Dictionary accessory, Integer cost) {
         this.id = id;
         this.contract = contract;
         this.accessory = accessory;
         this.cost = cost;
+    }
+
+    public Accessory(int id, Contract contract, Dictionary accessory, Integer cost, Integer assemblyCost) {
+        this.id = id;
+        this.contract = contract;
+        this.accessory = accessory;
+        this.cost = cost;
+        this.assemblyCost = assemblyCost;
     }
 
     @Id
@@ -87,6 +102,15 @@ public class Accessory {
         this.car = car;
     }
 
+    @Basic
+    @Column(name = "assembly_cost")
+    public Integer getAssemblyCost() {
+        return assemblyCost;
+    }
+
+    public void setAssemblyCost(Integer assemblyCost) {
+        this.assemblyCost = assemblyCost;
+    }
 
 //    @Basic
 //    @ManyToOne

@@ -4,6 +4,7 @@ import jersey.repackaged.com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import pl.polsl.Data;
 import pl.polsl.model.*;
 import pl.polsl.repository.*;
 
@@ -12,6 +13,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -49,6 +51,8 @@ public class ReportsController {
     public List<Report> findAllRaports() {
         return Lists.newArrayList(reportsRepository.findAll());
     }
+
+
 
     @GET
     @Path("/{id}")
@@ -92,5 +96,19 @@ public class ReportsController {
         content += "Zysk: " + profit;
 
         return reportsRepository.save(new Report(name, targetShowroom,content, dateBeggining, dateEnd));
+    }
+
+    public List<Report> findReportsRelatedToWorker(Worker worker){
+        List<Report> retList;
+        String position = worker.getPosition().getValue();
+        if( position.equals(Data.directorValue))
+            retList = reportsRepository.findRelatedToDirector(worker);
+        else if(position.equals(Data.adminValue))
+            retList = findAllRaports();
+        else retList = null;
+
+        if(retList == null)retList = new ArrayList<Report>();
+
+        return retList;
     }
 }

@@ -51,4 +51,15 @@ import java.util.List;
             " AND wp.privileges.module.value = :moduleName")
     public List<WorkersPrivileges> getReadPriv(@Param("moduleName")String moduleName,
                                                  @Param("worker")Worker worker);
+
+    @Query(value = "SELECT p " +
+            " FROM Privileges p" +
+            " WHERE exists( " +
+                "SELECT wp FROM WorkersPrivileges wp " +
+                "WHERE wp.privileges = p " +
+                "AND wp.worker = :worker)" +
+            "GROUP BY p.id")
+    public List<Privileges> getPrivsForWorker(@Param("worker")Worker worker);
+
+
 }

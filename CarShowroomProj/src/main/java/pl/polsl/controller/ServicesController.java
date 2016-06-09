@@ -54,18 +54,28 @@ public class ServicesController {
         servicesRepository.delete(id);
     }
 
-    public Service addService(int type, int idServiceman, int idCar, int idAccessory, int cost, Date dateConducted) {
-        return servicesRepository.save(new Service(dictionaryRepository.findOne(type), workersRepository.findOne(idServiceman),
-                carsRepository.findOne(idCar),accessoriesRepository.findOne(idAccessory),cost,dateConducted));
+    public Service addService(int type, int idServiceman, int idCar, int idAccessory, int idSubservice, int cost, Date dateConducted) {
+
+        if(idAccessory != 0) {
+            return servicesRepository.save(new Service(dictionaryRepository.findOne(type), workersRepository.findOne(idServiceman),
+                    carsRepository.findOne(idCar),accessoriesRepository.findOne(idAccessory),cost,dateConducted));
+        } else {
+            return servicesRepository.save(new Service(dictionaryRepository.findOne(type), workersRepository.findOne(idServiceman),
+                    carsRepository.findOne(idCar),dictionaryRepository.findOne(idSubservice),cost,dateConducted));
+        }
     }
 
-    public Service editService(int id, int type, int idServiceman, int idCar, int idAccessory, int cost, Date dateConducted) {
+    public Service editService(int id, int type, int idServiceman, int idCar, int idAccessory, int idSubservice, int cost, Date dateConducted) {
         Service service = servicesRepository.findOne(id);
 
         service.setServiceType(dictionaryRepository.findOne(type));
         service.setServiceman(workersRepository.findOne(idServiceman));
         service.setCar(carsRepository.findOne(idCar));
-        service.setAccessory(accessoriesRepository.findOne(idAccessory));
+        if(idAccessory != 0) {
+            service.setAccessory(accessoriesRepository.findOne(idAccessory));
+        } else {
+            service.setSubserviceType(dictionaryRepository.findOne(idSubservice));
+        }
         service.setCost(cost);
         service.setDateConducted(dateConducted);
 

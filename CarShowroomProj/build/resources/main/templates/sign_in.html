@@ -2,27 +2,33 @@
 <html xmlns:layout="http://www.w3.org/1999/xhtml" layout:decorator="index">
 <head>
     <title>Logowanie</title>
+    <link rel="stylesheet" type="text/css" href="../static/styles/login_style.css" th:href="@{/../styles/login_style.css}"/>
+
 </head>
-<body>
-<div layout:fragment="content" style="margin: 0 auto; max-width: 1000px;">
-    <form class="form-signin" action="/signIn" method="post">
-        <h2 class="form-signin-heading">Logowanie</h2>
-        <label class="sr-only">Login:</label>
-        <input name="login" type="text" class="form-control" placeholder="Podaj login"/>
-        <br/>
-        <label class="sr-only">Hasło</label>
-        <input type="password" name="password" class="form-control" placeholder="Podaj hasło"/>
-        <br/>
-        <div class="checkbox">
-            <label>
-                <input type="checkbox" name="remember" value="remember-me"/> Zapamiętaj mnie
-            </label>
-        </div>
-        <br/>
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Zaloguj</button>
-    </form>
-    <br/>
-        <div th:if="${error}" class="label label-danger">Podano niepoprawne dane</div>
+<body class="main-login-view">
+<div layout:fragment="content" style="display: none;"></div>
+<div layout:fragment="main" style="margin: 0 auto; max-width:1000px;">
+
+        <form class="form-signin" action="/signIn" method="post">
+            <div class="form-content">
+                <h2> <!--class="form-signin-heading">-->LOGOWANIE</h2>
+                <!--<label class="sr-only">Login:</label>-->
+                <input name="login" type="text" class="form-control" placeholder="Podaj login" required="required"/>
+                <br/>
+                <!--<label class="sr-only">Hasło</label>-->
+                <input type="password" name="password" class="form-control" placeholder="Podaj hasło" required="required"/>
+                <!--<div class="checkbox">-->
+                    <!--<label>-->
+                        <!--<input type="checkbox" name="remember" value="remember-me"/> Zapamiętaj mnie-->
+                    <!--</label>-->
+                <!--</div>-->
+                <br/>
+                <button class="btn btn-lg btn-block" type="submit">Zaloguj</button>
+                <!--<div th:if="${error}" class="label label-danger">Podano niepoprawne dane</div>-->
+                <div th:if="${error}" class="label label-danger">Podano niepoprawne dane</div>
+            </div>
+        </form>
+
 
 </div> <!-- /container -->
 </body>

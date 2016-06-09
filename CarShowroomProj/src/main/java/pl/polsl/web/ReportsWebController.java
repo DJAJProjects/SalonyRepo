@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import pl.polsl.Data;
 import pl.polsl.ViewMode;
 import pl.polsl.controller.*;
 import pl.polsl.model.Report;
@@ -29,7 +30,7 @@ public class ReportsWebController extends BaseWebController {
 
     @RequestMapping(value ="/reports")
     public String getReports(Model model){
-        model.addAttribute("reports", reportsController.findAllRaports());
+        model.addAttribute("reports", reportsController.findReportsRelatedToWorker(Data.user));
         refreshMenuPrivileges(model);
         return "reports";
     }
@@ -43,7 +44,7 @@ public class ReportsWebController extends BaseWebController {
 
         model.addAttribute("showroom", report.getShowroom().getId());
         model.addAttribute("report", report);
-        model.addAttribute("reports", reportsController.findAllRaports());
+        model.addAttribute("reports", reportsController.findReportsRelatedToWorker(Data.user));
         model.addAttribute("showrooms", showroomsController.findAll());
         model.addAttribute("controlsPanelVisible", true);
         model.addAttribute("controlsDisabled", true);
@@ -61,7 +62,7 @@ public class ReportsWebController extends BaseWebController {
         model.addAttribute("report", report);
         model.addAttribute("controlsPanelVisible", true);
         model.addAttribute("controlsDisabled", false);
-        model.addAttribute("reports", reportsController.findAllRaports());
+        model.addAttribute("reports", reportsController.findReportsRelatedToWorker(Data.user));
         model.addAttribute("showrooms", showroomsController.findAll());
         return "reports";
     }
