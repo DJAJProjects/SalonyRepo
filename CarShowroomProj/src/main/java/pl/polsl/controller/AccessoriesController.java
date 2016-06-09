@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.*;
 
 /**
  * Created by Aleksandra on 2016-04-07.
@@ -56,16 +57,17 @@ public class AccessoriesController {
         accessoriesRepository.delete(id);
     }
 
-    public Accessory addAccessory(int name, int cost) {
-        return accessoriesRepository.save(new Accessory(dictionaryRepository.findOne(name),cost));
+    public Accessory addAccessory(int name, int cost, int assemblyCost) {
+        return accessoriesRepository.save(new Accessory(dictionaryRepository.findOne(name),cost, assemblyCost));
     }
 
-    public Accessory editAccessory(int id, int idName, int cost) {
+    public Accessory editAccessory(int id, int idName, int cost, int assemblyCost) {
 
         Accessory accessory = accessoriesRepository.findOne(id);
 
         accessory.setAccessory(dictionaryRepository.findOne(idName));
         accessory.setCost(cost);
+        accessory.setAssemblyCost(assemblyCost);
         return accessoriesRepository.save(accessory);
     }
 
@@ -84,5 +86,31 @@ public class AccessoriesController {
         }
         accessoriesSet.removeAll(properList);
         return accessoriesSet;
+    }
+
+    public Set<Accessory> findFreeAccessories() {
+        List<Accessory> allAccessory = findAll();
+        Set<Accessory> freeAccesssory = new HashSet<>();
+
+        for(int i = 0; i < allAccessory.size(); i++) {
+            if(allAccessory.get(i).getContract() == null && allAccessory.get(i).getCar() == null) {
+                freeAccesssory.add(allAccessory.get(i));
+            }
+        }
+
+        return freeAccesssory;
+    }
+
+    public Set<Accessory> findAllForOneCar(int carId) {
+        List<Accessory> allAccessory = findAll();
+        Set<Accessory> carAccesssory = new HashSet<>();
+
+        for(int i = 0; i < allAccessory.size(); i++) {
+            if(allAccessory.get(i).getCar().getId() == carId) {
+                carAccesssory.add(allAccessory.get(i));
+            }
+        }
+
+        return carAccesssory;
     }
 }

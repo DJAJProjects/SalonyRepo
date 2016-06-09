@@ -15,6 +15,7 @@ public class Dictionary {
     private String type;
     private String value;
     private String value2;
+    private String value3;
     private Set<Showroom> country;
     private Set<Showroom> city;
     private Set<Invoice> invoiceType;
@@ -30,6 +31,14 @@ public class Dictionary {
         this.type = type;
         this.value = value;
         this.value2 = value2;
+    }
+
+    public Dictionary(int id, String type, String value, String value2, String value3) {
+        this.id = id;
+        this.type = type;
+        this.value = value;
+        this.value2 = value2;
+        this.value3 = value3;
     }
 
     @Id
@@ -71,6 +80,16 @@ public class Dictionary {
 
     public void setValue2(String value2) {
         this.value2 = value2;
+    }
+
+    @Basic
+    @Column(name = "value3")
+    public String getValue3() {
+        return value3;
+    }
+
+    public void setValue3(String value3) {
+        this.value3 = value3;
     }
 
     @JsonIgnore
