@@ -23,25 +23,27 @@
             <table class="table tablesorter table-hover table-bordered results" id="mytable">
                 <!-- head row -->
                 <thead>
-                    <tr style="font-weight: bold; margin: 0 auto;">
-                        <td class="col-md-5">Nazwa</td>
-                        <td class="con-md-5">Cena [PLN]</td>
-                        <td class="col-md-1 center-item">Edytuj</td>
-                        <td class="col-md-1 center-item">Usuń</td>
-                        <td class="col-md-1 center-item">Podgląd</td>
-                    </tr>
-                    <tr class="warning no-result">
-                        <td colspan="8"><i class="fa fa-warning"></i> No result</td>
-                    </tr>
+                <tr style="font-weight: bold; margin: 0 auto;">
+                    <td class="col-md-5">Nazwa</td>
+                    <td class="con-md-5">Cena [PLN]</td>
+                    <td class="con-md-5">Koszt montażu</td>
+                    <td class="col-md-1 center-item">Edytuj</td>
+                    <td class="col-md-1 center-item">Usuń</td>
+                    <td class="col-md-1 center-item">Podgląd</td>
+                </tr>
+                <tr class="warning no-result">
+                    <td colspan="8"><i class="fa fa-warning"></i> No result</td>
+                </tr>
                 </thead>
                 <tbody>
-                    <tr th:each="accessory : ${accessories}">
-                        <td th:text="${accessory.accessory.value}"></td>
-                        <td th:text="${accessory.cost}"></td>
-                        <td class="center-item"><a href="accessories.html" th:href="@{'/editAccessory/'+${accessory.id}+'#anch'}"><span class="glyphicon glyphicon-edit" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Edytuj"></span></a></td>
-                        <td class="center-item"><a href="accessories.html" th:href="@{'/deleteAccessory/'+${accessory.id}}"><span class="glyphicon glyphicon-remove" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Usuń"></span></a></td>
-                        <td class="center-item"><a href="accessories.html" th:href="@{'/viewAccessory/'+${accessory.id}+'#anch'}"><span class="glyphicon glyphicon-eye-open" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Podgląd"></span></a></td>
-                    </tr>
+                <tr th:each="accessory : ${accessories}">
+                    <td th:text="${accessory.accessory.value}"></td>
+                    <td th:text="${accessory.cost}"></td>
+                    <td th:text="${accessory.assemblyCost}"></td>
+                    <td class="center-item"><a href="accessories.html" th:href="@{'/editAccessory/'+${accessory.id}+'#anch'}"><span class="glyphicon glyphicon-edit" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Edytuj"></span></a></td>
+                    <td class="center-item"><a href="accessories.html" th:href="@{'/deleteAccessory/'+${accessory.id}}"><span class="glyphicon glyphicon-remove" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Usuń"></span></a></td>
+                    <td class="center-item"><a href="accessories.html" th:href="@{'/viewAccessory/'+${accessory.id}+'#anch'}"><span class="glyphicon glyphicon-eye-open" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Podgląd"></span></a></td>
+                </tr>
                 </tbody>
             </table>
         </div>
@@ -49,29 +51,50 @@
 
     <!--Modify accessory-->
     <a name="anch"></a>
-    <form th:if="${controlsPanelVisible}" class="form-horizontal" role="form" method="post" action="/modifyAccessory" th:object="${accessory}">
-        <input type="hidden" style="display: none;" name="id" th:field="*{id}"/>
+    <form th:if="${controlsPanelVisible}" class="form-horizontal" role="form" method="post" action="/modifyAccessory#anch" th:object="${accessory}">
         <div class="form-group">
             <label class="control-label col-sm-2">Nazwa:</label>
             <div class="col-sm-10">
                 <select type="text" name="name" list="accessoryList" required="required" class="form-control" aria-label="...">
                     <datalist id="accessoryList">
-                        <option th:disabled="${controlsDisabled}"></option>
-                        <option th:disabled="${controlsDisabled}" th:each="accessoryName : ${accessoryNames}" th:value="${accessoryName.id}" th:text="${accessoryName.value}" th:selected="${accessoryName.id}==${accessoryNameId}"></option>
+                        <option th:disabled="${controlsDisabledPart1}"></option>
+                        <option th:disabled="${controlsDisabledPart1}" th:each="accessoryName : ${accessoryNames}" th:value="${accessoryName.id}" th:text="${accessoryName.value}" th:selected="${accessoryName.id}==${accessoryNameId}"></option>
+                    </datalist>
+                </select>
+            </div>
+        </div>
+        <div class="col-sm-offset-2 col-sm-10">
+            <button th:disabled="${controlsDisabledPart1}" type="submit" class="btn btn-default">Ok</button>
+        </div>
+    </form>
+    <form th:if="${controlsPanelVisible}" class="form-horizontal" role="form" method="post" action="/modifyAccessoryCost#anch" th:object="${accessory}">
+        <div class="form-group">
+            <label class="control-label col-sm-2">Cena [PLN]:</label>
+            <div class="col-sm-10">
+                <select type="text" name="cost" placeholder="Wybierz cenę" list="costList" required="required" class="form-control" aria-label="...">
+                    <datalist id="costList">
+                        <option th:disabled="${controlsDisabledPart2}"></option>
+                        <option th:disabled="${controlsDisabledPart2}" th:each="c : ${costList}" th:value="${c}" th:text="${c}" th:selected="${c}==${cost}"></option>
                     </datalist>
                 </select>
             </div>
         </div>
         <div class="form-group">
-            <label class="control-label col-sm-2">Cena [PLN]:</label>
+            <label class="control-label col-sm-2">Koszt montażu [PLN]:</label>
             <div class="col-sm-10">
-                <input placeholder="Wprowadź cenę" th:disabled="${controlsDisabled}" th:field="*{cost}" name="cost" type="number" min="0" max="999999" class="form-control" required="required"/>
+                <select type="text" name="assemblyCost" list="assemblyCostList" required="required" class="form-control" aria-label="...">
+                    <datalist id="assemblyCostList">
+                        <option th:disabled="${controlsDisabledPart2}"></option>
+                        <option th:disabled="${controlsDisabledPart2}" th:each="c : ${assemblyCostList}" th:value="${c}" th:text="${c}" th:selected="${c}==${assemblyCost}"></option>
+                    </datalist>
+                </select>
             </div>
         </div>
+        <input type="hidden" style="display: none;" name="id" th:field="*{id}"/>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
-                <button type="submit" th:disabled="${controlsDisabled}" class="btn btn-default" >Akceptuj</button>
-                <button type="reset" th:disabled="${controlsDisabled}" class="btn btn-default">Anuluj zmiany</button>
+                <button type="submit" th:disabled="${controlsDisabledPart2}" class="btn btn-default" >Akceptuj</button>
+                <button type="reset" th:disabled="${controlsDisabledPart2}" class="btn btn-default">Anuluj zmiany</button>
             </div>
         </div>
     </form>

@@ -146,6 +146,22 @@
             </div>
         </div>
         <input th:unless="${controlsPasswordVisible}" type="hidden" th:field="*{password}" name="password" class="form-control" placeholder="Wprowadź hasło" required="required"/>
+        <form class="form-horizontal" role="form" method="post" action="/addPrivilege">
+            <div class="form-group">
+                <label class="control-label col-sm-2">Uprawnienia:</label>
+                <div class="col-sm-10">
+                    <select th:disabled="${disabledButtons}" name="privilege" class="form-control" aria-label="..." >
+                        <option th:value="-1" text="Uprawnienia:"></option>
+                        <option  th:each="c : ${privileges}" th:value="${c.id}" th:text="${c.name}" th:selected="${c.id}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button th:disabled="${disabledButtons}" type="submit" class="btn btn-default">Ok</button>
+                </div>
+            </div>
+        </form>
         <div class="form-group">
             <div class="col-sm-offset-4 col-sm-10">
                 <button onclick="validateActualDate()" type="submit" th:disabled="${controlsDisabled}" class="btn btn-default" >Akceptuj</button>
