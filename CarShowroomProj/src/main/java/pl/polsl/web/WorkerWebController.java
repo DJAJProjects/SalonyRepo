@@ -10,14 +10,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pl.polsl.Data;
 import pl.polsl.ViewMode;
-import pl.polsl.controller.DictionaryController;
-import pl.polsl.controller.PrivilegesController;
-import pl.polsl.controller.ShowroomsController;
-import pl.polsl.controller.WorkersController;
-import pl.polsl.model.Dictionary;
-import pl.polsl.model.Worker;
+import pl.polsl.controller.*;
+import pl.polsl.model.*;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,6 +25,7 @@ import java.util.stream.Collectors;
 public class WorkerWebController extends  BaseWebController {
 
     private ViewMode viewMode;
+    private ArrayList<Privileges> privilegesList;
 
     @Autowired
     private ShowroomsController showroomsController;
@@ -37,6 +35,9 @@ public class WorkerWebController extends  BaseWebController {
     private WorkersController workersController;
     @Autowired
     private PrivilegesController privilegesController;
+    @Autowired
+    private WorkersPrivilegesController workersPrivilegesController;
+
 
     @RequestMapping(value ="/worker")
     public String getWorkers(Model model){
@@ -98,11 +99,12 @@ public class WorkerWebController extends  BaseWebController {
         redirectAttributes.addFlashAttribute("controlsDisabled", true);
         redirectAttributes.addFlashAttribute("positionId", worker.getPosition().getId());
         if(worker.getShowroom()!=null)
-        redirectAttributes.addFlashAttribute("showroomId", worker.getShowroom().getId());
+            redirectAttributes.addFlashAttribute("showroomId", worker.getShowroom().getId());
         redirectAttributes.addFlashAttribute("positions", dictionaryController.findAllPositions());
         redirectAttributes.addFlashAttribute("showrooms", showroomsController.findAll());
         redirectAttributes.addFlashAttribute("controlsLoginVisible", true);
         redirectAttributes.addFlashAttribute("controlsPasswordVisible", false);
+        redirectAttributes.addFlashAttribute("privileges", privilegesController.findPrivilegesOfWorker(worker));
         return "redirect:/worker";
     }
 
@@ -130,6 +132,7 @@ public class WorkerWebController extends  BaseWebController {
         if(worker.getPosition().getId() == Data.directorId && worker.getShowroom()!=null){
             redirectAttributes.addFlashAttribute("positionDisabled", true);
         }
+        redirectAttributes.addFlashAttribute("privileges", privilegesController.findPrivilegesOfWorker(worker));
         return "redirect:/worker";
 
     }
@@ -174,10 +177,25 @@ public class WorkerWebController extends  BaseWebController {
                     error = "Niestety nie udało się dodać użytkownika do bazy";
             }
             worker = workersController.addWorker(true, name, surname, payment, dateHired, position, showroom, login, password);
+
+            if(worker != null){
+                for(Privileges priv: privilegesList){
+                    workersPrivilegesController.addWorkersPrivileges(worker, priv);
+                }
+            }
+
             redirectAttributes.addFlashAttribute("error", error);
             redirectAttributes.addFlashAttribute("worker", worker);
             return "redirect:/addWorker/";
         }
         return "redirect:/worker/";
     }
+
+    @RequestMapping(value ="/addPrivilege", method = RequestMethod.POST)
+    public String newPrivilege(RedirectAttributes redirectAttributes, @RequestParam("privilege") int privilege) {
+        Privileges priv = privilegesController.findOne(privilege);
+        privilegesList.add(priv);
+        return "redirect:/workers";
+    }
+
 }

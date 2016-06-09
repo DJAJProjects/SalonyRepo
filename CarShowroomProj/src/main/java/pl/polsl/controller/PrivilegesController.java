@@ -83,4 +83,9 @@ public class PrivilegesController {
         else return true;
     }
 
+    public List<Privileges> findPrivilegesOfWorker(Worker worker){
+        List<Privileges> ret =  privilegesRepository.getPrivsForWorker(worker);
+        return ret;
+    }
+
 }

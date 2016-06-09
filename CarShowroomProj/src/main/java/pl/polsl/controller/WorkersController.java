@@ -150,4 +150,8 @@ public class WorkersController {
 
         return retList;
     }
+
+    public List<Privileges> findPrivilegesOfWorker(Worker worker) {
+        return privilegesController.findPrivilegesOfWorker(worker);
+    }
 }
