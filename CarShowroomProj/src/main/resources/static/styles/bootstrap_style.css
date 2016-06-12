@@ -1,11 +1,11 @@
 /**Do bootstrapa*/
 .btn{
     color:  #EFEFEF;
-    background-color: #FF530D;
+    background-color: #3F5765;
     /*border-radius: 0%;*/
 }
 .btn:hover{
-    background-color: #3F5765;
+    background-color: #FF530D;
     color:  #EFEFEF;
 }
 .form-control {

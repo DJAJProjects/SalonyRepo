@@ -92,6 +92,8 @@ hr{
 .results tr[visible='false'],
 .no-result{
     display:none;
+    background-color: #FF530D;
+    color:  #EFEFEF;
 }
 
 .results tr[visible='true']{
@@ -120,4 +122,8 @@ hr{
 .empty{
     width:100%;
     heigth: 20px;
+}
+
+.no-result{
+    margin: 0;
 }
