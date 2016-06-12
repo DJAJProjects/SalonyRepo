@@ -4,6 +4,7 @@ package pl.polsl.controller;
 import jersey.repackaged.com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import pl.polsl.model.Accessory;
 import pl.polsl.model.Service;
 import pl.polsl.repository.*;
 
@@ -57,24 +58,41 @@ public class ServicesController {
     public Service addService(int type, int idServiceman, int idCar, int idAccessory, int idSubservice, int cost, Date dateConducted) {
 
         if(idAccessory != 0) {
-            return servicesRepository.save(new Service(dictionaryRepository.findOne(type), workersRepository.findOne(idServiceman),
-                    carsRepository.findOne(idCar),accessoriesRepository.findOne(idAccessory),cost,dateConducted));
+            Service service = new Service();
+            service.setServiceType(dictionaryRepository.findOne(type));
+            service.setServiceman(workersRepository.findOne(idServiceman));
+            service.setCar(carsRepository.findOne(idCar));
+            service.setAccessory(accessoriesRepository.findOne(idAccessory));
+            Accessory accessory = accessoriesRepository.findOne(idAccessory);
+            accessory.setCar(carsRepository.findOne(idCar));
+            accessoriesRepository.save(accessory);
+            service.setCost(cost);
+            service.setDateConducted(dateConducted);
+            return servicesRepository.save(service);
         } else {
             return servicesRepository.save(new Service(dictionaryRepository.findOne(type), workersRepository.findOne(idServiceman),
                     carsRepository.findOne(idCar),dictionaryRepository.findOne(idSubservice),cost,dateConducted));
         }
     }
 
-    public Service editService(int id, int type, int idServiceman, int idCar, int idAccessory, int idSubservice, int cost, Date dateConducted) {
+    public Service editService(int id, int type, int idServiceman, int idCar, int idAccessory, int idSubservice, int cost, Date dateConducted, int idPreviousAccessory) {
         Service service = servicesRepository.findOne(id);
-
+        Accessory accessory;
         service.setServiceType(dictionaryRepository.findOne(type));
         service.setServiceman(workersRepository.findOne(idServiceman));
         service.setCar(carsRepository.findOne(idCar));
         if(idAccessory != 0) {
             service.setAccessory(accessoriesRepository.findOne(idAccessory));
+            accessory = accessoriesRepository.findOne(idAccessory);
+            accessory.setCar(carsRepository.findOne(idCar));
+            accessoriesRepository.save(accessory);
         } else {
             service.setSubserviceType(dictionaryRepository.findOne(idSubservice));
+        }
+        if(idPreviousAccessory != 0) {
+            accessory = accessoriesRepository.findOne(idPreviousAccessory);
+            accessory.setCar(null);
+            accessoriesRepository.save(accessory);
         }
         service.setCost(cost);
         service.setDateConducted(dateConducted);
