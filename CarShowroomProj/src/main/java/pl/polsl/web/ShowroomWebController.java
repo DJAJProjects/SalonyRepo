@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import pl.polsl.Data;
 import pl.polsl.ViewMode;
 import pl.polsl.controller.DictionaryController;
 import pl.polsl.controller.ShowroomsController;
@@ -22,7 +23,6 @@ import java.util.List;
  */
 @Controller
 public class ShowroomWebController extends  BaseWebController {
-    private ViewMode viewMode;
 
     @Autowired
     private ShowroomsController showroomsController;
@@ -34,7 +34,20 @@ public class ShowroomWebController extends  BaseWebController {
 
     @RequestMapping(value ="/showroom")
     public String getShowrooms(Model model){
-        model.addAttribute("showrooms", showroomsController.findAll());
+        if (Data.user == null) {
+            model.asMap().clear();
+            model.addAttribute("userNotLoggedIn", true);
+            return "sign_in";
+        } else if (!privilegesController.getReadPriv(Data.showroomModuleValue, Data.user)) {
+            model.asMap().clear();
+            model.addAttribute("forbiddenAccess", true);
+        } else {
+            model.addAttribute("showrooms", showroomsController.findShowroomsRelatedToWorker(Data.user));
+        }
+        analisePrivileges(Data.showroomModuleValue);
+        model.addAttribute("insertEnabled", insertEnabled);
+        model.addAttribute("updateEnabled", updateEnabled);
+        model.addAttribute("deleteEnabled", deleteEnabled);
         refreshMenuPrivileges(model);
         return "showroom";
     }
@@ -62,9 +75,7 @@ public class ShowroomWebController extends  BaseWebController {
 
     @RequestMapping(value ="/viewShowroom/{id}")
     public String viewShowroom(RedirectAttributes redirectAttributes, @PathVariable("id")int id) {
-
         viewMode = ViewMode.VIEW_ALL;
-
         Showroom showroom = showroomsController.findOne(id);
         redirectAttributes.addFlashAttribute("controlsPanelVisible", true);
         redirectAttributes.addFlashAttribute("controlsDisabled", true);
@@ -77,12 +88,12 @@ public class ShowroomWebController extends  BaseWebController {
         redirectAttributes.addFlashAttribute("countries", dictionaryController.findAllCountries());
         redirectAttributes.addFlashAttribute("cities", dictionaryController.findAllCities());
         redirectAttributes.addFlashAttribute("showrooms", showroomsController.findAll());
-
         return "redirect:/showroom/";
     }
 
     @RequestMapping(value ="/acceptModifyShowroom", method = RequestMethod.POST)
-    public String editShowroom(@RequestParam("id") int id,
+    public String editShowroom(RedirectAttributes redirectAttributes,
+                               @RequestParam("id") int id,
                                @RequestParam("name") String name,
                                @RequestParam(value = "street") String street,
                                @RequestParam(value = "city")int city,
@@ -94,10 +105,13 @@ public class ShowroomWebController extends  BaseWebController {
                 workersController.updateWorker(oldShowroom.getDirector().getId(), -1);
                 workersController.updateWorker(director, id);
             }
-            Showroom showroom = showroomsController.updateShowroom(id, name, street, city, country, director);
+            if(showroomsController.updateShowroom(id, name, street, city, country, director)==null) {
+                redirectAttributes.addFlashAttribute("databaseError", true);
+            }
         }
         else if(viewMode==ViewMode.INSERT) {
-            Showroom showroom = showroomsController.addShowroom(name, street, city, country, director);
+            if(showroomsController.addShowroom(name, street, city, country, director)==null)
+                redirectAttributes.addFlashAttribute("databaseError", true);
         }
         return "redirect:/showroom/";
     }
@@ -112,13 +126,21 @@ public class ShowroomWebController extends  BaseWebController {
         redirectAttributes.addFlashAttribute("cities", dictionaryController.findAllCities());
         redirectAttributes.addFlashAttribute("countries", dictionaryController.findAllCountries());
         redirectAttributes.addFlashAttribute("directors", workersController.findAllFreeDirectors());
-        redirectAttributes.addFlashAttribute("showrooms", showroomsController.findAll());
         return "redirect:/showroom/";
     }
 
     @RequestMapping(value ="/deleteShowroom/{id}")
-    public String deleteShowroom(@PathVariable("id")int id){
-        showroomsController.delete(id);
+    public String deleteShowroom(RedirectAttributes redirectAttributes, @PathVariable("id")int id){
+        Showroom showroom = showroomsController.findOne(id);
+        if(showroom.getWorkers()!=null || showroom.getCars() !=null || showroom.getReports()!=null){
+            redirectAttributes.addFlashAttribute("deleteShowroomError", true);
+        }else
+            showroomsController.delete(id);
         return "redirect:/showroom/";
+    }
+    @RequestMapping(value="/ResetShowroomChange")
+    public  String resetChange(){
+        viewMode = ViewMode.DEFAULT;
+        return "redirect:/showroom";
     }
 }

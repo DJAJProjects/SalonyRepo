@@ -16,6 +16,7 @@ public class Data {
     public static String adminValue = "Admininstrator";
     public static String directorValue = "Dyrektor";
     public static String workerModuleValue = "Pracownicy";
+    public static  String dictionaryModuleValue = "Słownik";
     public static String showroomModuleValue = "Salony";
     public static String servicemanValue = "Serwisant";
     public static String salesmanValue = "Sprzedawca";

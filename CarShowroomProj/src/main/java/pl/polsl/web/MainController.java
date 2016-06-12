@@ -38,14 +38,30 @@ public class MainController extends BaseWebController {
     public String signIn(Model model, @RequestParam(value = "login")String login, @RequestParam(value = "password")String password){
         Data.user = workersController.findOne(login,password);
         if(Data.user!=null){
-            refreshMenuPrivileges(model);
             Data.adminId = dictionaryController.findAdmin();
             Data.directorId = dictionaryController.findDirector();
-            return "menu";
+            return "redirect:/menu";
         }
         else{
             model.addAttribute("error",true);
         }
         return "sign_in";
+    }
+
+    @RequestMapping(value="/logOut")
+    public String logOut(Model model){
+        Data.user = null;
+        return "sign_in";
+    }
+
+    @RequestMapping(value = "/menu", method= RequestMethod.GET)
+    public String goToMenu(Model model){
+        if (Data.user == null) {
+            model.asMap().clear();
+            model.addAttribute("userNotLoggedIn", true);
+            return "sign_in";
+        }
+        refreshMenuPrivileges(model);
+        return "menu";
     }
 }

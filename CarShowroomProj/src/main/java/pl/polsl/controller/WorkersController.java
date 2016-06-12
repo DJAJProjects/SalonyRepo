@@ -64,10 +64,18 @@ public class WorkersController {
     }
 
     public List<Worker> findAllFreeDirectors() {
-        return (List)workersRepository.findAllOneType(11);
+        return (List)workersRepository.findAllOneTypeWithoutShowroom(Data.directorId);
     }
 
-    public Worker addWorker(boolean error, String name, String surname, int payment, Date dateHired, int position, int showroom, String login, String password) {
+    public Worker addWorker(boolean error,
+                            String name,
+                            String surname,
+                            int payment,
+                            Date dateHired,
+                            int position,
+                            int showroom,
+                            String login,
+                            String password) {
         MessageDigest md = null;
         Worker retWorker = null;
         try {
@@ -106,7 +114,14 @@ public class WorkersController {
         return retWorker;
     }
 
-    public Worker updateWorker(boolean error, int id, String name, String surname, int payment, Date dateHired, int position, int showroom) {
+    public Worker updateWorker(boolean error,
+                               int id,
+                               String name,
+                               String surname,
+                               int payment,
+                               Date dateHired,
+                               int position,
+                               int showroom) {
         Worker worker = workersRepository.findOne(id);
         worker.setName(name);
         worker.setSurname(surname);
@@ -134,19 +149,16 @@ public class WorkersController {
     public Worker updateWorker(int idWorker, int idShowroom) {
         Worker worker = workersRepository.findOne(idWorker);
         worker.setShowroom(showroomsController.findOne(idShowroom));
-//        if(error)
-//            return worker;
         return workersRepository.save(worker);
     }
 
-    public List<Worker> findContractorsRelatedToWorker(Worker worker){
+    public List<Worker> findWorkersRelatedToWorker(Worker worker){
         List<Worker> retList = null;
         if( worker.getPosition().getId() == Data.directorId)
             retList = workersRepository.findRelatedToDirector(worker.getShowroom());
         else if(worker.getPosition().getId() == Data.adminId)
             retList =  findAll().stream().filter(worker1 -> worker1.getPosition().getId()!=Data.adminId).collect(Collectors.toList());
-
-        if(retList == null)retList = new ArrayList<Worker>();
+        if(retList == null)retList = new ArrayList<>();
 
         return retList;
     }

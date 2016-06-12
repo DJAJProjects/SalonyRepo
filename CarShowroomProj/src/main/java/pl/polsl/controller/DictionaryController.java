@@ -77,16 +77,17 @@ public class DictionaryController {
     public List<String> findAllTypes() { return dictionaryRepository.findAllTypes();
     }
 
-    public Dictionary updateDictionaryValue(int id, String type, String value, String value2) {
+    public Dictionary updateDictionaryValue(int id, String type, String value, String value2, String value3) {
         Dictionary dictionaryValue = dictionaryRepository.findOne(id);
         dictionaryValue.setType(type);
         dictionaryValue.setValue(value);
         dictionaryValue.setValue2(value2);
+        dictionaryValue.setValue3(value3);
         return dictionaryRepository.save(dictionaryValue);
     }
 
-    public Dictionary addDictionaryValue(int id, String type, String value1, String value2) {
-        return dictionaryRepository.save(new Dictionary(id,type,value1,value2));
+    public Dictionary addDictionaryValue(int id, String type, String value1, String value2, String value3) {
+        return dictionaryRepository.save(new Dictionary(id,type,value1,value2, value3));
     }
 
     public void delete(int id) {

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:layout="http://www.w3.org/1999/xhtml" layout:decorator="index"
-      xmlns:th="http://www.w3.org/1999/xhtml">
+      xmlns:th="http://www.w3.org/1999/xhtml" xmlns:display="http://www.w3.org/1999/xhtml">
 <head>
     <title>Samochody</title>
 </head>
@@ -97,13 +97,23 @@
 
     <div th:if="${controlsPanelVisible}" >
         <div th:if="${chosenAccessories}">
-            <div class="col-sm-offset-2 col-sm-10">
-                <table th:disabled="${controlsDisabled}" class="table">
-                    <tr>Wybrane przez Ciebie dodatkowe akcesoria:</tr>
-                    <tr th:each ="item : ${chosenAccessories}">
-                        <td th:text="${item.accessory.value}"/>
-                        <td th:disabled="${controlsDisabled}" ><a href="contracts.html" th:href="@{'/deleteChosenAccessories/'+${item.id}}"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a></td>
-                    </tr>
+            <div>
+                <label>Wybrane przez Ciebie dodatkowe akcesoria:</label>
+                <table th:disabled="${controlsCostDisabled}" class="table col-sm-offset-2 col-sm-1" style="width:84%">
+                    <thead th:disabled="${controlsCostDisabled}">
+                        <tr>
+                            <td class="col-md-2">Nazwa</td>
+                            <td class="col-md-1">Cena [PLN]</td>
+                            <td class="col-md-1 center-item">Usuń</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each ="item : ${chosenAccessories}">
+                            <td th:text="${item.accessory.value}"/>
+                            <td th:text="${item.accessory.value2}"/>
+                            <td class="center-item" th:disabled="${controlsCostDisabled}" ><a href="contracts.html" th:href="@{'/deleteChosenAccessories/'+${item.id}+'#anch'}"><span class="glyphicon glyphicon-remove" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Usuń"></span></a></td>
+                       </tr>
+                    </tbody>
                 </table>
             </div>
         </div>

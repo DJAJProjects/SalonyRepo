@@ -35,4 +35,9 @@ function disableShowroom(){
     document.write("JUHU lalala");
     }
 }
+
+
+function confirm_delete(node) {
+    return confirm("Usunięcie rekordu spowoduje wstawienie null w wszystkich jego odwołaniach. Kliknij okej, by kontynuować");
+}
 //]]>

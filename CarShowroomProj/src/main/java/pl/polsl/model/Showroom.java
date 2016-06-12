@@ -16,6 +16,8 @@ public class Showroom {
     private Dictionary country;
     private Worker director;
     private Set<Worker> workers;
+    private Set<Car> cars;
+    private Set<Report> reports;
 
     public Showroom(){}
     public Showroom(String name, String street, Dictionary city, Dictionary country, Worker director) {
@@ -96,4 +98,14 @@ public class Showroom {
     public void setWorkers(Set<Worker> workers) {
         this.workers = workers;
     }
+
+    @OneToMany(mappedBy = "showroom")
+    public Set<Car> getCars() { return cars; }
+
+    public void setCars(Set<Car> cars) { this.cars = cars;  }
+
+    @OneToMany(mappedBy = "showroom")
+    public Set<Report> getReports() { return reports; }
+
+    public void setReports(Set<Report> reports) { this.reports = reports; }
 }
