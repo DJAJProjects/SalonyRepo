@@ -23,7 +23,7 @@ public class Dictionary {
     private Set<Car>carName;
     private Set<Accessory>accessory;
     private Set<Service> serviceType;
-
+    private Set<Worker> position;
     public Dictionary(){}
 
     public Dictionary(int id, String type, String value, String value2) {
@@ -153,5 +153,14 @@ public class Dictionary {
 
     public void setServices(Set<Service> services) {
         this.serviceType = services;
+    }
+
+    @OneToMany(mappedBy = "position")
+    public Set<Worker> getPosition() {
+        return position;
+    }
+
+    public void setPosition(Set<Worker> position) {
+        this.position = position;
     }
 }

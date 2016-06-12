@@ -1,14 +1,18 @@
 package pl.polsl.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
 import pl.polsl.Data;
+import pl.polsl.ViewMode;
 import pl.polsl.controller.PrivilegesController;
 
 /**
  * Created by Kuba on 27.05.2016.
  */
 public class BaseWebController {
+    protected ViewMode viewMode;
 
     @Autowired
     protected PrivilegesController privilegesController;
@@ -37,7 +41,6 @@ public class BaseWebController {
         model.addAttribute("privilegesVisible", privilegesController.getReadPriv("Uprawnienia", Data.user));
         model.addAttribute("carsVisible", privilegesController.getReadPriv("Samochody", Data.user));
     }
-
 }
 
 

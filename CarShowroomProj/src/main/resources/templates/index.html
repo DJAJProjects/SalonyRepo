@@ -36,8 +36,8 @@
                 $("#mytable").tablesorter();
             });
         });
-    </script>
-    <script>$(document).ready(function() {
+
+        $(document).ready(function() {
         $(".search").keyup(function () {
             var searchTerm = $(".search").val();
             var listItem = $('.results tbody').children('tr');
@@ -57,10 +57,13 @@
             if(jobCount == '0') {$('.no-result').show();}
             else {$('.no-result').hide();}
         });
-    });</script>
+    });
+        function print_database_error() {
+            alert("Błąd związany z bazą danych. Niestety operacja nie wykonała się poprawnie, zwrócony został obiekt: null");
+        }
+    </script>
 </head>
-<body class="hold-transition skin-blue sidebar-mini">
-    <div  th:unless="${userNotLoggedIn}">
+<body th:attr="onload=${databaseError!=null ? 'print_database_error()' : null}" class="hold-transition skin-blue sidebar-mini">
         <header layout:fragment="content" id="nav-menu" style="margin:0 auto">
             <nav >
                 <ul style="margin: 0 auto;  max-width:1260px;">
@@ -89,7 +92,5 @@
         <div th:unless="${forbiddenAccess}" layout:fragment="main">
         </div>
         <div th:if="${forbiddenAccess}">Nie masz uprawnień by przeglądać ten moduł</div>
-    </div>
-    <div th:if="${userNotLoggedIn}">Zaloguj się ziomeczuuuuu</div>
 </body>
 </html>

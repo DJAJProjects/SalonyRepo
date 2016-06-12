@@ -18,15 +18,28 @@ import java.util.List;
 @Repository
 @Transactional
 public interface WorkersRepository extends PagingAndSortingRepository<Worker, Integer> {
+
+    /**
+     * Method needs to log in
+     * @param login user login
+     * @param password user password
+     * @return user who has the same login like @param login and the same password like @param password
+     * or null if that user doesn't exist
+     */
     @Query(value = "SELECT worker " +
                    "FROM Worker worker " +
                    "WHERE worker.login = :login AND worker.password = :password")
     public Worker findOne(@Param("login")String login, @Param("password")String password);
 
+
+    /**
+     * @param position position identifier in application
+     * @return all workers of one type (e.g. directors), whom position hasn't been related to any showroom yet.
+     */
     @Query(value = "SELECT director " +
                    "FROM Worker director " +
                    "WHERE director.position.id = :position AND director.showroom = null")
-    public List<Worker> findAllOneType(@Param("position")int position);
+    public List<Worker> findAllOneTypeWithoutShowroom(@Param("position")int position);
 
     @Query(value = "SELECT worker " +
                    "FROM Worker worker " +

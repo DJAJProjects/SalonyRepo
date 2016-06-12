@@ -92,8 +92,8 @@ hr{
 .results tr[visible='false'],
 .no-result{
     display:none;
-    background-color: #FF530D;
-    color:  #EFEFEF;
+    background-color: #EFEFEF;
+    color:  #3F5765;
 }
 
 .results tr[visible='true']{
@@ -104,9 +104,7 @@ hr{
     color:#fff;
 }
 /* Koniec wyszukiwania */
-.glyphicon{
-    color:#2B3A42;
-}
+
 .panel {
     border: 1px solid #3F5765;
     border-radius: 0px;
@@ -116,14 +114,7 @@ hr{
     text-align:center;
 }
 
-.table-hover>tbody>tr:hover {
-    background-color: #BDD4DE;
-}
 .empty{
     width:100%;
     heigth: 20px;
-}
-
-.no-result{
-    margin: 0;
 }

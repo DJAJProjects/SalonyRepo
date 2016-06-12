@@ -2,11 +2,16 @@
 .btn{
     color:  #EFEFEF;
     background-color: #3F5765;
-    /*border-radius: 0%;*/
+    border-radius: 0%;
 }
 .btn:hover{
     background-color: #FF530D;
     color:  #EFEFEF;
+}
+.btn:focus, .btn:active{
+    outline: thin dotted;
+    outline: 5px auto #FF530D;
+    outline-offset: -2px;
 }
 .form-control {
     border-radius: 0;
@@ -39,4 +44,18 @@
 thead{
     background-color: rgba(63, 87, 101,0.6);
     color: #EFEFEF;
+    border: 1px solid  rgba(63, 87, 101,0.6);
+}
+table{
+    border: 1px solid #3F5765;
+}
+.glyphicon{
+    color:#2B3A42;
+}
+
+.glyphicon:hover{
+    color:#FF530D;
+}
+.table-hover>tbody>tr:hover {
+    background-color: #BDD4DE;
 }

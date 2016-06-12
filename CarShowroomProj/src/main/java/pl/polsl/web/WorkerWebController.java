@@ -48,17 +48,20 @@ public class WorkerWebController extends  BaseWebController {
             if (Data.user == null) {
                 model.asMap().clear();
                 model.addAttribute("userNotLoggedIn", true);
+                return "sign_in";
             } else if (!privilegesController.getReadPriv(Data.workerModuleValue, Data.user)) {
                 model.asMap().clear();
                 model.addAttribute("forbiddenAccess", true);
             } else {
-                model.addAttribute("workers", workersController.findContractorsRelatedToWorker(Data.user));
+                model.addAttribute("workers", workersController.findWorkersRelatedToWorker(Data.user));
             }
+            analisePrivileges(Data.workerModuleValue);
+            model.addAttribute("insertEnabled", insertEnabled);
+            model.addAttribute("updateEnabled", updateEnabled);
+            model.addAttribute("deleteEnabled", deleteEnabled);
             refreshMenuPrivileges(model);
             if(!model.containsAttribute("deleteDirector"))
                 model.addAttribute("deleteDirector", false);
-
-
             return "worker";
 
     }
@@ -136,7 +139,6 @@ public class WorkerWebController extends  BaseWebController {
         viewMode = ViewMode.EDIT;
 
         Worker worker;
-
         if(!model.containsAttribute("error"))
             worker = workersController.findOne(id);
         else{
@@ -281,9 +283,7 @@ public class WorkerWebController extends  BaseWebController {
                 workersPrivilegesController.deleteWorkersPrivileges(prevPriv.getId());
             }
         }
-
         return ret;
-
     }
 
 }
