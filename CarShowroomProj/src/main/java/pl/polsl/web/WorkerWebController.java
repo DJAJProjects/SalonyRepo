@@ -1,5 +1,6 @@
 package pl.polsl.web;
 
+import netscape.security.Privilege;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,7 +26,10 @@ import java.util.stream.Collectors;
 public class WorkerWebController extends  BaseWebController {
 
     private ViewMode viewMode;
+    private Worker currentWorker;
     private ArrayList<Privileges> privilegesList;
+    private ArrayList<Privileges> previousPrivilegesList;
+    private boolean differentWorker = false;
 
     @Autowired
     private ShowroomsController showroomsController;
@@ -53,6 +57,8 @@ public class WorkerWebController extends  BaseWebController {
             refreshMenuPrivileges(model);
             if(!model.containsAttribute("deleteDirector"))
                 model.addAttribute("deleteDirector", false);
+
+
             return "worker";
 
     }
@@ -79,6 +85,7 @@ public class WorkerWebController extends  BaseWebController {
             redirectAttributes.addFlashAttribute("positionId", worker.getPosition().getId());
             redirectAttributes.addFlashAttribute("error", model.asMap().get("error"));
         }
+
         redirectAttributes.addFlashAttribute("controlsPanelVisible", true);
         redirectAttributes.addFlashAttribute("controlsDisabled", false);
         redirectAttributes.addFlashAttribute("worker", worker);
@@ -87,6 +94,8 @@ public class WorkerWebController extends  BaseWebController {
         redirectAttributes.addFlashAttribute("showrooms", showroomsController.findAll());
         redirectAttributes.addFlashAttribute("controlsLoginVisible", true);
         redirectAttributes.addFlashAttribute("controlsPasswordVisible", true);
+        if(differentWorker)
+            privilegesList = previousPrivilegesList = new ArrayList<Privileges>();
         return "redirect:/worker";
     }
 
@@ -94,6 +103,12 @@ public class WorkerWebController extends  BaseWebController {
     public String displayWorker(RedirectAttributes redirectAttributes, @PathVariable("id")int id) {
         viewMode = ViewMode.VIEW_ALL;
         Worker worker = workersController.findOne(id);
+
+        if(currentWorker == null || currentWorker.getId() != worker.getId())
+            differentWorker = true;
+
+        currentWorker = worker;
+
         redirectAttributes.addFlashAttribute("worker", worker);
         redirectAttributes.addFlashAttribute("controlsPanelVisible", true);
         redirectAttributes.addFlashAttribute("controlsDisabled", true);
@@ -104,7 +119,15 @@ public class WorkerWebController extends  BaseWebController {
         redirectAttributes.addFlashAttribute("showrooms", showroomsController.findAll());
         redirectAttributes.addFlashAttribute("controlsLoginVisible", true);
         redirectAttributes.addFlashAttribute("controlsPasswordVisible", false);
-        redirectAttributes.addFlashAttribute("privileges", privilegesController.findPrivilegesOfWorker(worker));
+
+        if(differentWorker)
+            privilegesList = previousPrivilegesList = (ArrayList)privilegesController.findPrivilegesOfWorker(worker);
+
+        redirectAttributes.addFlashAttribute("choosenPrivileges", previousPrivilegesList);
+        redirectAttributes.addFlashAttribute("privileges", privilegesController.findPrivilegesNotRelatedToWorker(worker));
+
+        differentWorker = false;
+
         return "redirect:/worker";
     }
 
@@ -113,11 +136,18 @@ public class WorkerWebController extends  BaseWebController {
         viewMode = ViewMode.EDIT;
 
         Worker worker;
+
         if(!model.containsAttribute("error"))
             worker = workersController.findOne(id);
         else{
             worker = (Worker)model.asMap().get("worker");
         }
+
+        if(currentWorker == null || currentWorker.getId() != worker.getId())
+            differentWorker = true;
+
+        currentWorker = worker;
+
         redirectAttributes.addFlashAttribute("controlsPanelVisible", true);
         redirectAttributes.addFlashAttribute("controlsDisabled", false);
         redirectAttributes.addFlashAttribute("positionId", worker.getPosition().getId());
@@ -132,7 +162,15 @@ public class WorkerWebController extends  BaseWebController {
         if(worker.getPosition().getId() == Data.directorId && worker.getShowroom()!=null){
             redirectAttributes.addFlashAttribute("positionDisabled", true);
         }
-        redirectAttributes.addFlashAttribute("privileges", privilegesController.findPrivilegesOfWorker(worker));
+
+        if(differentWorker)
+            privilegesList = previousPrivilegesList = (ArrayList)privilegesController.findPrivilegesOfWorker(worker);
+
+        redirectAttributes.addFlashAttribute("choosenPrivileges", previousPrivilegesList);
+        redirectAttributes.addFlashAttribute("privileges", privilegesController.findPrivilegesNotRelatedToWorker(worker));
+
+        differentWorker = false;
+
         return "redirect:/worker";
 
     }
@@ -147,10 +185,13 @@ public class WorkerWebController extends  BaseWebController {
                                @RequestParam(value = "showroom")int showroom,
                                @RequestParam(value = "login")String login,
                                @RequestParam(value = "password")String password) {
+        differentWorker = true;
         if (viewMode == ViewMode.EDIT) {
             Worker worker = workersController.updateWorker(false, id, name, surname, payment, dateHired, position, showroom);
-            if (worker != null)
+            if (worker != null) {
+                updatePrivileges(worker);
                 return "redirect:/worker/";
+            }
             else {
                 redirectAttributes.addFlashAttribute("error", "Niestety nie udało się edytować użytkownika");
                 worker = workersController.updateWorker(true, id, name, surname, payment, dateHired, position, showroom);
@@ -171,18 +212,14 @@ public class WorkerWebController extends  BaseWebController {
                 error = "Dodawany dyrektor nie powinien mieć przypisanego salonu";
             } else {
                 worker = workersController.addWorker(false, name, surname, payment, dateHired, position, showroom, login, password);
-                if (worker != null)
+                if (worker != null) {
+                    updatePrivileges(worker);
                     return "redirect:/worker/";
+                }
                 else
                     error = "Niestety nie udało się dodać użytkownika do bazy";
             }
             worker = workersController.addWorker(true, name, surname, payment, dateHired, position, showroom, login, password);
-
-            if(worker != null){
-                for(Privileges priv: privilegesList){
-                    workersPrivilegesController.addWorkersPrivileges(worker, priv);
-                }
-            }
 
             redirectAttributes.addFlashAttribute("error", error);
             redirectAttributes.addFlashAttribute("worker", worker);
@@ -191,11 +228,62 @@ public class WorkerWebController extends  BaseWebController {
         return "redirect:/worker/";
     }
 
+    // DLA UPRAWNIEN
+
     @RequestMapping(value ="/addPrivilege", method = RequestMethod.POST)
-    public String newPrivilege(RedirectAttributes redirectAttributes, @RequestParam("privilege") int privilege) {
+    public String addPrivilege(RedirectAttributes redirectAttributes, @RequestParam("privilege") int privilege) {
         Privileges priv = privilegesController.findOne(privilege);
         privilegesList.add(priv);
-        return "redirect:/workers";
+        if(this.viewMode == ViewMode.INSERT)
+            return "redirect:/addWorker/";
+        else return "redirect:/editWorker/";
+    }
+
+    @RequestMapping(value ="/deleteRelatedPrivilege/{id}")
+    public String deleteRelatedPrivilege(@PathVariable("id")int id){
+        //Privileges priv = privilegesController.findOne(id);
+        for(Privileges priv: privilegesList){
+            if(priv.getId() == id) {
+                privilegesList.remove(priv);
+                break;
+            }
+
+        }
+        if(this.viewMode == ViewMode.INSERT)
+            return "redirect:/addWorker/";
+        else return "redirect:/editWorker/"+currentWorker.getId();
+    }
+
+    private boolean updatePrivileges(Worker worker){
+
+        boolean ret = true;
+
+        for(Privileges actPriv: privilegesList){
+            boolean found = false;
+            for(Privileges prevPriv: previousPrivilegesList){
+                if(prevPriv.getId() == actPriv.getId()){
+                    found = true;
+                }
+            }
+            if(!found){
+                workersPrivilegesController.addWorkersPrivileges(worker, actPriv);
+            }
+        }
+
+        for(Privileges prevPriv: previousPrivilegesList){
+            boolean found = false;
+            for(Privileges actPriv: privilegesList){
+                if(prevPriv.getId() == actPriv.getId()){
+                    found = true;
+                }
+            }
+            if(!found){
+                workersPrivilegesController.deleteWorkersPrivileges(prevPriv.getId());
+            }
+        }
+
+        return ret;
+
     }
 
 }

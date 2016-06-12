@@ -146,6 +146,18 @@
             </div>
         </div>
         <input th:unless="${controlsPasswordVisible}" type="hidden" th:field="*{password}" name="password" class="form-control" placeholder="Wprowadź hasło" required="required"/>
+        <div th:if="${choosenPrivileges}">
+            <div class="col-sm-offset-2 col-sm-5">
+                <table class="table">
+                    <tr>Wybrane uprawnienia:</tr>
+                    <tr th:each ="item : ${choosenPrivileges}">
+                        <td th:text="${item.name}"/>
+                        <td th:disabled="${disabledButtons}"><a href="contracts.html" th:href="@{'/deleteRelatedPrivilege/'+${item.id}}"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a></td>
+                        <br/>
+                    </tr>
+                </table>
+            </div>
+        </div>
         <form class="form-horizontal" role="form" method="post" action="/addPrivilege">
             <div class="form-group">
                 <label class="control-label col-sm-2">Uprawnienia:</label>
@@ -158,7 +170,7 @@
             </div>
             <div class="form-group">
                 <div class="col-sm-offset-2 col-sm-10">
-                    <button th:disabled="${disabledButtons}" type="submit" class="btn btn-default">Ok</button>
+                    <button th:disabled="${disabledButtons}" type="submit" class="btn btn-default">Dodaj uprawnienie</button>
                 </div>
             </div>
         </form>
