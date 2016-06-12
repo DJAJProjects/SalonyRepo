@@ -3,10 +3,10 @@
 <head>
     <title>Salony</title>
     <script type="text/javascript">
-        function print_error() {
-            alert("Salon jest powiązany z innymi rekordami. Nie mozna go usunąć");
-        }
-    </script>
+    function print_error() {
+        alert("Salon jest powiązany z innymi rekordami. Nie mozna go usunąć");
+    }
+</script>
 </head>
 <body  th:attr="onload=${deleteShowroomError!=null ? 'print_error()' : null}">
 <div layout:fragment="main" style="margin: 0 auto; max-width: 1000px;">

@@ -2,6 +2,11 @@
 <html xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml" layout:decorator="index">
 <head>
     <title>Słownik</title>
+    <script type="text/javascript">
+        function print_error() {
+            alert("Usuwany rekord jest powiązany z innymi rekordami. Nie mozna go usunąć");
+        }
+    </script>
 </head>
 <body th:attr="onload=${deleteDictionaryError!=null ? 'print_error()' : null}">
 <div layout:fragment="main" style="margin: 0 auto; max-width: 1000px;">

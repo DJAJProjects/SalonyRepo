@@ -25,7 +25,6 @@ public class DictionaryWebController extends BaseWebController{
     @RequestMapping(value ="/dictionary")
     public String getDictionaries(Model model) {
         model.addAttribute("dictionaries", dictionaryController.findAll());
-        refreshMenuPrivileges(model);
         if (Data.user == null) {
             model.asMap().clear();
             model.addAttribute("userNotLoggedIn", true);
@@ -65,7 +64,7 @@ public class DictionaryWebController extends BaseWebController{
     }
 
     @RequestMapping(value ="/acceptModifyDictionary", method = RequestMethod.POST)
-    public String editDictionary(RedirectAttributes redirectAttributes, @RequestParam("id") int id,
+    public String addOrEditDictionary(RedirectAttributes redirectAttributes, @RequestParam("id") int id,
                                @RequestParam("type") String type,
                                @RequestParam(value = "value") String value,
                                @RequestParam(value = "value2")String value2,
@@ -97,14 +96,14 @@ public class DictionaryWebController extends BaseWebController{
     @RequestMapping(value ="/deleteDictionary/{id}")
     public String deleteDictionary(RedirectAttributes redirectAttributes, @PathVariable("id")int id) {
         Dictionary dictionary = dictionaryController.findOne(id);
-        if (dictionary.getPosition() != null
-                || dictionary.getAccessory() != null
-                || dictionary.getCarName() != null
-                || dictionary.getCity() != null
-                || dictionary.getCountry() != null
-                || dictionary.getInvoiceType() != null
-                || dictionary.getPaymentForm() != null
-                || dictionary.getServices() != null)
+        if (dictionary.getPosition() != null && dictionary.getPosition().size() != 0
+                || (dictionary.getAccessory() != null && dictionary.getAccessory().size() != 0)
+                || (dictionary.getCarName() != null && dictionary.getCarName().size() != 0)
+                || (dictionary.getCity() != null && dictionary.getCity().size() != 0)
+                || (dictionary.getCountry() != null && dictionary.getCountry().size() != 0)
+                || (dictionary.getInvoiceType() != null && dictionary.getInvoiceType().size() != 0)
+                || (dictionary.getPaymentForm() != null && dictionary.getPaymentForm().size() != 0)
+                || (dictionary.getServices() != null && dictionary.getServices().size() != 0))
             redirectAttributes.addFlashAttribute("deleteDictionaryError", true);
         else
             dictionaryController.delete(id);
