@@ -11,128 +11,135 @@
     </style>
 </head>
 <body>
-<div layout:fragment="main" class="row " id="menuIndex2" style="max-width: 960px;" >
-    <a href="showroom.html"  th:href="@{/showroom}" th:if="${showroomsVisible}" class="col-sm-6
-        col-md-2">
-        <div class="thumbnail">
-            <div class="circle">
-                <img src="/image/png/showrooms.png" alt="..."/>
-            </div>
-            <div class="caption">
-                <h3>Salony</h3>
-            </div>
-        </div>
-    </a>
-    <div th:if="${carsVisible}" class="col-sm-6
-        col-md-2">
-        <div class="thumbnail">
-            <div class="circle">
-                <img src="/image/png/cars.png" alt="..."/>
-            </div>
-            <div class="caption">
-                <h3>Samochody</h3>
-            </div>
-        </div>
+<div layout:fragment="main" style ="margin: 0 auto; width:100%;">
+    <br/>
+    <div class="col-sm-offset-2 btn-group" role="group" aria-label="..." style="display: block; max-width: 960px;">
+        <a th:href="@{/changePassword}" ><button type="button" class="btn">ZMIEŃ HASŁO</button></a>
+        <a th:href="@{/logOut}" ><button type="button" class="btn">WYLOGUJ</button></a>
     </div>
-    <div  th:if="${workersVisible}" class="col-md-2">
-        <div class="thumbnail">
-            <div class="circle">
-                <img src="/image/png/workers.png" alt="..."/>
+    <br/>
+    <div class="row " id="menuIndex2" style="max-width: 960px;clear: both" >
+        <a href="showroom.html"  th:href="@{/showroom}" th:if="${showroomsVisible}" class="col-sm-3 col-md-2">
+            <div class="thumbnail">
+                <div class="circle">
+                    <img src="/image/png/showrooms.png" alt="..."/>
+                </div>
+                <div class="caption">
+                    <h3>Salony</h3>
+                </div>
             </div>
-            <div class="caption ">
-                <h3>Pracownicy</h3>
+        </a>
+        <a href="car.html"  th:href="@{/car}" th:if="${carsVisible}" class="col-sm-3
+            col-md-2">
+            <div class="thumbnail">
+                <div class="circle">
+                    <img src="/image/png/cars.png" alt="..."/>
+                </div>
+                <div class="caption">
+                    <h3>Samochody</h3>
+                </div>
             </div>
-        </div>
-    </div>
-    <div  th:if="${contractsVisible}" class="col-md-2">
-        <div class="thumbnail">
-            <div class="circle">
-                <img src="/image/png/contracts.png" alt="..."/>
+        </a>
+        <a href="worker.html"  th:href="@{/worker}"  th:if="${workersVisible}" class="col-sm-3 col-md-2">
+            <div class="thumbnail">
+                <div class="circle">
+                    <img src="/image/png/workers.png" alt="..."/>
+                </div>
+                <div class="caption ">
+                    <h3>Pracownicy</h3>
+                </div>
             </div>
-            <div class="caption">
-                <h3>Sprzedaże</h3>
+        </a>
+        <a href="contracts.html"  th:href="@{/contracts}"  th:if="${contractsVisible}" class="col-sm-3 col-md-2">
+            <div class="thumbnail">
+                <div class="circle">
+                    <img src="/image/png/contracts.png" alt="..."/>
+                </div>
+                <div class="caption">
+                    <h3>Sprzedaże</h3>
+                </div>
             </div>
-        </div>
-    </div>
-    <div  th:if="${contractorsVisible}" class="col-md-2">
-        <div class="thumbnail">
-            <div class="circle">
-                <img src="/image/png/contractors.png" alt="..."/>
+        </a>
+        <a href="contractors.html"  th:href="@{/contractors}"  th:if="${contractorsVisible}" class="col-sm-3 col-md-2">
+            <div class="thumbnail">
+                <div class="circle">
+                    <img src="/image/png/contractors.png" alt="..."/>
+                </div>
+                <div class="caption">
+                    <h3>Klienci</h3>
+                </div>
             </div>
-            <div class="caption">
-                <h3>Klienci</h3>
+        </a>
+        <a href="invoices.html"  th:href="@{/invoices}" th:if="${invoicesVisible}" class="col-sm-3 col-md-2">
+            <div class="thumbnail">
+                <div class="circle">
+                    <img src="/image/png/invoices.png" alt="..."/>
+                </div>
+                <div class="caption">
+                    <h3>Faktury</h3>
+                </div>
             </div>
-        </div>
-    </div>
-    <div  th:if="${invoicesVisible}" class="col-md-2">
-        <div class="thumbnail">
-            <div class="circle">
-                <img src="/image/png/invoices.png" alt="..."/>
+        </a>
+        <a href="reports.html"  th:href="@{/reports}"  th:if="${reportsVisible}" class="col-sm-3 col-md-2">
+            <div class="thumbnail">
+                <div class="circle">
+                    <img src="/image/png/reports.png" alt="..."/>
+                </div>
+                <div class="caption">
+                    <h3>Raporty</h3>
+                </div>
             </div>
-            <div class="caption">
-                <h3>Faktury</h3>
+        </a>
+        <a href="accessories.html"  th:href="@{/accessories}"  th:if="${accessoriesVisible}" class="col-sm-3 col-md-2">
+            <div class="thumbnail">
+                <div class="circle">
+                    <img src="/image/png/accessories.png" alt="..."/>
+                </div>
+                <div class="caption">
+                    <h3>Akcesoria</h3>
+                </div>
             </div>
-        </div>
-    </div>
-    <div  th:if="${reportsVisible}" class="col-md-2">
-        <div class="thumbnail">
-            <div class="circle">
-                <img src="/image/png/reports.png" alt="..."/>
+        </a>
+        <a href="promotions.html"  th:href="@{/promotions}"  th:if="${promotionsVisible}" class="col-sm-3 col-md-2">
+            <div class="thumbnail">
+                <div class="circle">
+                    <img src="/image/png/promotions.png" alt="..."/>
+                </div>
+                <div class="caption ">
+                    <h3>Promocje</h3>
+                </div>
             </div>
-            <div class="caption">
-                <h3>Raporty</h3>
+        </a>
+        <a href="services.html"  th:href="@{/services}"  th:if="${servicesVisible}" class="col-sm-3 col-md-2">
+            <div class="thumbnail">
+                <div class="circle">
+                    <img src="/image/png/services.png" alt="..."/>
+                </div>
+                <div class="caption">
+                    <h3>Serwisy</h3>
+                </div>
             </div>
-        </div>
-    </div>
-    <div  th:if="${accessoriesVisible}" class="col-md-2">
-        <div class="thumbnail">
-            <div class="circle">
-                <img src="/image/png/accessories.png" alt="..."/>
+        </a>
+        <a href="dictionary.html"  th:href="@{/dictionary}"  th:if="${dictionaryVisible}" class="col-sm-3 col-md-2">
+            <div class="thumbnail">
+                <div class="circle">
+                    <img src="/image/png/dict.png" alt="..."/>
+                </div>
+                <div class="caption">
+                    <h3>Słownik</h3>
+                </div>
             </div>
-            <div class="caption">
-                <h3>Akcesoria</h3>
+        </a>
+        <a href="privileges.html"  th:href="@{/privileges}" th:if="${privilegesVisible}" class="col-sm-3 col-md-2">
+            <div class="thumbnail">
+                <div class="circle">
+                    <img src="/image/png/priv.png" alt="..."/>
+                </div>
+                <div class="caption">
+                    <h3>Uprawnienia</h3>
+                </div>
             </div>
-        </div>
-    </div>
-    <div  th:if="${promotionsVisible}" class="col-md-2">
-        <div class="thumbnail">
-            <div class="circle">
-                <img src="/image/png/promotions.png" alt="..."/>
-            </div>
-            <div class="caption ">
-                <h3>Promocje</h3>
-            </div>
-        </div>
-    </div>
-    <div  th:if="${servicesVisible}" class="col-md-2">
-        <div class="thumbnail">
-            <div class="circle">
-                <img src="/image/png/services.png" alt="..."/>
-            </div>
-            <div class="caption">
-                <h3>Serwisy</h3>
-            </div>
-        </div>
-    </div>
-    <div  th:if="${dictionaryVisible}" class="col-md-2">
-        <div class="thumbnail">
-            <div class="circle">
-                <img src="/image/png/dict.png" alt="..."/>
-            </div>
-            <div class="caption">
-                <h3>Słownik</h3>
-            </div>
-        </div>
-    </div>
-    <div  th:if="${privilegesVisible}" class="col-md-2">
-        <div class="thumbnail">
-            <div class="circle">
-                <img src="/image/png/priv.png" alt="..."/>
-            </div>
-            <div class="caption">
-                <h3>Uprawnienia</h3>
-            </div>
-        </div>
+        </a>
     </div>
 </div>
 </body>

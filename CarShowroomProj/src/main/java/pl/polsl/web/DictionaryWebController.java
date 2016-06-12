@@ -18,7 +18,6 @@ import pl.polsl.model.Dictionary;
  */
 @Controller
 public class DictionaryWebController extends BaseWebController{
-    private ViewMode viewMode;
     @Autowired
     private DictionaryController dictionaryController;
 

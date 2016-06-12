@@ -25,7 +25,6 @@ import java.util.stream.Collectors;
 @Controller
 public class WorkerWebController extends  BaseWebController {
 
-    private ViewMode viewMode;
     private Worker currentWorker;
     private ArrayList<Privileges> privilegesList;
     private ArrayList<Privileges> previousPrivilegesList;
@@ -284,5 +283,37 @@ public class WorkerWebController extends  BaseWebController {
             }
         }
         return ret;
+    }
+    @RequestMapping(value ="/changePassword")
+    public String changePassword(Model model){
+        if (Data.user == null) {
+            model.asMap().clear();
+            model.addAttribute("userNotLoggedIn", true);
+            return "sign_in";
+        }
+        refreshMenuPrivileges(model);
+        return "password";
+    }
+    @RequestMapping(value ="/changePassword", method = RequestMethod.POST)
+    public String changePassword(Model model,
+                                 @RequestParam(value="oldPassword") String oldPassword,
+                                 @RequestParam(value = "password") String newPassword,
+                                 @RequestParam(value="confirmPassword") String confirmPassword){
+        if(!newPassword.equals(confirmPassword)){
+            model.addAttribute("error", "Hasła nie są takie same");
+        }else if(!oldPassword.equals(Data.user.getPassword()))
+            model.addAttribute("error", "Podano nieprawidłowe hasło");
+        else {
+            workersController.updatePassword(Data.user.getId(), newPassword);
+            model.addAttribute("info", "Zmieniono hasło");
+        }
+        refreshMenuPrivileges(model);
+        return "password";
+    }
+
+    @RequestMapping(value="/resetPasswordChange")
+    public  String resetPasswordChange(){
+        viewMode = ViewMode.DEFAULT;
+        return "redirect:/menu";
     }
 }

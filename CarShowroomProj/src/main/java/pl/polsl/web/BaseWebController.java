@@ -23,8 +23,8 @@ public class BaseWebController {
 
     protected void analisePrivileges(String modulename){
         insertEnabled = privilegesController.getInsertPriv(modulename, Data.user);
-        updateEnabled = privilegesController.getDeletePriv(modulename, Data.user);
-        deleteEnabled = privilegesController.getUpdatePriv(modulename, Data.user);
+        updateEnabled = privilegesController.getUpdatePriv(modulename, Data.user);
+        deleteEnabled = privilegesController.getDeletePriv(modulename, Data.user);
     }
 
     protected void refreshMenuPrivileges(Model model){

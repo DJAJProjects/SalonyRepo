@@ -43,7 +43,7 @@ public interface WorkersRepository extends PagingAndSortingRepository<Worker, In
 
     @Query(value = "SELECT worker " +
                    "FROM Worker worker " +
-                   "WHERE worker.showroom = :showroom ")
+                   "WHERE worker.showroom = :showroom OR worker.showroom = null")
     public List<Worker> findAllFromTheSameShowroom (@Param("showroom")Showroom showroom);
 
 

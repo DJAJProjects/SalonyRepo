@@ -18,9 +18,9 @@
             th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
     <!-- Datepicker -->
     <!--<link rel="stylesheet" href="http://eyecon.ro/bootstrap-datepicker/css/datepicker.css"-->
-          <!--th:href="@{/bootstrap/css/datepicker.css}"/>-->
+    <!--th:href="@{/bootstrap/css/datepicker.css}"/>-->
     <!--<script src="http://eyecon.ro/bootstrap-datepicker/js/bootstrap-datepicker.js"-->
-            <!--th:src="@{/bootstrap/js/bootstrap-datepicker.js}"></script>-->
+    <!--th:src="@{/bootstrap/js/bootstrap-datepicker.js}"></script>-->
     <!-- Font Awesome -->
     <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css"/>-->
     <!-- Ionicons -->
@@ -36,8 +36,8 @@
                 $("#mytable").tablesorter();
             });
         });
-
-        $(document).ready(function() {
+    </script>
+    <script>$(document).ready(function() {
         $(".search").keyup(function () {
             var searchTerm = $(".search").val();
             var listItem = $('.results tbody').children('tr');
@@ -53,44 +53,37 @@
                 $(this).attr('visible','true');
             });
             var jobCount = $('.results tbody tr[visible="true"]').length;
-            $('.counter').text('Liczba rezultatów: ' + jobCount);
+            $('.counter').text(jobCount + ' item');
             if(jobCount == '0') {$('.no-result').show();}
             else {$('.no-result').hide();}
         });
-    });
-        function print_database_error() {
-            alert("Błąd związany z bazą danych. Niestety operacja nie wykonała się poprawnie, zwrócony został obiekt: null");
-        }
-    </script>
+    });</script>
 </head>
-<body th:attr="onload=${databaseError!=null ? 'print_database_error()' : null}" class="hold-transition skin-blue sidebar-mini">
-        <header layout:fragment="content" id="nav-menu" style="margin:0 auto">
-            <nav >
-                <ul style="margin: 0 auto;  max-width:1260px;">
-                    <div  th:if="${showroomsVisible}">
-                        <a href="showroom.html" th:href="@{/showroom}"><li role="presentation" >SALONY</li></a>
-                    </div>
-                    <div  th:if="${workersVisible}">
-                        <a href="worker.html" th:if="${workersVisible}" th:href="@{/worker}"><li role="presentation" >PRACOWNICY</li></a>
-                    </div>
-                    <a href="contracts.html" th:if="${contractsVisible}" th:href="@{/contracts}"><li role="presentation" >SPRZEDAŻE</li></a>
-                    <a href="contractors.html" th:if="${contractorsVisible}" th:href="@{/contractors}"><li role="presentation" >Klienci</li></a>
-                    <a href="invoices.html" th:if="${invoicesVisible}" th:href="@{/invoices}"><li role="presentation" >Faktury</li></a>
-                    <a href="cars.html" th:if="${carsVisible}" th:href="@{/cars}"><li role="presentation" >Samochody</li></a>
-                    <a href="reports.html" th:if="${reportsVisible}" th:href="@{/reports}"><li role="presentation" >Raporty</li></a>
-                    <a href="accessories.html" th:if="${accessoriesVisible}" th:href="@{/accessories}"><li role="presentation" >Akcesoria</li></a>
-                    <a href="promotions.html" th:if="${promotionsVisible}" th:href="@{/promotions}"><li role="presentation" >Promocje</li></a>
-                    <a href="services.html" th:if="${servicesVisible}" th:href="@{/services}"><li role="presentation" >Serwis</li></a>
-                    <a href="dictionary.html" th:if="${dictionaryVisible}" th:href="@{/dictionary}"><li role="presentation" >Słownik</li></a>
-                    <a href="privileges.html" th:if="${privilegesVisible}" th:href="@{/privileges}"><li role="presentation" >Uprawnienia</li></a>
-                </ul>
-                <div class="my-block"></div>
-                <hr/>
-            </nav>
-            <div class="empty"></div>
-        </header>
-        <div th:unless="${forbiddenAccess}" layout:fragment="main">
-        </div>
-        <div th:if="${forbiddenAccess}">Nie masz uprawnień by przeglądać ten moduł</div>
+<body class="hold-transition skin-blue sidebar-mini">
+    <header layout:fragment="content" id="nav-menu" style="margin:0 auto">
+        <nav >
+            <ul style="margin: 0 auto;  max-width:1260px;">
+                <a href="menu.html"  th:href="@{/menu}"><li role="presentation" >MENU</li></a>
+                <a href="showroom.html" th:if="${showroomsVisible}" th:href="@{/showroom}"><li role="presentation" >SALONY</li></a>
+                <a href="worker.html" th:if="${workersVisible}" th:href="@{/worker}"><li role="presentation" >PRACOWNICY</li></a>
+                <a href="contracts.html" th:if="${contractsVisible}" th:href="@{/contracts}"><li role="presentation" >SPRZEDAŻE</li></a>
+                <a href="contractors.html" th:if="${contractorsVisible}" th:href="@{/contractors}"><li role="presentation" >Klienci</li></a>
+                <a href="invoices.html" th:if="${invoicesVisible}" th:href="@{/invoices}"><li role="presentation" >Faktury</li></a>
+                <a href="cars.html" th:if="${carsVisible}" th:href="@{/cars}"><li role="presentation" >Samochody</li></a>
+                <a href="reports.html" th:if="${reportsVisible}" th:href="@{/reports}"><li role="presentation" >Raporty</li></a>
+                <a href="accessories.html" th:if="${accessoriesVisible}" th:href="@{/accessories}"><li role="presentation" >Akcesoria</li></a>
+                <a href="promotions.html" th:if="${promotionsVisible}" th:href="@{/promotions}"><li role="presentation" >Promocje</li></a>
+                <a href="services.html" th:if="${servicesVisible}" th:href="@{/services}"><li role="presentation" >Serwis</li></a>
+                <a href="dictionary.html" th:if="${dictionaryVisible}" th:href="@{/dictionary}"><li role="presentation" >Słownik</li></a>
+                <a href="privileges.html" th:if="${privilegesVisible}" th:href="@{/privileges}"><li role="presentation" >Uprawnienia</li></a>
+            </ul>
+            <div class="my-block"></div>
+            <hr/>
+        </nav>
+        <div class="empty"></div>
+    </header>
+    <div th:unless="${forbiddenAccess}" layout:fragment="main">
+    </div>
+    <div th:if="${forbiddenAccess}" class="control-label col-sm-offset-4 col-sm-10"><br/>Nie masz uprawnień by przeglądać ten moduł</div>
 </body>
 </html>

@@ -80,13 +80,13 @@
         <div class="form-group">
             <label class="control-label col-sm-offset-2 col-sm-2">Nazwa:</label>
             <div class="col-sm-4">
-                <input th:disabled="${controlsDisabled}" th:field="*{name}" name="name" type="text" class="form-control" placeholder="Wprowadź nazwę salonu" required="required"/>
+                <input th:disabled="${controlsDisabled}" th:field="*{name}" name="name" type="text" class="form-control" placeholder="Wprowadź nazwę salonu, min. 3 znaki" required="required" pattern=".{3,}"/>
             </div>
         </div>
         <div class="form-group">
             <label class="control-label col-sm-offset-2 col-sm-2">Ulica:</label>
             <div class="col-sm-4">
-                <input th:disabled="${controlsDisabled}" th:field="*{street}" name="street" type="text" class="form-control" placeholder="Wprowadź adres" required="required"/>
+                <input th:disabled="${controlsDisabled}" th:field="*{street}" name="street" type="text" class="form-control" placeholder="Wprowadź ulicę, min 3 znaki" required="required" pattern=".{3,}"/>
             </div>
         </div>
         <div class="form-group">
