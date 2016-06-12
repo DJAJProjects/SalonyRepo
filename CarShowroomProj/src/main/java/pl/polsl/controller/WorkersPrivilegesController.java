@@ -58,6 +58,10 @@ public class WorkersPrivilegesController {
         return workersPrivilegesRepository.save(new WorkersPrivileges(priv, worker));
     }
 
+    public List<WorkersPrivileges> getWorkersPrivilegesByWorkerAndPrivilege(Worker worker, Privileges priv){
+        return workersPrivilegesRepository.getWorkersPrivilegesByWorkerAndPrivilege(worker, priv);
+    }
+
 /*    public Accessory editAccessory(int id, int idName, int cost) {
 
         Accessory accessory = accessoriesRepository.findOne(id);

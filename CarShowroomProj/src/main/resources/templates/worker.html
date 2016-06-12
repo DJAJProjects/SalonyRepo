@@ -82,86 +82,23 @@
             </table>
         </div>
     </div>
-    <!--Add worker-->
-    <a th:if="${controlsPanelVisible}" name="anch"></a>
-    <!--Edit worker-->
-    <form th:if="${controlsPanelVisible}" id="menuForm"  name="menuForm" class="form-horizontal" role="form" method="post" action="/acceptModifyWorker#anch" th:object="${worker}">
-        <input type="hidden" style="display: none;" name="id" th:field="*{id}"/>
-        <div class="form-group">
-            <label class="control-label col-sm-offset-2 col-sm-2">Imię:</label>
-            <div class="col-sm-4">
-                <input th:disabled="${controlsDisabled}" th:field="*{name}" name="name" type="text" class="form-control" placeholder="Wprowadź imię" required="required"/>
+    <div  th:if="${controlsPanelVisible}">
+        <form th:if="${privilegesPanelVisible}" class="form-horizontal" role="form" method="post" action="/addPrivilege">
+            <div th:if="${choosenPrivileges}" class="form-group">
+                <div class="col-sm-offset-3 col-sm-5">
+                    <table class="table">
+                        <label class="control-label col-sm-offset-2 col-sm-2"> Wybrane uprawnienia:</label>
+                        <tr th:each ="item : ${choosenPrivileges}">
+                            <td th:text="${item.name}"/>
+                            <td th:disabled="${disabledButtons}"><a href="contracts.html" th:href="@{'/deleteRelatedPrivilege/'+${item.id}}"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a></td>
+                            <br/>
+                        </tr>
+                    </table>
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            <label class="control-label col-sm-offset-2 col-sm-2">Nazwisko:</label>
-            <div class="col-sm-4">
-                <input  th:disabled="${controlsDisabled}" th:field="*{surname}" name="surname" type="text" class="form-control" placeholder="Wprowadź nazwisko" required="required"/>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="control-label col-sm-offset-2 col-sm-2">Płaca:</label>
-            <div class="col-sm-4">
-                <input  th:disabled="${controlsDisabled}" th:field="*{payment}" name="payment" type="number" min="0" class="form-control" placeholder="Wprowadź kwotę"/>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="control-label col-sm-offset-2 col-sm-2">Data przyjęcia:</label>
-            <div class="col-sm-4">
-                <!--PAMIETAJ O DODANIU SPR AKTUALNEJ DATY-->
-                <input  id="date" onfocus="loadCurrentDate('max');" th:disabled="${controlsDisabled}" th:field="*{dateHired}" name="dateHired" type="date" class="form-control" min="1970-01-01" required="required"/>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="control-label col-sm-offset-2 col-sm-2">Pozycja:</label>
-            <div class="col-sm-4">
-                <select  th:disabled="${controlsDisabled==true || positionDisabled==true}" onchange="disableShowroom()" id ="position" name="position" class="form-control" aria-label="..." required="required">
-                    <option value="" text="Wybierz pozycję"></option>
-                    <option  th:each="p : ${positions}" th:value="${p.id}" th:text="${p.value}" value ="Dyrektor" th:selected="${p.id}==${positionId}"></option>
-                </select>
-                <input th:if="${positionDisabled}" type="hidden" th:field="*{position}" name="position" class="form-control" />
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="control-label col-sm-offset-2 col-sm-2">Salon:</label>
-            <div class="col-sm-4">
-                <select  th:disabled="${controlsDisabled==true || positionDisabled==true}" name="showroom" id="showroom" class="form-control" aria-label="...">
-                    <option th:value="-1" text="Wybierz salon"></option>
-                    <option th:each="s : ${showrooms}" th:value="${s.id}" th:text="${s.name}" th:selected="${s.id}==${showroomId}"></option>
-                </select>
-                <input th:if="${positionDisabled}" type="hidden" th:field="*{showroom}" name="showroom" class="form-control"/>
-            </div>
-        </div>
-        <div  th:if="${controlsLoginVisible}" class="form-group" >
-            <label class="control-label col-sm-offset-2 col-sm-2">Login:</label>
-            <div class="col-sm-4">
-                <input th:disabled="${controlsDisabled}" th:field="*{login}" name="login" type="text" class="form-control" placeholder="Wprowadź login" required="required"/>
-            </div>
-        </div>
-        <input th:unless="${controlsLoginVisible}"  th:field="*{login}" name="login" type="hidden" class="form-control" placeholder="Wprowadź login" required="required"/>
-        <div th:if="${controlsPasswordVisible}" class="form-group">
-            <label class="control-label col-sm-offset-2 col-sm-2">Hasło:</label>
-            <div class="col-sm-4">
-                <input  th:disabled="${controlsDisabled}" th:field="*{password}" name="password" type="password" class="form-control" placeholder="Wprowadź hasło" required="required"/>
-            </div>
-        </div>
-        <input th:unless="${controlsPasswordVisible}" type="hidden" th:field="*{password}" name="password" class="form-control" placeholder="Wprowadź hasło" required="required"/>
-        <div th:if="${choosenPrivileges}">
-            <div class="col-sm-offset-2 col-sm-5">
-                <table class="table">
-                    <tr>Wybrane uprawnienia:</tr>
-                    <tr th:each ="item : ${choosenPrivileges}">
-                        <td th:text="${item.name}"/>
-                        <td th:disabled="${disabledButtons}"><a href="contracts.html" th:href="@{'/deleteRelatedPrivilege/'+${item.id}}"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a></td>
-                        <br/>
-                    </tr>
-                </table>
-            </div>
-        </div>
-        <form class="form-horizontal" role="form" method="post" action="/addPrivilege">
             <div class="form-group">
-                <label class="control-label col-sm-2">Uprawnienia:</label>
-                <div class="col-sm-10">
+                <label class="control-label col-sm-offset-2 col-sm-2">Uprawnienia:</label>
+                <div class="col-sm-4">
                     <select th:disabled="${disabledButtons}" name="privilege" class="form-control" aria-label="..." >
                         <option th:value="-1" text="Uprawnienia:"></option>
                         <option  th:each="c : ${privileges}" th:value="${c.id}" th:text="${c.name}" th:selected="${c.id}"></option>
@@ -169,19 +106,85 @@
                 </div>
             </div>
             <div class="form-group">
-                <div class="col-sm-offset-2 col-sm-10">
+                <div class="col-sm-offset-3 col-sm-10">
                     <button th:disabled="${disabledButtons}" type="submit" class="btn btn-default">Dodaj uprawnienie</button>
                 </div>
             </div>
         </form>
-        <div class="form-group">
-            <div class="col-sm-offset-4 col-sm-10">
-                <button onclick="validateActualDate()" type="submit" th:disabled="${controlsDisabled}" class="btn btn-default" >Akceptuj</button>
-                <button type="reset" th:disabled="${controlsDisabled}" class="btn btn-default">Anuluj zmiany</button>
+        <!--Add worker-->
+        <a th:if="${controlsPanelVisible}" name="anch"></a>
+        <!--Edit worker-->
+        <form id="menuForm"  name="menuForm" class="form-horizontal" role="form" method="post" action="/acceptModifyWorker#anch" th:object="${worker}">
+            <input type="hidden" style="display: none;" name="id" th:field="*{id}"/>
+            <div class="form-group">
+                <label class="control-label col-sm-offset-2 col-sm-2">Imię:</label>
+                <div class="col-sm-4">
+                    <input th:disabled="${controlsDisabled}" th:field="*{name}" name="name" type="text" class="form-control" placeholder="Wprowadź imię" required="required"/>
+                </div>
             </div>
-        </div>
-        <div th:text="${error != null} ? ${error}" class="label label-danger"></div>
-    </form>
+            <div class="form-group">
+                <label class="control-label col-sm-offset-2 col-sm-2">Nazwisko:</label>
+                <div class="col-sm-4">
+                    <input  th:disabled="${controlsDisabled}" th:field="*{surname}" name="surname" type="text" class="form-control" placeholder="Wprowadź nazwisko" required="required"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-offset-2 col-sm-2">Płaca:</label>
+                <div class="col-sm-4">
+                    <input  th:disabled="${controlsDisabled}" th:field="*{payment}" name="payment" type="number" min="0" class="form-control" placeholder="Wprowadź kwotę"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-offset-2 col-sm-2">Data przyjęcia:</label>
+                <div class="col-sm-4">
+                    <!--PAMIETAJ O DODANIU SPR AKTUALNEJ DATY-->
+                    <input  id="date" onfocus="loadCurrentDate('max');" th:disabled="${controlsDisabled}" th:field="*{dateHired}" name="dateHired" type="date" class="form-control" min="1970-01-01" required="required"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-offset-2 col-sm-2">Pozycja:</label>
+                <div class="col-sm-4">
+                    <select  th:disabled="${controlsDisabled==true || positionDisabled==true}" onchange="disableShowroom()" id ="position" name="position" class="form-control" aria-label="..." required="required">
+                        <option value="" text="Wybierz pozycję"></option>
+                        <option  th:each="p : ${positions}" th:value="${p.id}" th:text="${p.value}" value ="Dyrektor" th:selected="${p.id}==${positionId}"></option>
+                    </select>
+                    <input th:if="${positionDisabled}" type="hidden" th:field="*{position}" name="position" class="form-control" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-offset-2 col-sm-2">Salon:</label>
+                <div class="col-sm-4">
+                    <select  th:disabled="${controlsDisabled==true || positionDisabled==true}" name="showroom" id="showroom" class="form-control" aria-label="...">
+                        <option th:value="-1" text="Wybierz salon"></option>
+                        <option th:each="s : ${showrooms}" th:value="${s.id}" th:text="${s.name}" th:selected="${s.id}==${showroomId}"></option>
+                    </select>
+                    <input th:if="${positionDisabled}" type="hidden" th:field="*{showroom}" name="showroom" class="form-control"/>
+                </div>
+            </div>
+            <div  th:if="${controlsLoginVisible}" class="form-group" >
+                <label class="control-label col-sm-offset-2 col-sm-2">Login:</label>
+                <div class="col-sm-4">
+                    <input th:disabled="${controlsDisabled}" th:field="*{login}" name="login" type="text" class="form-control" placeholder="Wprowadź login" required="required"/>
+                </div>
+            </div>
+            <input th:unless="${controlsLoginVisible}"  th:field="*{login}" name="login" type="hidden" class="form-control" placeholder="Wprowadź login" required="required"/>
+            <div th:if="${controlsPasswordVisible}" class="form-group">
+                <label class="control-label col-sm-offset-2 col-sm-2">Hasło:</label>
+                <div class="col-sm-4">
+                    <input  th:disabled="${controlsDisabled}" th:field="*{password}" name="password" type="password" class="form-control" placeholder="Wprowadź hasło" required="required"/>
+                </div>
+            </div>
+            <input th:unless="${controlsPasswordVisible}" type="hidden" th:field="*{password}" name="password" class="form-control" placeholder="Wprowadź hasło" required="required"/>
+
+            <div class="form-group">
+                <div class="col-sm-offset-4 col-sm-10">
+                    <button onclick="validateActualDate()" type="submit" th:disabled="${controlsDisabled}" class="btn btn-default" >Akceptuj</button>
+                    <button type="reset" th:disabled="${controlsDisabled}" class="btn btn-default">Anuluj zmiany</button>
+                </div>
+            </div>
+            <div th:text="${error != null} ? ${error}" class="label label-danger"></div>
+        </form>
+    </div>
     <br/>
 </div>
 </body>

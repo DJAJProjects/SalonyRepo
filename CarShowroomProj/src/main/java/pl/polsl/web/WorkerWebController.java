@@ -27,7 +27,7 @@ public class WorkerWebController extends  BaseWebController {
 
     private ViewMode viewMode;
     private Worker currentWorker;
-    private ArrayList<Privileges> privilegesList;
+    private ArrayList<Privileges> currentPrivilegesList;
     private ArrayList<Privileges> previousPrivilegesList;
     private boolean differentWorker = false;
 
@@ -45,6 +45,8 @@ public class WorkerWebController extends  BaseWebController {
 
     @RequestMapping(value ="/worker")
     public String getWorkers(Model model){
+            boolean isAdmin = false;
+
             if (Data.user == null) {
                 model.asMap().clear();
                 model.addAttribute("userNotLoggedIn", true);
@@ -58,6 +60,11 @@ public class WorkerWebController extends  BaseWebController {
             if(!model.containsAttribute("deleteDirector"))
                 model.addAttribute("deleteDirector", false);
 
+            if(Data.user.getPosition().getValue().equals(Data.adminValue)){
+                isAdmin = true;
+            }
+
+            model.addAttribute("privilegesPanelVisible", isAdmin);
 
             return "worker";
 
@@ -94,8 +101,14 @@ public class WorkerWebController extends  BaseWebController {
         redirectAttributes.addFlashAttribute("showrooms", showroomsController.findAll());
         redirectAttributes.addFlashAttribute("controlsLoginVisible", true);
         redirectAttributes.addFlashAttribute("controlsPasswordVisible", true);
-        if(differentWorker)
-            privilegesList = previousPrivilegesList = new ArrayList<Privileges>();
+
+        if(differentWorker) {
+            previousPrivilegesList = new ArrayList<Privileges>();
+            currentPrivilegesList = new ArrayList<Privileges>();
+        }
+
+        redirectAttributes.addFlashAttribute("choosenPrivileges", currentPrivilegesList);
+        redirectAttributes.addFlashAttribute("privileges", privilegesController.findPrivilegesNotRelatedToWorker(worker));
         return "redirect:/worker";
     }
 
@@ -120,10 +133,12 @@ public class WorkerWebController extends  BaseWebController {
         redirectAttributes.addFlashAttribute("controlsLoginVisible", true);
         redirectAttributes.addFlashAttribute("controlsPasswordVisible", false);
 
-        if(differentWorker)
-            privilegesList = previousPrivilegesList = (ArrayList)privilegesController.findPrivilegesOfWorker(worker);
+        if(differentWorker) {
+            previousPrivilegesList = (ArrayList) privilegesController.findPrivilegesOfWorker(worker);
+            currentPrivilegesList = (ArrayList) privilegesController.findPrivilegesOfWorker(worker);
+        }
 
-        redirectAttributes.addFlashAttribute("choosenPrivileges", previousPrivilegesList);
+        redirectAttributes.addFlashAttribute("choosenPrivileges", currentPrivilegesList);
         redirectAttributes.addFlashAttribute("privileges", privilegesController.findPrivilegesNotRelatedToWorker(worker));
 
         differentWorker = false;
@@ -163,10 +178,12 @@ public class WorkerWebController extends  BaseWebController {
             redirectAttributes.addFlashAttribute("positionDisabled", true);
         }
 
-        if(differentWorker)
-            privilegesList = previousPrivilegesList = (ArrayList)privilegesController.findPrivilegesOfWorker(worker);
+        if(differentWorker) {
+            previousPrivilegesList = (ArrayList) privilegesController.findPrivilegesOfWorker(worker);
+            currentPrivilegesList = (ArrayList) privilegesController.findPrivilegesOfWorker(worker);
+        }
 
-        redirectAttributes.addFlashAttribute("choosenPrivileges", previousPrivilegesList);
+        redirectAttributes.addFlashAttribute("choosenPrivileges", currentPrivilegesList);
         redirectAttributes.addFlashAttribute("privileges", privilegesController.findPrivilegesNotRelatedToWorker(worker));
 
         differentWorker = false;
@@ -233,18 +250,17 @@ public class WorkerWebController extends  BaseWebController {
     @RequestMapping(value ="/addPrivilege", method = RequestMethod.POST)
     public String addPrivilege(RedirectAttributes redirectAttributes, @RequestParam("privilege") int privilege) {
         Privileges priv = privilegesController.findOne(privilege);
-        privilegesList.add(priv);
+        currentPrivilegesList.add(priv);
         if(this.viewMode == ViewMode.INSERT)
             return "redirect:/addWorker/";
-        else return "redirect:/editWorker/";
+        else return "redirect:/editWorker/"+currentWorker.getId();
     }
 
     @RequestMapping(value ="/deleteRelatedPrivilege/{id}")
     public String deleteRelatedPrivilege(@PathVariable("id")int id){
-        //Privileges priv = privilegesController.findOne(id);
-        for(Privileges priv: privilegesList){
+        for(Privileges priv: currentPrivilegesList){
             if(priv.getId() == id) {
-                privilegesList.remove(priv);
+                currentPrivilegesList.remove(priv);
                 break;
             }
 
@@ -258,7 +274,7 @@ public class WorkerWebController extends  BaseWebController {
 
         boolean ret = true;
 
-        for(Privileges actPriv: privilegesList){
+        for(Privileges actPriv: currentPrivilegesList){
             boolean found = false;
             for(Privileges prevPriv: previousPrivilegesList){
                 if(prevPriv.getId() == actPriv.getId()){
@@ -272,13 +288,14 @@ public class WorkerWebController extends  BaseWebController {
 
         for(Privileges prevPriv: previousPrivilegesList){
             boolean found = false;
-            for(Privileges actPriv: privilegesList){
+            for(Privileges actPriv: currentPrivilegesList){
                 if(prevPriv.getId() == actPriv.getId()){
                     found = true;
                 }
             }
             if(!found){
-                workersPrivilegesController.deleteWorkersPrivileges(prevPriv.getId());
+                WorkersPrivileges target = (workersPrivilegesController.getWorkersPrivilegesByWorkerAndPrivilege(worker, prevPriv)).get(0);
+                workersPrivilegesController.deleteWorkersPrivileges(target.getId());
             }
         }
 
