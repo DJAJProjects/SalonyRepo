@@ -88,4 +88,9 @@ public class PrivilegesController {
         return ret;
     }
 
+    public List<Privileges> findPrivilegesNotRelatedToWorker(Worker worker){
+        List<Privileges> ret =  privilegesRepository.getUnrelatedPrivsForWorker(worker);
+        return ret;
+    }
+
 }
