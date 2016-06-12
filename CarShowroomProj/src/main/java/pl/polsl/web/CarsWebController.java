@@ -16,6 +16,7 @@ import pl.polsl.model.Car;
 import java.io.Console;
 import java.sql.Date;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -38,6 +39,7 @@ public class CarsWebController extends BaseWebController {
 
     private ViewMode viewMode;
     private Set<Accessory> accessorySet = new HashSet<>();
+    private Set<Accessory> previousAccessorySet = new HashSet<>();
     private Car car;
     private boolean flag;
 
@@ -60,7 +62,7 @@ public class CarsWebController extends BaseWebController {
         model.addAttribute("showrooms", showroomsController.findAll());
         model.addAttribute("accessory", accessoriesController.findFreeAccessories());
         model.addAttribute("chosenAccessories",accessorySet);
-        model.addAttribute("editCostDisabled",false);
+        model.addAttribute("editCostDisabled",true);
 
         if(viewMode == ViewMode.INSERT) {
             model.addAttribute("controlsDisabled", false);
@@ -128,7 +130,10 @@ public class CarsWebController extends BaseWebController {
         viewMode = ViewMode.EDIT;
         this.car = carsController.findOne(id);
         flag = false;
-        accessorySet = car.getAccessories();
+        accessorySet.clear();
+        previousAccessorySet.clear();
+        accessorySet.addAll(car.getAccessories());
+        previousAccessorySet.addAll(accessorySet);
         model.addAttribute("controlsCostDisabled",false);
 
         return "redirect:/carsDetails";
@@ -138,7 +143,7 @@ public class CarsWebController extends BaseWebController {
     public String viewCar(Model model, @PathVariable("id")int id) {
         viewMode = ViewMode.VIEW_ALL;
         this.car = carsController.findOne(id);
-        flag = false;
+        flag = false;accessorySet.clear();
         accessorySet = car.getAccessories();
         model.addAttribute("controlsCostDisabled",false);
 
@@ -151,7 +156,9 @@ public class CarsWebController extends BaseWebController {
         car.setCarName(dictionaryController.findOne(name));
         car.setProdDate(prodDate);
         car.setShowroom(showroomsController.findOne(showroom));
-        car.setCost(Integer.parseInt(dictionaryController.findOne(name).getValue2()));
+        if(viewMode == ViewMode.INSERT) {
+            car.setCost(Integer.parseInt(dictionaryController.findOne(name).getValue2()));
+        }
         flag = true;
 
         return "redirect:/carsDetails";
@@ -159,18 +166,18 @@ public class CarsWebController extends BaseWebController {
 
     @RequestMapping(value = "/modifyCar", method = RequestMethod.POST)
     public String modifyCar(RedirectAttributes redirectAttributes, @RequestParam("id") int id,
-                            @RequestParam("cost")int cost, @RequestParam(value="ordered", required = false)Integer order,
+                            @RequestParam(value="ordered", required = false)Integer order,
                             @RequestParam(value="contract", required = false)Integer contract) {
         if(contract !=null) {
-            Car addCar = carsController.addCar(car.getCarName().getId(),car.getProdDate(),car.getShowroom().getId(),cost, 1, null,accessorySet);
+            Car addCar = carsController.addCar(car.getCarName().getId(),car.getProdDate(),car.getShowroom().getId(),car.getCost(), 1, null,accessorySet);
             ContractWebController.contract.getCarList().add(addCar);
             redirectAttributes.addAttribute("carId", contract);
             return "redirect:/contactAdditions";
         }
         if(viewMode == ViewMode.INSERT){
-            Car addCar = carsController.addCar(car.getCarName().getId(),car.getProdDate(),car.getShowroom().getId(),cost,order == null ? 0 : 1,null,accessorySet);
+            Car addCar = carsController.addCar(car.getCarName().getId(),car.getProdDate(),car.getShowroom().getId(),car.getCost(),order == null ? 0 : 1,null,accessorySet);
         } else if(viewMode == ViewMode.EDIT){
-            Car editCar = carsController.editCar(id,car.getCarName().getId(),car.getProdDate(),car.getShowroom().getId(),cost, order == null ? 0 : 1);
+            Car editCar = carsController.editCar(id,car.getCarName().getId(),car.getProdDate(),car.getShowroom().getId(),car.getCost(), order == null ? 0 : 1,accessorySet,previousAccessorySet);
         }
         return "redirect:/cars";
     }
@@ -179,7 +186,6 @@ public class CarsWebController extends BaseWebController {
     public String newAccessory(RedirectAttributes redirectAttributes, @RequestParam("accessoryId")Integer accessoryId) {
         Accessory part = accessoriesController.findOne(accessoryId);
         accessorySet.add(part);
-
         Integer tmpCost = car.getCost() + part.getCost();
         car.setCost(tmpCost);
 
@@ -188,7 +194,14 @@ public class CarsWebController extends BaseWebController {
 
     @RequestMapping(value ="/deleteChosenAccessories/{id}")
     public String deleteAccessory(@PathVariable("id")int id){
-        accessorySet.remove(accessorySet.stream().filter(x-> (x.getId() == id)).findAny().get());
+        Integer tmpCost = car.getCost();
+        for(Accessory a : accessorySet) {
+            if(a.getId() == id) {
+                car.setCost(tmpCost - a.getCost());
+                accessorySet.remove(a);
+                break;
+            }
+        }
         return "redirect:/carsDetails";
     }
 
