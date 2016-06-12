@@ -37,9 +37,9 @@ public class AccessoriesWebController extends  BaseWebController {
     @RequestMapping(value = "/accessories")
     public String getAccessories(Model model) {
         viewMode = ViewMode.DEFAULT;
-        model.addAttribute("accessories",accessoriesController.findAll());
+     //   model.addAttribute("accessories",accessoriesController.findAll());
         freeAccessory = accessoriesController.findFreeAccessories();
-        //     model.addAttribute("accessories",freeAccessory);
+        model.addAttribute("accessories",freeAccessory);
         model.addAttribute("controlsPanelVisible", false);
         refreshMenuPrivileges(model);
         return "accessories";
@@ -79,8 +79,8 @@ public class AccessoriesWebController extends  BaseWebController {
     @RequestMapping(value = "/accessoryDetails", method = RequestMethod.GET)
     public String accessoryDetails(Model model){
         model.addAttribute("accessory",accessory);
-        model.addAttribute("accessories",accessoriesController.findAll());
-        //     model.addAttribute("accessories",freeAccessory);
+     //   model.addAttribute("accessories",accessoriesController.findAll());
+        model.addAttribute("accessories",freeAccessory);
         model.addAttribute("accessoryNames", dictionaryController.findAllAccessories());
         if(viewMode == ViewMode.INSERT) {
             model.addAttribute("controlsPanelVisible", true);
@@ -104,7 +104,7 @@ public class AccessoriesWebController extends  BaseWebController {
         List<Integer> costList = new ArrayList<>();
         List<Integer> assemblyCostList = new ArrayList<>();
         for(int i = 0; i < accesoryList.size(); i++) {
-            if(accesoryList.get(i).getType().equals(accessory.getAccessory().getType())) {
+            if(accesoryList.get(i).getValue().equals(accessory.getAccessory().getValue())) {
                 costList.add(Integer.parseInt(accesoryList.get(i).getValue2()));
                 assemblyCostList.add(Integer.parseInt(accesoryList.get(i).getValue3()));
             }

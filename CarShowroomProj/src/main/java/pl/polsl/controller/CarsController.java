@@ -10,6 +10,7 @@ import pl.polsl.model.Accessory;
 import pl.polsl.model.Car;
 import pl.polsl.model.Contract;
 import pl.polsl.model.Report;
+import pl.polsl.repository.AccessoriesRepository;
 import pl.polsl.repository.CarsRepository;
 import pl.polsl.repository.DictionaryRepository;
 import pl.polsl.repository.ShowroomsRepository;
@@ -40,6 +41,8 @@ public class CarsController {
     private ShowroomsRepository showroomsRepository;
     @Autowired
     private DictionaryRepository dictionaryRepository;
+    @Autowired
+    private AccessoriesRepository accessoriesRepository;
 
     @GET
     @Produces({MediaType.APPLICATION_JSON})
@@ -58,22 +61,49 @@ public class CarsController {
     }
 
     public void deleteCar(int id){
+        Car car = findOne(id);
+        Set<Accessory> set = car.getAccessories();
+        for(Accessory a : set) {
+            a.setCar(null);
+        }
         carsRepository.delete(id);
     }
 
     public Car addCar(int name, Date dateProd, int showroom, int cost, int order, Contract contract, Set<Accessory> accessorySet) {
-        return carsRepository.save(new Car(dictionaryRepository.findOne(name),dateProd,
+        Car car = carsRepository.save(new Car(dictionaryRepository.findOne(name),dateProd,
                 showroomsRepository.findOne(showroom),cost, order, contract, accessorySet));
+        for(Accessory a : car.getAccessories()) {
+            a.setCar(car);
+            accessoriesRepository.save(a);
+        }
+        return carsRepository.save(car);
     }
 
-    public Car editCar(int id, int idName, Date prodDate, int showroom, int cost, int order) {
+    public Car editCar(int id, int idName, Date prodDate, int showroom, int cost, int order,Set<Accessory> set, Set<Accessory> previousSet) {
         Car car = carsRepository.findOne(id);
-
         car.setCarName(dictionaryRepository.findOne(idName));
         car.setProdDate(prodDate);
         car.setShowroom(showroomsRepository.findOne(showroom));
         car.setCost(cost);
         car.setOrdered(order);
+        car.setAccessories(set);
+        for(Accessory a : car.getAccessories()) {
+            a.setCar(car);
+            accessoriesRepository.save(a);
+        }
+        boolean flag;
+        for(Accessory a : previousSet) {
+            flag = false;
+            for(Accessory a2 : car.getAccessories()) {
+                if (a.getId() == a2.getId()) {
+                    flag = true;
+                }
+            }
+            if(flag || car.getAccessories().size() == 0) {
+                a.setCar(null);
+                accessoriesRepository.save(a);
+            }
+        }
         return carsRepository.save(car);
     }
 

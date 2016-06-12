@@ -65,6 +65,7 @@ public class ServicesWebController extends BaseWebController {
         model.addAttribute("servicemans",workersController.findAllServicemans());
         model.addAttribute("cars",carsController.findAllCars());
         model.addAttribute("serviceObjects",dictionaryController.findAllSubservice());
+        model.addAttribute("controlsDisabledCost",true);
         if(viewMode == ViewMode.EDIT || viewMode == ViewMode.INSERT) {
             if(editPart1 && !editPart2) {
                 model.addAttribute("controlsDisabledPart1",true);
@@ -222,6 +223,9 @@ public class ServicesWebController extends BaseWebController {
     @RequestMapping(value = "/modifyServiceObject", method = RequestMethod.POST)
     public String modifyService2(@RequestParam("idServiceObject")int idServiceObject) {
         if(accessoryCost) {
+            if(viewMode == ViewMode.EDIT) {
+                previousAccessory = service.getAccessory();
+            }
             service.setAccessory(accessoriesController.findOne(idServiceObject));
             service.setCost(accessoriesController.findOne(idServiceObject).getCost() + accessoriesController.findOne(idServiceObject).getAssemblyCost());
         } else {
@@ -238,17 +242,17 @@ public class ServicesWebController extends BaseWebController {
 
     @RequestMapping(value = "/modifyService", method = RequestMethod.POST)
     public String modifyService(@RequestParam("id") int id, @RequestParam("idServiceman")int idServiceman,
-                                @RequestParam(value = "cost")int cost, @RequestParam("dateConducted")Date dateConducted) {
+                                @RequestParam("dateConducted")Date dateConducted) {
         if(viewMode == ViewMode.INSERT){
             if(accessoryCost)
-                servicesController.addService(service.getServiceType().getId(),idServiceman,service.getCar().getId(),service.getAccessory().getId(),0,cost,dateConducted);
+                servicesController.addService(service.getServiceType().getId(),idServiceman,service.getCar().getId(),service.getAccessory().getId(),0,service.getCost(),dateConducted);
             else
-                servicesController.addService(service.getServiceType().getId(),idServiceman,service.getCar().getId(),0,service.getSubserviceType().getId(),cost,dateConducted);
+                servicesController.addService(service.getServiceType().getId(),idServiceman,service.getCar().getId(),0,service.getSubserviceType().getId(),service.getCost(),dateConducted);
         } else if(viewMode == ViewMode.EDIT) {
             if(accessoryCost) {
-                servicesController.editService(id, service.getServiceType().getId(), idServiceman, service.getCar().getId(), service.getAccessory().getId(), 0, cost, dateConducted);
+                servicesController.editService(id, service.getServiceType().getId(), idServiceman, service.getCar().getId(), service.getAccessory().getId(), 0, service.getCost(), dateConducted, previousAccessory.getId());
             } else {
-                servicesController.editService(id, service.getServiceType().getId(), idServiceman, service.getCar().getId(), 0, service.getSubserviceType().getId(), cost, dateConducted);
+                servicesController.editService(id, service.getServiceType().getId(), idServiceman, service.getCar().getId(), 0, service.getSubserviceType().getId(), service.getCost(), dateConducted, 0);
             }
         }
         return "redirect:/services";
