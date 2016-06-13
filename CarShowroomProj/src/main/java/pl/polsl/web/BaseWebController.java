@@ -12,7 +12,7 @@ import pl.polsl.controller.PrivilegesController;
  * Created by Kuba on 27.05.2016.
  */
 public class BaseWebController {
-    protected ViewMode viewMode;
+    protected ViewMode viewMode = ViewMode.DEFAULT;
 
     @Autowired
     protected PrivilegesController privilegesController;

@@ -7,12 +7,31 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.View;
 import pl.polsl.Data;
 import pl.polsl.ViewMode;
 import pl.polsl.controller.ContractorsController;
 import pl.polsl.controller.DictionaryController;
 import pl.polsl.controller.PrivilegesController;
 import pl.polsl.model.Contractor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import pl.polsl.Data;
+import pl.polsl.ViewMode;
+import pl.polsl.controller.DictionaryController;
+import pl.polsl.controller.ShowroomsController;
+import pl.polsl.controller.WorkersController;
+import pl.polsl.model.Showroom;
+import pl.polsl.model.Worker;
+
+import java.util.List;
 
 import java.util.List;
 
@@ -21,8 +40,6 @@ import java.util.List;
  */
 @Controller
 public class ContractorsWebController extends BaseWebController {
-
-    private ViewMode viewMode;
 
 
     @Autowired
@@ -36,10 +53,14 @@ public class ContractorsWebController extends BaseWebController {
 
         analisePrivileges("Klienci");
 
-        viewMode = ViewMode.DEFAULT;
+        if(viewMode == ViewMode.DEFAULT){
+            model.addAttribute("controlsPanelVisible", false);
+        }
+        else{
+            model.addAttribute("controlsPanelVisible", true);
+        }
 
         model.addAttribute("contractors", contractorsController.findContractorsRelatedToWorker(Data.user));
-        model.addAttribute("controlsPanelVisible", false);
         model.addAttribute("insertEnabled", insertEnabled);
         model.addAttribute("updateEnabled", updateEnabled);
         model.addAttribute("deleteEnabled", deleteEnabled);
@@ -49,67 +70,52 @@ public class ContractorsWebController extends BaseWebController {
     }
 
     @RequestMapping(value ="/viewContractor/{id}")
-    public String viewContractor(Model model, @PathVariable("id")int id) {
+    public String viewContractor(RedirectAttributes redirectAttributes, @PathVariable("id")int id) {
 
         viewMode = ViewMode.VIEW_ALL;
 
         Contractor contractor = contractorsController.findOne(id);
-        model.addAttribute("cityId", contractor.getCity().getId());
-        model.addAttribute("countryId", contractor.getCountry().getId());
+        redirectAttributes.addFlashAttribute("cityId", contractor.getCity().getId());
+        redirectAttributes.addFlashAttribute("countryId", contractor.getCountry().getId());
 
-        model.addAttribute("contractor", contractor);
-        model.addAttribute("controlsPanelVisible", true);
-        model.addAttribute("controlsDisabled", true);
-        model.addAttribute("cities", dictionaryController.findAllCities());
-        model.addAttribute("countries", dictionaryController.findAllCountries());
-        model.addAttribute("contractors", contractorsController.findAllContractors());
-        model.addAttribute("insertEnabled", insertEnabled);
-        model.addAttribute("updateEnabled", updateEnabled);
-        model.addAttribute("deleteEnabled", deleteEnabled);
+        redirectAttributes.addFlashAttribute("contractor", contractor);
+        redirectAttributes.addFlashAttribute("controlsDisabled", true);
+        redirectAttributes.addFlashAttribute("cities", dictionaryController.findAllCities());
+        redirectAttributes.addFlashAttribute("countries", dictionaryController.findAllCountries());
 
-        return "contractors";
+        return "redirect:/contractors/";
     }
 
     @RequestMapping(value ="/addContractor")
-    public String addContractor(Model model) {
+    public String addContractor(RedirectAttributes redirectAttributes) {
 
         viewMode = ViewMode.INSERT;
 
         Contractor contractor = new Contractor();
 
-        model.addAttribute("contractor", contractor);
-        model.addAttribute("controlsPanelVisible", true);
-        model.addAttribute("controlsDisabled", false);
-        model.addAttribute("cities", dictionaryController.findAllCities());
-        model.addAttribute("countries", dictionaryController.findAllCountries());
-        model.addAttribute("contractors", contractorsController.findAllContractors());
-        model.addAttribute("insertEnabled", insertEnabled);
-        model.addAttribute("updateEnabled", updateEnabled);
-        model.addAttribute("deleteEnabled", deleteEnabled);
+        redirectAttributes.addFlashAttribute("contractor", contractor);
+        redirectAttributes.addFlashAttribute("controlsDisabled", false);
+        redirectAttributes.addFlashAttribute("cities", dictionaryController.findAllCities());
+        redirectAttributes.addFlashAttribute("countries", dictionaryController.findAllCountries());
 
-        return "contractors";
+        return "redirect:/contractors/";
     }
 
     @RequestMapping(value ="/editContractor/{id}")
-    public String editContractor(Model model, @PathVariable("id")int id) {
+    public String editContractor(RedirectAttributes redirectAttributes, @PathVariable("id")int id) {
 
         viewMode = ViewMode.EDIT;
 
         Contractor contractor = contractorsController.findOne(id);
-        model.addAttribute("cityId", contractor.getCity().getId());
-        model.addAttribute("countryId", contractor.getCountry().getId());
+        redirectAttributes.addFlashAttribute("cityId", contractor.getCity().getId());
+        redirectAttributes.addFlashAttribute("countryId", contractor.getCountry().getId());
 
-        model.addAttribute("contractor", contractor);
-        model.addAttribute("controlsPanelVisible", true);
-        model.addAttribute("controlsDisabled", false);
-        model.addAttribute("cities", dictionaryController.findAllCities());
-        model.addAttribute("countries", dictionaryController.findAllCountries());
-        model.addAttribute("contractors", contractorsController.findAllContractors());
-        model.addAttribute("insertEnabled", insertEnabled);
-        model.addAttribute("updateEnabled", updateEnabled);
-        model.addAttribute("deleteEnabled", deleteEnabled);
+        redirectAttributes.addFlashAttribute("contractor", contractor);
+        redirectAttributes.addFlashAttribute("controlsDisabled", false);
+        redirectAttributes.addFlashAttribute("cities", dictionaryController.findAllCities());
+        redirectAttributes.addFlashAttribute("countries", dictionaryController.findAllCountries());
 
-        return "contractors";
+        return "redirect:/contractors/";
     }
 
     @RequestMapping(value ="/acceptModifyContractor", method = RequestMethod.POST)
@@ -131,6 +137,7 @@ public class ContractorsWebController extends BaseWebController {
             Contractor contractor = contractorsController.updateContractor( id,name,surname,pesel,nip,
                                                                         regon,city,country,street);
         }
+        viewMode = ViewMode.DEFAULT;
         return "redirect:/contractors/";
     }
 
