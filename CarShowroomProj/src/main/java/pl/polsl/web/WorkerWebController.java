@@ -266,7 +266,6 @@ public class WorkerWebController extends  BaseWebController {
                 currentPrivilegesList.remove(priv);
                 break;
             }
-
         }
         if(this.viewMode == ViewMode.INSERT)
             return "redirect:/addWorker/";

@@ -37,14 +37,14 @@
         <button type="button" class="btn btn-default"><a href="#anch" th:href="@{/addReport#anch}">Dodaj raport</a></button>
     </div>
     <div>
-        <div class="form-group pull-right">
-            <input type="text" class="search form-control" placeholder="What are you looking for?"/>
-        </div>
-        <span class="counter pull-right"></span>
-
-        <div class="panel panel-default">
+        <div class="panel">
             <!-- Default panel contents -->
-            <div class="panel-heading">Lista raportów</div>
+            <div class="panel-heading"><b>LISTA RAPORTÓW</b>
+                <div class="form-group pull-right">
+                    <input type="text" class="search form-control" placeholder="Wyszukaj w tabeli"/>
+                </div>
+                <span class="counter pull-right"></span>
+            </div>
 
             <!-- Table -->
             <table class="table tablesorter table-hover table-bordered results" id="mytable">
