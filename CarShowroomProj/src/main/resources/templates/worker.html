@@ -3,17 +3,27 @@
 <head>
     <title>Pracownicy</title>
     <script type="text/javascript">
+        function confirm_delete(node) {
+            return confirm("Usunięcie pracownika spowoduje wstawienie null w wszystkich jego odwołaniach. Kliknij okej, by kontynuować");
+        }
+    </script>
+    <script type="text/javascript">
         function print_error() {
-            alert("Pracownik jest dyrektorem salonu. Nie mozna go usunąć");
+            alert("Pracownik jest dyrektorem salonu. Nie można go usunąć");
+        }
+    </script>
+    <script>
+        function mymessage() {
+            alert("This message was triggered from the onload event");
         }
     </script>
 </head>
 <body th:attr="onload=${deleteDirector ? 'print_error()' : null}">
 <div layout:fragment="main" style="margin: 0 auto; max-width: 1000px;">
-    <br/>
-    <div th:if="${insertEnabled}" class="btn-group" role="group" aria-label="..." style="margin: 20px 0;">
+    <div class="btn-group" role="group" aria-label="..." style="margin: 20px 0;">
         <a th:href="@{/addWorker#anch}"><button type="button" class="btn ">Dodaj pracownika</button></a>
     </div>
+    <div>
         <div class="panel">
             <!-- Default panel contents -->
             <div class="panel-heading"><b>LISTA PRACOWNIKÓW</b>
@@ -23,56 +33,54 @@
                 <span class="counter pull-right"></span>
             </div>
 
-            <!-- Table of workers-->
-            <table class="table tablesorter table-hover results" id="mytable">
+            <!-- Table -->
+            <table class="table tablesorter table-hover table-bordered results" id="mytable">
                 <!-- head row -->
-               <thead>
-                   <tr style="font-weight: bold; margin: 0 auto;">
-                       <td class="col-md-1 change-on-hand center-item">#</td>
-                       <td class="col-md-2 change-on-hand">Imię</td>
-                       <td class="col-md-2 change-on-hand">Nazwisko</td>
-                       <td class="col-md-2 change-on-hand">Pozycja</td>
-                       <td class="col-md-2 change-on-hand">Salon</td>
-                       <td th:if="${updateEnabled}" class="col-md-1 center-item">Edytuj</td>
-                       <td th:if="${deleteEnabled}" class="col-md-1 center-item">Usuń</td>
-                       <td class="col-md-1 center-item">Podgląd</td>
-                   </tr>
-                   <!-- Show when result not found -->
-                   <tr class="no-result">
-                       <td colspan="8"><b>Brak wyników wyszukiwania</b></td>
-                   </tr>
-               </thead>
-                <!-- body row -->
+
+                <thead>
+                <tr style="font-weight: bold; margin: 0 auto;">
+                    <td class="col-md-1 change-on-hand center-item">#</td>
+                    <td class="col-md-2 change-on-hand">Imię</td>
+                    <td class="col-md-2 change-on-hand">Nazwisko</td>
+                    <td class="col-md-2 change-on-hand">Pozycja</td>
+                    <td class="col-md-2 change-on-hand">Salon</td>
+                    <td class="col-md-1 center-item">Edytuj</td>
+                    <td class="col-md-1 center-item">Usuń</td>
+                    <td class="col-md-1 center-item">Podgląd</td>
+                </tr>
+                <tr class="warning no-result">
+                    <td colspan="8"><i class="fa fa-warning"></i> Brak wyników</td>
+                </tr>
+                </thead>
                 <tbody>
-                    <tr th:each="worker,stat : ${workers}">
-                        <td  th:text="${stat.count}" class="center-item"></td>
-                        <td th:text="${worker.name}"></td>
-                        <td th:text="${worker.surname}"></td>
-                        <td th:text="${worker.position.value}"></td>
-                        <td th:if="${worker.showroom}" th:text="${worker.showroom.name}"></td>
-                        <td th:unless="${worker.showroom}" class="center-item">---</td>
-                        <td th:if="${updateEnabled}" class="center-item">
-                            <a th:href="@{'/editWorker/'+${worker.id}+'#anch'}" >
+                <tr th:each="worker : ${workers}">
+                    <td class="center-item" th:text="${worker.id}"></td>
+                    <td th:text="${worker.name}"></td>
+                    <td th:text="${worker.surname}"></td>
+                    <td th:text="${worker.position.value}"></td>
+                    <td th:if="${worker.showroom}" th:text="${worker.showroom.name}"></td>
+                    <td th:unless="${worker.showroom}" >brak</td>
+                    <td class="center-item">
+                        <a th:href="@{'/editWorker/'+${worker.id}+'#anch'}" >
                                 <span class="glyphicon glyphicon-pencil" aria-hidden="true" style="height:100%;width:100%">
                                 </span>
-                            </a>
-                        </td>
-                        <td th:if="${deleteEnabled}" class="center-item">
-                            <a th:href="@{'/deleteWorker/'+${worker.id}}" onclick="return confirm_delete(this);" > <!--"-->
-                                <span class="glyphicon glyphicon-remove" aria-hidden="true" style="height:100%;width:100%"></span>
-                            </a>
-                        </td>
-                        <td class="center-item">
-                            <a th:href="@{'/viewWorker/'+${worker.id}+'#anch'}">
+                        </a>
+                    </td>
+                    <td class="center-item">
+                        <a th:href="@{'/deleteWorker/'+${worker.id}}" onclick="return confirm_delete(this);">
+                            <span class="glyphicon glyphicon-remove" aria-hidden="true" style="height:100%;width:100%"></span>
+                        </a>
+                    </td>
+                    <td class="center-item">
+                        <a th:href="@{'/viewWorker/'+${worker.id}+'#anch'}">
                                 <span class="glyphicon glyphicon-eye-open" aria-hidden="true" style="height:100%;width:100%">
                                 </span>
-                            </a>
-                        </td>
-                    </tr>
+                        </a>
+                    </td>
+                </tr>
                 </tbody>
             </table>
         </div>
-<<<<<<< HEAD
     </div>
     <div  th:if="${controlsPanelVisible}">
         <form th:if="${privilegesPanelVisible}" class="form-horizontal" role="form" method="post" action="/addPrivilege">
@@ -87,22 +95,6 @@
                         </tr>
                     </table>
                 </div>
-=======
-    <a th:if="${controlsPanelVisible}" name="anch"></a>
-    <!---Add, Edit and Display worker-->
-    <form th:if="${controlsPanelVisible}" id="menuForm"  name="menuForm" class="form-horizontal" role="form" method="post" action="/acceptModifyWorker#anch" th:object="${worker}">
-        <input type="hidden" style="display: none;" name="id" th:field="*{id}"/>
-        <div class="form-group">
-            <label class="control-label col-sm-offset-2 col-sm-2">Imię:</label>
-            <div class="col-sm-4">
-                <input th:disabled="${controlsDisabled}" th:field="*{name}" name="name" type="text" class="form-control" placeholder="Wprowadź imię" required="required"/>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="control-label col-sm-offset-2 col-sm-2">Nazwisko:</label>
-            <div class="col-sm-4">
-                <input  th:disabled="${controlsDisabled}" th:field="*{surname}" name="surname" type="text" class="form-control" placeholder="Wprowadź nazwisko" required="required"/>
->>>>>>> origin/develeop
             </div>
             <div class="form-group">
                 <label class="control-label col-sm-offset-2 col-sm-2">Uprawnienia:</label>
@@ -113,18 +105,10 @@
                     </select>
                 </div>
             </div>
-<<<<<<< HEAD
             <div class="form-group">
                 <div class="col-sm-offset-3 col-sm-10">
                     <button th:disabled="${disabledButtons}" type="submit" class="btn btn-default">Dodaj uprawnienie</button>
                 </div>
-=======
-        </div>
-        <div class="form-group">
-            <label class="control-label col-sm-offset-2 col-sm-2">Data przyjęcia:</label>
-            <div class="col-sm-4">
-                <input  id="date" onfocus="loadCurrentDate('max');" th:disabled="${controlsDisabled}" th:field="*{dateHired}" name="dateHired" type="date" class="form-control" min="1970-01-01" required="required"/>
->>>>>>> origin/develeop
             </div>
         </form>
         <!--Add worker-->

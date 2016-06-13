@@ -63,7 +63,6 @@ public class WorkerWebController extends  BaseWebController {
             refreshMenuPrivileges(model);
             if(!model.containsAttribute("deleteDirector"))
                 model.addAttribute("deleteDirector", false);
-<<<<<<< HEAD
 
             if(Data.user.getPosition().getValue().equals(Data.adminValue)){
                 isAdmin = true;
@@ -71,8 +70,6 @@ public class WorkerWebController extends  BaseWebController {
 
             model.addAttribute("privilegesPanelVisible", isAdmin);
 
-=======
->>>>>>> origin/develeop
             return "worker";
 
     }

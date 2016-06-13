@@ -67,6 +67,10 @@ public class WorkersController {
         return (List)workersRepository.findAllOneTypeWithoutShowroom(Data.directorId);
     }
 
+    public void updatePassword(Integer userID, String pass){
+
+    }
+
     public Worker addWorker(boolean error,
                             String name,
                             String surname,
