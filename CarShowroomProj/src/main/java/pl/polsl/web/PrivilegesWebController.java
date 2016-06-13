@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pl.polsl.ViewMode;
 import pl.polsl.controller.ContractorsController;
 import pl.polsl.controller.DictionaryController;
@@ -23,8 +24,6 @@ import java.io.Console;
 @Controller
 public class PrivilegesWebController extends BaseWebController{
 
-    private ViewMode viewMode;
-
     @Autowired
     private PrivilegesController privilegesController;
     @Autowired
@@ -33,58 +32,54 @@ public class PrivilegesWebController extends BaseWebController{
     @RequestMapping(value ="/privileges")
     public String getPrivileges(Model model){
 
-        viewMode = ViewMode.DEFAULT;
+
+        if(viewMode == ViewMode.DEFAULT){
+            model.addAttribute("controlsPanelVisible", false);
+        }
+        else{
+            model.addAttribute("controlsPanelVisible", true);
+        }
 
         model.addAttribute("privilegesGroups", privilegesController.findAll());
-        model.addAttribute("controlsPanelVisible", false);
+
         refreshMenuPrivileges(model);
         return "privileges";
     }
 
     @RequestMapping(value ="/viewPrivileges/{id}")
-    public String viewPrivileges(Model model, @PathVariable("id")int id) {
+    public String viewPrivileges(RedirectAttributes redirectAttributes, @PathVariable("id")int id) {
 
         viewMode = ViewMode.VIEW_ALL;
 
         Privileges privileges = privilegesController.findOne(id);
 
-        model.addAttribute("privilegesGroups", privilegesController.findAll());
-        model.addAttribute("privilegesGroup", privileges);
-        model.addAttribute("modules", dictionaryController.findAllModules());
-        model.addAttribute("controlsPanelVisible", true);
-        model.addAttribute("controlsDisabled", true);
-        return "privileges";
+        redirectAttributes.addFlashAttribute("privilegesGroup", privileges);
+        redirectAttributes.addFlashAttribute("modules", dictionaryController.findAllModules());
+        redirectAttributes.addFlashAttribute("controlsDisabled", true);
+        return "redirect:/privileges/";
     }
 
     @RequestMapping(value ="/addPrivileges")
-    public String addPrivileges(Model model) {
+    public String addPrivileges(RedirectAttributes redirectAttributes) {
 
         viewMode = ViewMode.INSERT;
 
-        Privileges privileges =  new Privileges();
+        redirectAttributes.addFlashAttribute("privilegesGroups", privilegesController.findAll());
+        redirectAttributes.addFlashAttribute("modules", dictionaryController.findAllModules());
+        redirectAttributes.addFlashAttribute("controlsDisabled", false);
 
-        model.addAttribute("privilegesGroups", privilegesController.findAll());
-        model.addAttribute("modules", dictionaryController.findAllModules());
-        model.addAttribute("privilegesGroup", privileges);
-        model.addAttribute("controlsPanelVisible", true);
-        model.addAttribute("controlsDisabled", false);
-
-        return "privileges";
+        return "redirect:/privileges/";
     }
 
     @RequestMapping(value ="/editPrivileges/{id}")
-    public String editPrivileges(Model model, @PathVariable("id")int id) {
+    public String editPrivileges(RedirectAttributes redirectAttributes, @PathVariable("id")int id) {
 
         viewMode = ViewMode.EDIT;
 
-        Privileges privileges = privilegesController.findOne(id);
-
-        model.addAttribute("privilegesGroups", privilegesController.findAll());
-        model.addAttribute("modules", dictionaryController.findAllModules());
-        model.addAttribute("privilegesGroup", privileges);
-        model.addAttribute("controlsPanelVisible", true);
-        model.addAttribute("controlsDisabled", false);
-        return "privileges";
+        redirectAttributes.addFlashAttribute("privilegesGroups", privilegesController.findAll());
+        redirectAttributes.addFlashAttribute("modules", dictionaryController.findAllModules());
+        redirectAttributes.addFlashAttribute("controlsDisabled", false);
+        return "redirect:/privileges/";
     }
 
     @RequestMapping(value ="/acceptModifyPrivileges", method = RequestMethod.POST)
@@ -106,6 +101,9 @@ public class PrivilegesWebController extends BaseWebController{
             Privileges privileges = privilegesController.updatePrivilege( id,name,module,read,
                     insert,update,delete);
         }
+
+        viewMode = ViewMode.DEFAULT;
+
         return "redirect:/privileges/";
     }
 }
