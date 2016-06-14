@@ -45,7 +45,7 @@
                         <td th:text="${invoice.contract.totalCost}"></td>
                         <td th:text="${invoice.paymentDeadline}"></td>
                         <td th:text="${invoice.paymentForm.value}"></td>
-                        <td th:if="${deleteEnabled}" th:if="${deleteEnabled}"><a href="invoices.html" th:href="@{'/deleteInvoice/'+${invoice.id}}"><span class="glyphicon glyphicon-remove" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Usuń"></span></a></td>
+                        <td th:if="${deleteEnabled}" ><a href="invoices.html" th:href="@{'/deleteInvoice/'+${invoice.id}}"><span class="glyphicon glyphicon-remove" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Usuń"></span></a></td>
                         <td><a href="invoice_generate.html" th:href="@{'/viewInvoice/'+${invoice.id}}"><span class="glyphicon glyphicon-eye-open" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Usuń"></span></a></td>
                     </tr>
                 </tbody>
