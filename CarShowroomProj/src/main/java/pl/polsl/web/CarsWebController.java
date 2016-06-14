@@ -13,11 +13,8 @@ import pl.polsl.controller.*;
 import pl.polsl.model.Accessory;
 import pl.polsl.model.Car;
 
-import java.io.Console;
 import java.sql.Date;
 import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -42,19 +39,25 @@ public class CarsWebController extends BaseWebController {
     private Set<Accessory> previousAccessorySet = new HashSet<>();
     private Car car;
     private boolean flag;
+    private boolean orderedCar;
 
-    @RequestMapping(value = "/cars")
+    @RequestMapping(value = "/cars", method = RequestMethod.GET)
     public String getCars(Model model) {
         model.addAttribute("cars",carsController.findAllCars());
         model.addAttribute("controlsPanelVisible", false);
         refreshMenuPrivileges(model);
         flag = false;
+        orderedCar = false;
         accessorySet.clear();
         return "cars";
     }
 
     @RequestMapping(value = "/carsDetails", method = RequestMethod.GET)
-    public String carsDetails(Model model) {
+    public String carsDetails(Model model, @RequestParam(value="contract", required = false)Integer contract) {
+        if(orderedCar){
+            model.addAttribute("ordered", 1);
+            model.addAttribute("disabledOrdered", 1);
+        }
 
         model.addAttribute("controlsPanelVisible", true);
         model.addAttribute("cars",carsController.findAllCars());
@@ -66,7 +69,8 @@ public class CarsWebController extends BaseWebController {
 
         if(viewMode == ViewMode.INSERT) {
             model.addAttribute("controlsDisabled", false);
-            model.addAttribute("disabledOrdered", 0);
+            if(!orderedCar)
+                model.addAttribute("disabledOrdered", 0);
             if(!flag) {
                 flag = true;
                 model.addAttribute("controlsCostDisabled",true);
@@ -90,7 +94,6 @@ public class CarsWebController extends BaseWebController {
         } else if(viewMode == ViewMode.VIEW_ALL) {
             model.addAttribute("controlsDisabledPart1", true);
         }
-        System.out.println("order:" + car.getOrdered());
         model.addAttribute("carNameId",car.getCarName().getId());
         model.addAttribute("showroomId",car.getShowroom().getId());
         model.addAttribute("prodDate",car.getProdDate());
@@ -108,11 +111,8 @@ public class CarsWebController extends BaseWebController {
         flag = false;
         model.addAttribute("controlsCostDisabled",true);
 
-        System.out.println("contract id: " + contract);
         if(contract != null){
-            model.addAttribute("contract",ContractWebController.contract.getId());
-            model.addAttribute("ordered", 1);
-            model.addAttribute("disabledOrdered", 1);
+            orderedCar = true;
         }
 
         return "redirect:/carsDetails";
@@ -160,6 +160,9 @@ public class CarsWebController extends BaseWebController {
             car.setCost(Integer.parseInt(dictionaryController.findOne(name).getValue2()));
         }
         flag = true;
+        if(orderedCar) {
+            car.setOrdered(1);
+        }
 
         return "redirect:/carsDetails";
     }
@@ -168,12 +171,14 @@ public class CarsWebController extends BaseWebController {
     public String modifyCar(RedirectAttributes redirectAttributes, @RequestParam("id") int id,
                             @RequestParam(value="ordered", required = false)Integer order,
                             @RequestParam(value="contract", required = false)Integer contract) {
-        if(contract !=null) {
-            Car addCar = carsController.addCar(car.getCarName().getId(),car.getProdDate(),car.getShowroom().getId(),car.getCost(), 1, null,accessorySet);
-            ContractWebController.contract.getCarList().add(addCar);
-            redirectAttributes.addAttribute("carId", contract);
-            return "redirect:/contactAdditions";
-        }
+       if(car.getOrdered()!=null) {
+           if (car.getOrdered() == 1) {
+               Car addCar = carsController.addCar(car.getCarName().getId(), car.getProdDate(), car.getShowroom().getId(), car.getCost(), 1, null, accessorySet);
+               ContractWebController.contract.getCarList().add(addCar);
+               redirectAttributes.addAttribute("carId", contract);
+               return "redirect:/contactAdditions";
+           }
+       }
         if(viewMode == ViewMode.INSERT){
             Car addCar = carsController.addCar(car.getCarName().getId(),car.getProdDate(),car.getShowroom().getId(),car.getCost(),order == null ? 0 : 1,null,accessorySet);
         } else if(viewMode == ViewMode.EDIT){

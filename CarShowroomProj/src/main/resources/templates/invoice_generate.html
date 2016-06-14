@@ -61,8 +61,8 @@
             <label class="control-label col-sm-4">Typ płatności:</label>
             <div class="col-sm-8">
                 <select th:disabled="${disabledButtons}" name="paymentForm" class="form-control" aria-label="..." required="required">
-                    <option th:value="-1" text="Płatność:"></option>
-                    <option th:unless="${invoice}" th:each="c : ${paymentforms}" th:value="${c.id}" th:text="${c.value}" th:selected="${c.id}"></option>
+                    <option value="" text="Płatność:"></option>
+                    <option th:unless="${invoice}" th:each="c : ${paymentforms}" th:value="${c.id}" th:text="${c.value}"></option>
                     <option th:if="${invoice}"  th:each="c : ${paymentforms}" th:value="${c.id}" th:text="${c.value}" th:selected="${c.id}==${paymentForm.id}"></option>
                 </select>
             </div>
@@ -71,8 +71,8 @@
             <label class="control-label col-sm-4">Typ faktury:</label>
             <div class="col-sm-8">
                 <select th:disabled="${disabledButtons}" name="invoiceType" class="form-control" aria-label="..." required="required">
-                    <option th:value="-1" text="Faktura:"></option>
-                    <option th:unless="${invoice}" th:each="c : ${invoiceTypes}" th:value="${c.id}" th:text="${c.value}" th:selected="${c.id}"></option>
+                    <option value="" text="Faktura:"></option>
+                    <option th:unless="${invoice}" th:each="c : ${invoiceTypes}" th:value="${c.id}" th:text="${c.value}"></option>
                     <option th:if="${invoice}" th:each="c : ${invoiceTypes}" th:value="${c.id}" th:text="${c.value}" th:selected="${c.id}==${invoiceType.id}"></option>
                 </select>
             </div>
@@ -82,6 +82,7 @@
                 <button th:disabled="${disabledButtons}" type="submit" class="btn btn-default">Zatwierdź</button>
             </div>
         </div>
+        <div th:text="${error != null} ? ${error}" class="label label-danger"></div>
     </form>
 </div>
 </body>

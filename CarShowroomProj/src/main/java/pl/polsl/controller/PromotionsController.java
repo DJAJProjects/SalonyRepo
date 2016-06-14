@@ -10,7 +10,12 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import java.util.*;
+import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+
 
 /**
  * Created by Aleksandra on 2016-04-07.
@@ -36,6 +41,7 @@ public class PromotionsController {
         return promotionsRepository.findOne(id);}
 
     public List<Promotion> findActual(Date date, Set<Promotion> promotionList) {
+
         List<Promotion>promotions = Lists.newArrayList(promotionsRepository.findActual(date));
         List<Promotion>properList = new ArrayList<>();
         for(Promotion promotion : promotionList) {

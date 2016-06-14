@@ -1,7 +1,7 @@
 package pl.polsl.model;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.sql.Date;
 
 /**
  * Created by Aleksandra Chronowska on 04.04.2016.

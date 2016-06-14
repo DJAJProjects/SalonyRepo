@@ -7,9 +7,11 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import pl.polsl.model.Accessory;
 
+import pl.polsl.model.Contract;
 import pl.polsl.model.Invoice;
 import pl.polsl.model.Showroom;
 import java.sql.Date;
+import java.util.List;
 
 /**
  * Created by Aleksandra on 2016-04-07.
@@ -32,4 +34,15 @@ public interface InvoiceRepository extends PagingAndSortingRepository<Invoice, I
     public Double getIncomeForShowroom(@Param("showroom")Showroom showroom,
                                        @Param("dateBeg")Date dateBeg,
                                        @Param("dateEnd")Date dateEnd);
+
+
+    @Query(value = "SELECT invoice " +
+            "FROM Invoice invoice " +
+            "WHERE invoice.contract.worker.id = :workerId")
+    public List<Invoice> findForWorker(@Param("workerId") Integer workerId);
+
+    @Query(value = "SELECT invoice " +
+            "FROM Invoice invoice " +
+            "WHERE invoice.contract.worker.showroom.id = :showroomId")
+    public List<Invoice> findForDirector(@Param("showroomId") Integer showroomId);
 }

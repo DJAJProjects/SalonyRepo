@@ -11,6 +11,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -56,9 +57,24 @@ public class ContractsController {
         return contractsRepository.save(con);
     }
 
-    public void SetList(Contract contract) {
+    public List<Contract> findContracts(){
+        System.out.println("Użytkownik: " + Data.user.getPosition().getValue() + " " + Data.user.getPosition().getId());
+        List<Contract> retList = null;
+        if( Data.user.getPosition().getId() == 11)
+            retList = contractsRepository.findForDirector(Data.user.getShowroom().getId());
+        else if(Data.user.getPosition().getId() == 10) {
+            retList = contractsRepository.findForWorker(Data.user.getId());
+        }
+        else if(Data.user.getPosition().getId() == 12) {
+            retList = contractsRepository.findForServisman(Data.user);
+        }
+        else if(Data.user.getPosition().getId() == Data.adminId)
+            retList =  findAllContracts();
+        if(retList == null)retList = new ArrayList<Contract>();
 
+        return retList;
     }
+
     public Contract updateContract(Contract contract, Set<Car>carList, Set<Accessory>accessoryList,Set<Promotion> promotionList, int contractor){
         final int[] totalCost = {0};
         contract.setCarList(carList);
@@ -83,7 +99,7 @@ public class ContractsController {
             promotion = promotionsController.findOne(promotion.getId());
             promotion.getContracts().add(contract);
             totalCost[0] = totalCost[0] - (int) totalCost[0] * promotion.getPercValue()/100;
-            accessoriesController.edit(promotion.getId());
+            promotionsController.edit(promotion);
         });
 
         contract.setTotalCost(totalCost[0]);
