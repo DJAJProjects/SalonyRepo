@@ -112,7 +112,7 @@ public class WorkerWebController extends  BaseWebController {
         }
 
         redirectAttributes.addFlashAttribute("choosenPrivileges", currentPrivilegesList);
-        redirectAttributes.addFlashAttribute("privileges", privilegesController.findPrivilegesNotRelatedToWorker(worker));
+        //redirectAttributes.addFlashAttribute("privileges", privilegesController.findPrivilegesNotRelatedToWorker(worker));
         return "redirect:/worker";
     }
 

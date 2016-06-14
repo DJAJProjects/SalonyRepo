@@ -122,6 +122,7 @@
                 <button type="reset" th:disabled="${controlsDisabled}" class="btn btn-default">Anuluj zmiany</button>
             </div>
         </div>
+        <div th:text="${error != null} ? ${error}" class="label label-danger"></div>
     </form>
     <br/>
 </div>

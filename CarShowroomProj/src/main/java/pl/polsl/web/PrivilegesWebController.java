@@ -64,7 +64,9 @@ public class PrivilegesWebController extends BaseWebController{
 
         viewMode = ViewMode.INSERT;
 
-        redirectAttributes.addFlashAttribute("privilegesGroups", privilegesController.findAll());
+        Privileges privileges  = new Privileges();
+
+        redirectAttributes.addFlashAttribute("privilegesGroup", privileges);
         redirectAttributes.addFlashAttribute("modules", dictionaryController.findAllModules());
         redirectAttributes.addFlashAttribute("controlsDisabled", false);
 
@@ -76,7 +78,6 @@ public class PrivilegesWebController extends BaseWebController{
 
         viewMode = ViewMode.EDIT;
 
-        redirectAttributes.addFlashAttribute("privilegesGroups", privilegesController.findAll());
         redirectAttributes.addFlashAttribute("modules", dictionaryController.findAllModules());
         redirectAttributes.addFlashAttribute("controlsDisabled", false);
         return "redirect:/privileges/";

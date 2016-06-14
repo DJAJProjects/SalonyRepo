@@ -104,7 +104,8 @@ public class ContractorsWebController extends BaseWebController {
     }
 
     @RequestMapping(value ="/acceptModifyContractor", method = RequestMethod.POST)
-    public String editContractor(   @RequestParam("id") int id,
+    public String editContractor(   RedirectAttributes redirectAttributes,
+                                    @RequestParam("id") int id,
                                     @RequestParam("name") String name,
                                     @RequestParam(value = "surname") String surname,
                                     @RequestParam(value = "pesel") String pesel,
@@ -115,6 +116,10 @@ public class ContractorsWebController extends BaseWebController {
                                     @RequestParam(value = "street") String street){
 
         if(viewMode == ViewMode.INSERT){
+            if (surname == null || surname.equals("")) {
+                redirectAttributes.addFlashAttribute("error","Pole z nazwiskiem nie może być puste");
+                return "redirect:/addContractor/";
+            }
             Contractor contractor = contractorsController.addContractor(name,surname,pesel,nip,
                                                                         regon,city,country, street);
         }
