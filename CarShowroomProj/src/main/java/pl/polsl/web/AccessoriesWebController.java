@@ -42,6 +42,9 @@ public class AccessoriesWebController extends  BaseWebController {
         model.addAttribute("accessories",freeAccessory);
         model.addAttribute("controlsPanelVisible", false);
         refreshMenuPrivileges(model);
+        model.addAttribute("insertEnabled", insertEnabled);
+        model.addAttribute("updateEnabled", updateEnabled);
+        model.addAttribute("deleteEnabled", deleteEnabled);
         return "accessories";
     }
 

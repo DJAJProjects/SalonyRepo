@@ -51,19 +51,28 @@
             <img th:src="@{'image/help/'+${help.moduleName}+'_all_remove.jpg'}" width="1000" vspace="30" alt="Upps... coś poszło nie tak xD" />
         </div>
         <div class="form-group">
-            <label> Dodoawanie </label>
-            <div th:text="${help.descriptionAdd}"></div>
-            <img th:src="@{'image/help/'+${help.moduleName}+'_add.jpg'}" width="1000" vspace="30" alt="Upps... coś poszło nie tak xD" />
+            <label> Dodawanie </label>
+            <div th:if="${insertEnabled}">
+                <div th:text="${help.descriptionAdd}"></div>
+                <img th:src="@{'image/help/'+${help.moduleName}+'_add.jpg'}" width="1000" vspace="30" alt="Upps... coś poszło nie tak xD" />
+            </div>
+            <div th:unless="${insertEnabled}"> Nie masz uprawnień aby korzystać z tego modułu </div>
         </div>
         <div class="form-group">
             <label> Edycja </label>
-            <div th:text="${help.descriptionEdit}"></div>
-            <img th:src="@{'image/help/'+${help.moduleName}+'_edit.jpg'}" width="1000" vspace="30" alt="Upps... coś poszło nie tak xD" />
+            <div th:if="${updateEnabled}">
+                <div th:text="${help.descriptionEdit}"></div>
+                <img th:src="@{'image/help/'+${help.moduleName}+'_edit.jpg'}" width="1000" vspace="30" alt="Upps... coś poszło nie tak xD" />
+            </div>
+            <div th:unless="${updateEnabled}"> Nie masz uprawnień aby korzystać z tego modułu </div>
         </div>
         <div class="form-group">
             <label> Usuwanie </label>
-            <div th:text="${help.descriptionRemove}"></div>
-            <img th:src="@{'image/help/'+${help.moduleName}+'_all_remove.jpg'}" width="1000" vspace="30" alt="Upps... coś poszło nie tak xD" />
+            <div th:if="${deleteEnabled}">
+                <div th:text="${help.descriptionRemove}"></div>
+                <img th:src="@{'image/help/'+${help.moduleName}+'_all_remove.jpg'}" width="1000" vspace="30" alt="Upps... coś poszło nie tak xD" />
+            </div>
+            <div th:unless="${deleteEnabled}"> Nie masz uprawnień aby korzystać z tego modułu </div>
         </div>
         <div class="form-group">
             <label> Podgląd </label>

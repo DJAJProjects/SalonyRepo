@@ -14,6 +14,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import pl.polsl.Data;
 import pl.polsl.Help;
 import pl.polsl.controller.*;
 import pl.polsl.model.Dictionary;
@@ -32,6 +33,8 @@ public class HelpWebController extends BaseWebController {
 
     @Autowired
     DictionaryController dictionaryController;
+    @Autowired
+    PrivilegesController privilegesController;
 
     private boolean flag;
 
@@ -94,9 +97,27 @@ public class HelpWebController extends BaseWebController {
         return null;
     }
 
+    private List<Dictionary> getAvaiableModules() {
+        List<Dictionary> dictionaryList = dictionaryController.findAllModules();
+
+        List<Dictionary> avaiableList = new ArrayList<>();
+
+        for(int i = 0; i < dictionaryList.size(); i++) {
+            if("Pracownicy".equals(dictionaryList.get(i).getValue()) && privilegesController.getReadPriv(Data.showroomModuleValue, Data.user)) {
+                avaiableList.add(dictionaryList.get(i));
+            } else if("Salony".equals(dictionaryList.get(i).getValue()) && privilegesController.getReadPriv(Data.showroomModuleValue, Data.user)) {
+                avaiableList.add(dictionaryList.get(i));
+            } else if(!"Pracownicy".equals(dictionaryList.get(i).getValue()) && !"Salony".equals(dictionaryList.get(i).getValue())
+                    && privilegesController.getReadPriv(dictionaryList.get(i).getValue(), Data.user)) {
+                avaiableList.add(dictionaryList.get(i));
+            }
+        }
+        return avaiableList;
+    }
+
     @RequestMapping(value = "/help")
     public String getCars(Model model) {
-        model.addAttribute("module", dictionaryController.findAllModules());
+        model.addAttribute("module", getAvaiableModules());
         model.addAttribute("controlsPanelVisible", false);
         refreshMenuPrivileges(model);
         return "help";
@@ -115,9 +136,12 @@ public class HelpWebController extends BaseWebController {
 
     @RequestMapping(value = "/helpDetails", method = RequestMethod.GET)
     public String helpDetails(Model model){
-        model.addAttribute("module", dictionaryController.findAllModules());
+        model.addAttribute("module", getAvaiableModules());
         model.addAttribute("controlsPanelVisible",true);
         model.addAttribute("help",help);
+        model.addAttribute("insertEnabled", insertEnabled);
+        model.addAttribute("updateEnabled", updateEnabled);
+        model.addAttribute("deleteEnabled", deleteEnabled);
         return "help";
     }
 }

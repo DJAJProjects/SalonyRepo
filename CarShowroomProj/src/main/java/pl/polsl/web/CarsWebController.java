@@ -40,6 +40,7 @@ public class CarsWebController extends BaseWebController {
     private Car car;
     private boolean flag;
     private boolean orderedCar;
+    private boolean moduleOnlyCar;
 
     @RequestMapping(value = "/cars", method = RequestMethod.GET)
     public String getCars(Model model) {
@@ -49,6 +50,10 @@ public class CarsWebController extends BaseWebController {
         flag = false;
         orderedCar = false;
         accessorySet.clear();
+        moduleOnlyCar = true;
+        model.addAttribute("insertEnabled", insertEnabled);
+        model.addAttribute("updateEnabled", updateEnabled);
+        model.addAttribute("deleteEnabled", deleteEnabled);
         return "cars";
     }
 
@@ -171,6 +176,14 @@ public class CarsWebController extends BaseWebController {
     public String modifyCar(RedirectAttributes redirectAttributes, @RequestParam("id") int id,
                             @RequestParam(value="ordered", required = false)Integer order,
                             @RequestParam(value="contract", required = false)Integer contract) {
+        if(moduleOnlyCar) {
+            if(viewMode == ViewMode.INSERT){
+                Car addCar = carsController.addCar(car.getCarName().getId(),car.getProdDate(),car.getShowroom().getId(),car.getCost(),order == null ? 0 : 1,null,accessorySet);
+            } else if(viewMode == ViewMode.EDIT){
+                Car editCar = carsController.editCar(id,car.getCarName().getId(),car.getProdDate(),car.getShowroom().getId(),car.getCost(), order == null ? 0 : 1,accessorySet,previousAccessorySet);
+            }
+            return "redirect:/cars";
+        }
        if(car.getOrdered()!=null) {
            if (car.getOrdered() == 1) {
                Car addCar = carsController.addCar(car.getCarName().getId(), car.getProdDate(), car.getShowroom().getId(), car.getCost(), 1, null, accessorySet);
@@ -179,11 +192,6 @@ public class CarsWebController extends BaseWebController {
                return "redirect:/contactAdditions";
            }
        }
-        if(viewMode == ViewMode.INSERT){
-            Car addCar = carsController.addCar(car.getCarName().getId(),car.getProdDate(),car.getShowroom().getId(),car.getCost(),order == null ? 0 : 1,null,accessorySet);
-        } else if(viewMode == ViewMode.EDIT){
-            Car editCar = carsController.editCar(id,car.getCarName().getId(),car.getProdDate(),car.getShowroom().getId(),car.getCost(), order == null ? 0 : 1,accessorySet,previousAccessorySet);
-        }
         return "redirect:/cars";
     }
 

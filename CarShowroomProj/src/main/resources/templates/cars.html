@@ -6,7 +6,7 @@
 <body>
 <div layout:fragment="main" style="margin: 0 auto; max-width: 1000px;">
     <br/>
-    <div>
+    <div th:if="${insertEnabled}">
         <div class="btn-group" role="group" aria-label="..." style="margin: 20px 0;">
             <a th:href="@{/addNewCar#anch}"><button type="button" class="btn">Dodaj samochód</button></a>
         </div>
@@ -29,8 +29,8 @@
                 <td class="col-md-2">Cena [PLN]</td>
                 <td class="col-md-2">Status</td>
                 <td class="col-md-2">Salon</td>
-                <td class="col-md-1 center-item">Edytuj</td>
-                <td class="col-md-1 center-item">Usuń</td>
+                <td th:if="${updateEnabled}" class="col-md-1 center-item">Edytuj</td>
+                <td th:if="${deleteEnabled}" class="col-md-1 center-item">Usuń</td>
                 <td class="col-md-1 center-item">Podgląd</td>
             </tr>
             <!-- Show when result not found -->
@@ -47,8 +47,8 @@
                 <div th:if="${car.ordered}"><td>Zamówiony</td></div>
                 <div th:unless="${car.ordered}"><td>Dostępny w salonie</td></div>
                 <td th:text="${car.showroom.name}"></td>
-                <td class="center-item"><a href="cars.html" th:href="@{'/editCar/'+${car.id}+'#anch'}"><span class="glyphicon glyphicon-edit" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Edytuj"></span></a></td>
-                <td class="center-item"><a href="cars.html" th:href="@{'/deleteCar/'+${car.id}}"><span class="glyphicon glyphicon-remove" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Usuń"></span></a></td>
+                <td th:if="${updateEnabled}" class="center-item"><a href="cars.html" th:href="@{'/editCar/'+${car.id}+'#anch'}"><span class="glyphicon glyphicon-edit" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Edytuj"></span></a></td>
+                <td th:if="${deleteEnabled}" class="center-item"><a href="cars.html" th:href="@{'/deleteCar/'+${car.id}}"><span class="glyphicon glyphicon-remove" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Usuń"></span></a></td>
                 <td class="center-item"><a href="cars.html" th:href="@{'/viewCar/'+${car.id}+'#anch'}"><span class="glyphicon glyphicon-eye-open" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Podgląd"></span></a></td>
             </tr>
             </tbody>
