@@ -53,6 +53,9 @@ public class ServicesWebController extends BaseWebController {
         model.addAttribute("services",servicesController.findAll());
         model.addAttribute("controlsPanelVisible", false);
         refreshMenuPrivileges(model);
+        model.addAttribute("insertEnabled", insertEnabled);
+        model.addAttribute("updateEnabled", updateEnabled);
+        model.addAttribute("deleteEnabled", deleteEnabled);
         flag = false;
         return "services";
     }

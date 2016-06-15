@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:layout="http://www.w3.org/1999/xhtml" layout:decorator="index"
+      xmlns:th="http://www.w3.org/1999/xhtml" xmlns:display="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Pomoc</title>
+</head>
+<body>
+
+<div layout:fragment="main" style="margin: 0 auto; max-width: 1000px;">
+    <div>
+        <div class="panel panel-default">
+            <!-- Default panel contents -->
+            <div class="panel-heading panel-heading-34">Tematy pomocy
+                <div class="form-group pull-right">
+                    <input type="text" class="search form-control" placeholder="Wyszukaj w tabeli"/>
+                </div>
+                <span class="counter pull-right"></span>
+            </div>
+            <!-- Table -->
+            <table class="table tablesorter table-hover table-bordered results" id="mytable">
+                <!-- head row -->
+                <thead>
+                <tr style="font-weight: bold; margin: 0 auto;">
+                    <td class="col-md-1">#</td>
+                    <td class="col-md-2">Moduł</td>
+                    <td class="col-md-1 center-item">Szczegóły</td>
+                </tr>
+                <tr class="warning no-result">
+                    <td colspan="8"><i class="fa fa-warning"></i> No result</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="m : ${module}">
+                    <td th:text="${m.id - 32}"></td>
+                    <td th:text="${m.value}"></td>
+                    <td class="center-item"><a href="help.html" th:href="@{'/moduleDetails/'+${m.value}+'#anch'}"><span class="glyphicon glyphicon-eye-open" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Szczegóły"></span></a></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <a name="anch"></a>
+    <form th:if="${controlsPanelVisible}" class="form-horizontal" role="form" action="/helpDetails#anch" th:object="${help}">
+        <div class="form-group">
+            <label style="Text-align:center; text-decoration:underline; Font-size:x-large;" th:text="${help.moduleName}"></label>
+        </div>
+        <div class="form-group">
+            <label> Krótki opis </label>
+            <div th:text="${help.descriptionAll}"></div>
+            <img th:src="@{'image/help/'+${help.moduleName}+'_all_remove.jpg'}" width="1000" vspace="30" alt="Upps... coś poszło nie tak xD" />
+        </div>
+        <div class="form-group">
+            <label> Dodawanie </label>
+            <div th:if="${insertEnabled}">
+                <div th:text="${help.descriptionAdd}"></div>
+                <img th:src="@{'image/help/'+${help.moduleName}+'_add.jpg'}" width="1000" vspace="30" alt="Upps... coś poszło nie tak xD" />
+            </div>
+            <div th:unless="${insertEnabled}"> Nie masz uprawnień aby korzystać z tego modułu </div>
+        </div>
+        <div class="form-group">
+            <label> Edycja </label>
+            <div th:if="${updateEnabled}">
+                <div th:text="${help.descriptionEdit}"></div>
+                <img th:src="@{'image/help/'+${help.moduleName}+'_edit.jpg'}" width="1000" vspace="30" alt="Upps... coś poszło nie tak xD" />
+            </div>
+            <div th:unless="${updateEnabled}"> Nie masz uprawnień aby korzystać z tego modułu </div>
+        </div>
+        <div class="form-group">
+            <label> Usuwanie </label>
+            <div th:if="${deleteEnabled}">
+                <div th:text="${help.descriptionRemove}"></div>
+                <img th:src="@{'image/help/'+${help.moduleName}+'_all_remove.jpg'}" width="1000" vspace="30" alt="Upps... coś poszło nie tak xD" />
+            </div>
+            <div th:unless="${deleteEnabled}"> Nie masz uprawnień aby korzystać z tego modułu </div>
+        </div>
+        <div class="form-group">
+            <label> Podgląd </label>
+            <div th:text="${help.descriptionView}"></div>
+            <img th:src="@{'image/help/'+${help.moduleName}+'_view.jpg'}" width="1000" vspace="30" alt="Upps... coś poszło nie tak xD" />
+        </div>
+        <!--<div class="form-group">-->
+        <!--<div class="col-sm-offset-2 col-sm-10">-->
+        <!--<button type="submit" class="btn btn-default">Ok</button>-->
+        <!--</div>-->
+        <!--</div>-->
+    </form>
+
+</div>
+
+</body>
+</html>
