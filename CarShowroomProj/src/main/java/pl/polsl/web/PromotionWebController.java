@@ -30,6 +30,7 @@ public class PromotionWebController extends BaseWebController {
         model.addAttribute("promotions",promotionsController.findAll());
         model.addAttribute("controlsPanelVisible", false);
         refreshMenuPrivileges(model);
+        analisePrivileges("Promocje");
         model.addAttribute("insertEnabled", insertEnabled);
         model.addAttribute("updateEnabled", updateEnabled);
         model.addAttribute("deleteEnabled", deleteEnabled);

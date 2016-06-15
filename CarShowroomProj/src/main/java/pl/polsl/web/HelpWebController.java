@@ -125,6 +125,7 @@ public class HelpWebController extends BaseWebController {
 
     @RequestMapping(value = "/moduleDetails/{moduleName}")
     public String moduleDetails(Model model, @PathVariable("moduleName") String moduleName) {
+        analisePrivileges(moduleName);
         try {
             help = getDescription(moduleName);
         } catch (Exception e) {

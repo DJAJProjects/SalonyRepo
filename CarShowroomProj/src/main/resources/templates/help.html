@@ -21,7 +21,6 @@
                 <!-- head row -->
                 <thead>
                 <tr style="font-weight: bold; margin: 0 auto;">
-                    <td class="col-md-1">#</td>
                     <td class="col-md-2">Moduł</td>
                     <td class="col-md-1 center-item">Szczegóły</td>
                 </tr>
@@ -31,7 +30,6 @@
                 </thead>
                 <tbody>
                 <tr th:each="m : ${module}">
-                    <td th:text="${m.id - 32}"></td>
                     <td th:text="${m.value}"></td>
                     <td class="center-item"><a href="help.html" th:href="@{'/moduleDetails/'+${m.value}+'#anch'}"><span class="glyphicon glyphicon-eye-open" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Szczegóły"></span></a></td>
                 </tr>

@@ -51,6 +51,7 @@ public class CarsWebController extends BaseWebController {
         orderedCar = false;
         accessorySet.clear();
         moduleOnlyCar = true;
+        analisePrivileges("Samochody");
         model.addAttribute("insertEnabled", insertEnabled);
         model.addAttribute("updateEnabled", updateEnabled);
         model.addAttribute("deleteEnabled", deleteEnabled);
