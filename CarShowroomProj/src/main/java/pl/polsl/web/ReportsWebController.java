@@ -31,11 +31,19 @@ public class ReportsWebController extends BaseWebController {
     @RequestMapping(value ="/reports")
     public String getReports(Model model){
 
+
+
         if(viewMode == ViewMode.DEFAULT){
             model.addAttribute("controlsPanelVisible", false);
         }
         else{
-            model.addAttribute("controlsPanelVisible", true);
+            if(model.containsAttribute("report")) {
+                model.addAttribute("controlsPanelVisible", true);
+            }
+            else{
+                viewMode = ViewMode.DEFAULT;
+                model.addAttribute("controlsPanelVisible", false);
+            }
         }
 
         model.addAttribute("reports", reportsController.findReportsRelatedToWorker(Data.user));

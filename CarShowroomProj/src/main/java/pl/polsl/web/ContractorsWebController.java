@@ -42,7 +42,13 @@ public class ContractorsWebController extends BaseWebController {
             model.addAttribute("controlsPanelVisible", false);
         }
         else{
-            model.addAttribute("controlsPanelVisible", true);
+            if(model.containsAttribute("contractor")) {
+                model.addAttribute("controlsPanelVisible", true);
+            }
+            else{
+                viewMode = ViewMode.DEFAULT;
+                model.addAttribute("controlsPanelVisible", false);
+            }
         }
 
         model.addAttribute("contractors", contractorsController.findContractorsRelatedToWorker(Data.user));

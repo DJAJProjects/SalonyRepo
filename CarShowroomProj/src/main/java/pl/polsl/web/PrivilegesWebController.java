@@ -37,7 +37,13 @@ public class PrivilegesWebController extends BaseWebController{
             model.addAttribute("controlsPanelVisible", false);
         }
         else{
-            model.addAttribute("controlsPanelVisible", true);
+            if(model.containsAttribute("privilegesGroup")) {
+                model.addAttribute("controlsPanelVisible", true);
+            }
+            else{
+                viewMode = ViewMode.DEFAULT;
+                model.addAttribute("controlsPanelVisible", false);
+            }
         }
 
         model.addAttribute("privilegesGroups", privilegesController.findAll());
@@ -77,6 +83,10 @@ public class PrivilegesWebController extends BaseWebController{
     public String editPrivileges(RedirectAttributes redirectAttributes, @PathVariable("id")int id) {
 
         viewMode = ViewMode.EDIT;
+
+        Privileges privileges = privilegesController.findOne(id);
+
+        redirectAttributes.addFlashAttribute("privilegesGroup", privileges);
 
         redirectAttributes.addFlashAttribute("modules", dictionaryController.findAllModules());
         redirectAttributes.addFlashAttribute("controlsDisabled", false);

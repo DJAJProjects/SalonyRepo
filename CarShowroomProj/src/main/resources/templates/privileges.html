@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml" layout:decorator="index">
 <head>
-    <title>Klienci</title>
+    <title>Uprawnienia</title>
 </head>
 <script>$(document).ready(function() {
     $(".search").keyup(function () {
@@ -73,8 +73,6 @@
 
             </table>
         </div>
-    </div>
-    <br/>
 
     <form th:if="${controlsPanelVisible}"  class="form-horizontal" role="form" method="post" action="/acceptModifyPrivileges" th:object="${privilegesGroup}">
         <input type="hidden" style="display: none;" name="id" th:field="*{id}"/>
@@ -129,6 +127,7 @@
 
 
     </form>
+</div>
     <br/>
 </body>
 </html>

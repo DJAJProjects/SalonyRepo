@@ -39,7 +39,9 @@ public class PrivilegesController {
     @Path("/{id}")
     @Produces({MediaType.APPLICATION_JSON})
     public Privileges findOne(int id){
-        return privilegesRepository.findOne(id);}
+        Privileges priv = privilegesRepository.findOne(id);
+        return priv;
+    }
 
     public Privileges addPrivilege(String name, int module, boolean read,
                                 boolean insert, boolean update, boolean delete) {
