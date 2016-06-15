@@ -1,57 +1,60 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:layout="http://www.w3.org/1999/xhtml" layout:decorator="index"
-      xmlns:th="http://www.w3.org/1999/xhtml" xmlns:display="http://www.w3.org/1999/xhtml">
+<html xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml" layout:decorator="index">
 <head>
     <title>Samochody</title>
 </head>
 <body>
 <div layout:fragment="main" style="margin: 0 auto; max-width: 1000px;">
-    <div class="btn-group" role="group" aria-label="..." style="margin: 20px 0;">
-        <button type="button" class="btn btn-default"><a href="cars.html" th:href="@{/addNewCar}+'#anch'">Dodaj samochód</a></button>
-    </div>
+    <br/>
     <div>
-        <div class="panel panel-default">
-            <!-- Default panel contents -->
-            <div class="panel-heading panel-heading-34">Dostępne samochody
-                <div class="form-group pull-right">
-                    <input type="text" class="search form-control" placeholder="Wyszukaj w tabeli"/>
-                </div>
-                <span class="counter pull-right"></span>
-            </div>
-            <!-- Table -->
-            <table class="table tablesorter table-hover table-bordered results" id="mytable">
-                <!-- head row -->
-                <thead>
-                <tr style="font-weight: bold; margin: 0 auto;">
-                    <td class="col-md-2">Model</td>
-                    <td class="col-md-2">Data produkcji</td>
-                    <td class="col-md-2">Cena [PLN]</td>
-                    <td class="col-md-2">Status</td>
-                    <td class="col-md-2">Salon</td>
-                    <td class="col-md-1 center-item">Edytuj</td>
-                    <td class="col-md-1 center-item">Usuń</td>
-                    <td class="col-md-1 center-item">Podgląd</td>
-                </tr>
-                <tr class="warning no-result">
-                    <td colspan="8"><i class="fa fa-warning"></i> No result</td>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="car : ${cars}">
-                    <td th:text="${car.carName.value}"></td>
-                    <td th:text="${car.prodDate}"></td>
-                    <td th:text="${car.cost}"></td>
-                    <div th:if="${car.ordered}"><td>Zamówiony</td></div>
-                    <div th:unless="${car.ordered}"><td>Dostępny w salonie</td></div>
-                    <td th:text="${car.showroom.name}"></td>
-                    <td class="center-item"><a href="cars.html" th:href="@{'/editCar/'+${car.id}+'#anch'}"><span class="glyphicon glyphicon-edit" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Edytuj"></span></a></td>
-                    <td class="center-item"><a href="cars.html" th:href="@{'/deleteCar/'+${car.id}}"><span class="glyphicon glyphicon-remove" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Usuń"></span></a></td>
-                    <td class="center-item"><a href="cars.html" th:href="@{'/viewCar/'+${car.id}+'#anch'}"><span class="glyphicon glyphicon-eye-open" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Podgląd"></span></a></td>
-                </tr>
-                </tbody>
-            </table>
+        <div class="btn-group" role="group" aria-label="..." style="margin: 20px 0;">
+            <a th:href="@{/addNewCar#anch}"><button type="button" class="btn">Dodaj samochód</button></a>
         </div>
     </div>
+    <div class="panel">
+        <!-- Default panel contents -->
+        <div class="panel-heading"><b>LISTA SAMOCHODÓW</b>
+            <div class="form-group pull-right">
+                <input type="text" class="search form-control" placeholder="Wyszukaj w tabeli"/>
+            </div>
+            <span class="counter pull-right"></span>
+        </div>
+        <!-- Table of showrooms -->
+        <table class="table tablesorter table-hover results" id="mytable">
+            <!-- head row -->
+            <thead>
+            <tr style="font-weight: bold; margin: 0 auto;">
+                <td class="col-md-2">Model</td>
+                <td class="col-md-2">Data produkcji</td>
+                <td class="col-md-2">Cena [PLN]</td>
+                <td class="col-md-2">Status</td>
+                <td class="col-md-2">Salon</td>
+                <td class="col-md-1 center-item">Edytuj</td>
+                <td class="col-md-1 center-item">Usuń</td>
+                <td class="col-md-1 center-item">Podgląd</td>
+            </tr>
+            <!-- Show when result not found -->
+            <tr class="no-result">
+                <td colspan="8"><b>Brak wyników wyszukiwania</b></td>
+            </tr>
+            </thead>
+            <!-- body row -->
+            <tbody>
+            <tr th:each="car : ${cars}">
+                <td th:text="${car.carName.value}"></td>
+                <td th:text="${car.prodDate}"></td>
+                <td th:text="${car.cost}"></td>
+                <div th:if="${car.ordered}"><td>Zamówiony</td></div>
+                <div th:unless="${car.ordered}"><td>Dostępny w salonie</td></div>
+                <td th:text="${car.showroom.name}"></td>
+                <td class="center-item"><a href="cars.html" th:href="@{'/editCar/'+${car.id}+'#anch'}"><span class="glyphicon glyphicon-edit" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Edytuj"></span></a></td>
+                <td class="center-item"><a href="cars.html" th:href="@{'/deleteCar/'+${car.id}}"><span class="glyphicon glyphicon-remove" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Usuń"></span></a></td>
+                <td class="center-item"><a href="cars.html" th:href="@{'/viewCar/'+${car.id}+'#anch'}"><span class="glyphicon glyphicon-eye-open" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Podgląd"></span></a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <br/>
 
     <!--Modify car-->
     <a name="anch"></a>
@@ -101,18 +104,18 @@
                 <label>Wybrane przez Ciebie dodatkowe akcesoria:</label>
                 <table th:disabled="${controlsCostDisabled}" class="table col-sm-offset-2 col-sm-1" style="width:84%">
                     <thead th:disabled="${controlsCostDisabled}">
-                        <tr>
-                            <td class="col-md-2">Nazwa</td>
-                            <td class="col-md-1">Cena [PLN]</td>
-                            <td class="col-md-1 center-item">Usuń</td>
-                        </tr>
+                    <tr>
+                        <td class="col-md-2">Nazwa</td>
+                        <td class="col-md-1">Cena [PLN]</td>
+                        <td class="col-md-1 center-item">Usuń</td>
+                    </tr>
                     </thead>
                     <tbody>
-                        <tr th:each ="item : ${chosenAccessories}">
-                            <td th:text="${item.accessory.value}"/>
-                            <td th:text="${item.accessory.value2}"/>
-                            <td class="center-item" th:disabled="${controlsCostDisabled}" ><a href="contracts.html" th:href="@{'/deleteChosenAccessories/'+${item.id}+'#anch'}"><span class="glyphicon glyphicon-remove" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Usuń"></span></a></td>
-                       </tr>
+                    <tr th:each ="item : ${chosenAccessories}">
+                        <td th:text="${item.accessory.value}"/>
+                        <td th:text="${item.accessory.value2}"/>
+                        <td class="center-item" th:disabled="${controlsCostDisabled}" ><a href="contracts.html" th:href="@{'/deleteChosenAccessories/'+${item.id}+'#anch'}"><span class="glyphicon glyphicon-remove" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Usuń"></span></a></td>
+                    </tr>
                     </tbody>
                 </table>
             </div>
@@ -157,7 +160,7 @@
             </div>
         </div>
     </form>
-
+    <br/>
 </div>
 </body>
 </html>

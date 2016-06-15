@@ -1,29 +1,30 @@
 <!DOCTYPE html>
-<html lang="en"  xmlns:layout="http://www.w3.org/1999/xhtml" layout:decorator="index"
-      xmlns:th="http://www.w3.org/1999/xhtml">
+<html xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml" layout:decorator="index">
 <head>
     <title>Dodatkowe wyposażenie</title>
 </head>
-<body>
 
+<body>
 <div layout:fragment="main" style="margin: 0 auto; max-width: 1000px;">
+    <br/>
     <div class="btn-group" role="group" aria-label="..." style="margin: 20px 0;">
-        <button type="button" class="btn btn-default"><a href="accessories.html" th:href="@{'/addNewAccessory'}+'#anch'">Dodaj akcesorium</a></button>
+        <a href="accessories.html" th:href="@{/addNewAccessory}+'#anch'"><button type="button" class="btn">Dodaj akcesorium</button></a>
     </div>
     <div>
-        <div class="panel panel-default">
+        <div class="panel">
             <!-- Default panel contents -->
-            <div class="panel-heading panel-heading-34">Dostępne akcesoria
+            <div class="panel-heading"><b>DOSTĘPNE AKCESORIA</b>
                 <div class="form-group pull-right">
                     <input type="text" class="search form-control" placeholder="Wyszukaj w tabeli"/>
                 </div>
                 <span class="counter pull-right"></span>
             </div>
-            <!-- Table -->
-            <table class="table tablesorter table-hover table-bordered results" id="mytable">
+
+            <!-- Table of dictionary data-->
+            <table class="table tablesorter table-hover results" id="mytable">
                 <!-- head row -->
                 <thead>
-                <tr style="font-weight: bold; margin: 0 auto;">
+                <tr style="font-weight: bold;">
                     <td class="col-md-5">Nazwa</td>
                     <td class="con-md-5">Cena [PLN]</td>
                     <td class="con-md-5">Koszt montażu</td>
@@ -31,10 +32,12 @@
                     <td class="col-md-1 center-item">Usuń</td>
                     <td class="col-md-1 center-item">Podgląd</td>
                 </tr>
-                <tr class="warning no-result">
-                    <td colspan="8"><i class="fa fa-warning"></i> No result</td>
+                <!-- Show when result is not found -->
+                <tr class="no-result">
+                    <td colspan="8"><b>Brak wyników wyszukiwania</b></td>
                 </tr>
                 </thead>
+                <!-- body row -->
                 <tbody>
                 <tr th:each="accessory : ${accessories}">
                     <td th:text="${accessory.accessory.value}"></td>
@@ -48,7 +51,6 @@
             </table>
         </div>
     </div>
-
     <!--Modify accessory-->
     <a name="anch"></a>
     <form th:if="${controlsPanelVisible}" class="form-horizontal" role="form" method="post" action="/modifyAccessory#anch" th:object="${accessory}">
@@ -98,7 +100,7 @@
             </div>
         </div>
     </form>
-
+    <br/>
 </div>
 </body>
 </html>
