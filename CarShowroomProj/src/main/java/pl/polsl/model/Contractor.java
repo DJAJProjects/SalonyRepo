@@ -102,7 +102,7 @@ public class Contractor {
         this.regon = regon;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_city")
     public Dictionary getCity() {
         return city;
@@ -112,7 +112,7 @@ public class Contractor {
         this.city = city;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_country")
     public Dictionary getCountry() {
         return country;

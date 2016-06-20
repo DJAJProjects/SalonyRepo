@@ -48,7 +48,7 @@ public class Worker {
     }
 
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_showroom")
     public Showroom getShowroom() {
         return showroom;

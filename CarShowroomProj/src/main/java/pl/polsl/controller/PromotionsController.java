@@ -18,7 +18,9 @@ import java.util.Set;
 
 
 /**
- * Created by Aleksandra on 2016-04-07.
+ * Promotions Controller class
+ * @author Aleksandra Chronowska
+ * @version 1.0
  */
 @Component
 @Path("/promotions")
@@ -27,19 +29,33 @@ import java.util.Set;
 public class PromotionsController {
     @Autowired
     private PromotionsRepository promotionsRepository;
-
+    /**
+     * Rest get method
+     * @author Aleksadra Chronowska
+     * @return list of all promotions
+     */
     @GET
     @Produces({MediaType.APPLICATION_JSON})
     public List<Promotion> findAll() {
         return Lists.newArrayList(promotionsRepository.findAll());
     }
-
+    /**
+     * Rest method find promotions by id
+     * @param id
+     * @return priviliges data by json
+     */
     @GET
     @Path("/{id}")
     @Produces({MediaType.APPLICATION_JSON})
     public Promotion findOne(int id){
         return promotionsRepository.findOne(id);}
 
+    /**
+     * Method finding actual promotion
+     * @param date current date
+     * @param promotionList list with all promotion
+     * @return promotion list
+     */
     public List<Promotion> findActual(Date date, Set<Promotion> promotionList) {
 
         List<Promotion>promotions = Lists.newArrayList(promotionsRepository.findActual(date));
@@ -65,7 +81,12 @@ public class PromotionsController {
     public Promotion addPromotion(int percValue, String name, java.sql.Date dateStart, java.sql.Date dateEnd) {
         return promotionsRepository.save(new Promotion(percValue, name, dateStart, dateEnd));
     }
-
+    /**
+     * Method save object in repository.
+     * Used to confirm promotion in contract module.
+     * @author Aleksadra Chronowska
+     * @param id promotion id
+     */
     public Promotion editPromotion(int id, int percValue, String name, java.sql.Date dateStart, java.sql.Date dateEnd) {
 
         Promotion promotion = promotionsRepository.findOne(id);

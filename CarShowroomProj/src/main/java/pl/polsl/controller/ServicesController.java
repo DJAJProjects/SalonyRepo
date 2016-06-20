@@ -16,7 +16,9 @@ import java.sql.Date;
 import java.util.List;
 
 /**
- * Created by Julia on 2016-04-28.
+ * Services Controller class
+ * @author Julia Kubieniec
+ * @version 1.0
  */
 @Component
 @Path("/services")
@@ -33,13 +35,22 @@ public class ServicesController {
     private CarsRepository carsRepository;
     @Autowired
     private AccessoriesRepository accessoriesRepository;
-
+    /**
+     * Rest get method
+     * @author Aleksadra Chronowska
+     * @return list of all services
+     */
     @GET
     @Produces({MediaType.APPLICATION_JSON})
     public List<Service> findAll() {
         return Lists.newArrayList(servicesRepository.findAll());
     }
 
+    /**
+     * Rest method find service by id
+     * @param id
+     * @return service data by json
+     */
     @GET
     @Path("/{id}")
     @Produces({MediaType.APPLICATION_JSON})
@@ -47,14 +58,33 @@ public class ServicesController {
         return servicesRepository.findOne(id);
     }
 
+    /**
+     * Method save object in repository.
+     * @param id service id
+     */
     public void edit(int id) {
         servicesRepository.save(findOne(id));
     }
 
+    /**
+     * Method deleting service from proper id
+     * @param id service id
+     */
     public void deleteService(int id) {
         servicesRepository.delete(id);
     }
 
+    /**
+     * Method adding new object to database
+     * @param type service type
+     * @param idServiceman serviceman id
+     * @param idCar car, which is serviced
+     * @param idAccessory accessory, which is servieced
+     * @param idSubservice subservice id
+     * @param cost service cost
+     * @param dateConducted date conducted
+     * @return new object
+     */
     public Service addService(int type, int idServiceman, int idCar, int idAccessory, int idSubservice, int cost, Date dateConducted) {
 
         if(idAccessory != 0) {
@@ -75,6 +105,17 @@ public class ServicesController {
         }
     }
 
+    /**
+     * Method updating  object to database
+     * @param type service type
+     * @param idServiceman serviceman id
+     * @param idCar car, which is serviced
+     * @param idAccessory accessory, which is servieced
+     * @param idSubservice subservice id
+     * @param cost service cost
+     * @param dateConducted date conducted
+     * @return edited object
+     */
     public Service editService(int id, int type, int idServiceman, int idCar, int idAccessory, int idSubservice, int cost, Date dateConducted, int idPreviousAccessory) {
         Service service = servicesRepository.findOne(id);
         Accessory accessory;

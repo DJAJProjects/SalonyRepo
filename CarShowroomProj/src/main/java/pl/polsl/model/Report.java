@@ -41,7 +41,7 @@ public class Report {
     }
 
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn (name = "id_showroom")
     public Showroom getShowroom() {
         return showroom;
@@ -52,7 +52,7 @@ public class Report {
     }
 
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn (name = "id_contractor")
     public Contractor getContractor() {
         return contractor;

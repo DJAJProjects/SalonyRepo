@@ -18,7 +18,9 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Created by Aleksandra on 2016-04-07.
+ * Invoice controller class
+ * @author Aleksandra Chronowska
+ * @version 1.0
  */
 @Component
 @Path("/invoices")
@@ -31,22 +33,40 @@ public class InvoiceController {
     private DictionaryController dictionaryController;
     @Autowired
     ContractsController contractsController;
-
+    /**
+     * Rest get method
+     * @author Aleksadra Chronowska
+     * @return list of all invoices
+     */
     @GET
     @Produces({MediaType.APPLICATION_JSON})
     public List<Invoice> findAll() {
         return Lists.newArrayList(invoiceRepository.findAll());
     }
 
+    /**
+     * Rest method find invoice by id
+     * @param id
+     * @return invoice data by json
+     */
     @GET
     @Path("/{id}")
     @Produces({MediaType.APPLICATION_JSON})
     public Invoice findOne(int id){
         return invoiceRepository.findOne(id);}
 
+   /**
+    * Method deleting current invoice with given id
+    * @param id contract id
+    */
     public void delete(int id){
         invoiceRepository.delete(id);
     }
+    /**
+     * Method save object in repository.
+     * @author Aleksadra Chronowska
+     * @param id invoice id
+     */
     public void edit(int id) {invoiceRepository.save(findOne(id));}
     public Invoice addNew(Contract con, int paymentForm, int type){
         Invoice invoice = new Invoice();
@@ -59,6 +79,11 @@ public class InvoiceController {
         invoice.setPaymentForm(dictionaryController.findOne(paymentForm));
         return invoiceRepository.save(invoice);
     }
+
+    /**
+     * Method finding all invoices visilible for actual user
+     * @return all visilible invoices
+     */
     public List<Invoice> findInvoices(){
         List<Invoice> retList = null;
         if( Data.user.getPosition().getId() == 11)

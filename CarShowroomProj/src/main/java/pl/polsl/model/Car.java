@@ -12,7 +12,8 @@ import java.util.Set;
 @Entity
 @Table(name="cars", schema = "salonydb")
 public class Car {
-    private int id;
+
+    private Integer id;
     private Dictionary carName;
     private Date prodDate;
     private Integer cost;
@@ -36,14 +37,15 @@ public class Car {
     @Id
     @GeneratedValue
     @Column(name = "id")
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_name")
     public Dictionary getCarName() {
