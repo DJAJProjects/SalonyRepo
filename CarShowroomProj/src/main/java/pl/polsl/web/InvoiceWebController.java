@@ -23,6 +23,11 @@ public class InvoiceWebController extends  BaseWebController{
 
     @RequestMapping(value = "/invoices", method = RequestMethod.GET)
     public String getInvoices(Model model) {
+        if (Data.user == null) {
+            model.asMap().clear();
+            model.addAttribute("userNotLoggedIn", true);
+            return "sign_in";
+        }
         model.addAttribute("invoices",invoiceController.findInvoices());
         analisePrivileges(Data.invoiceModuleValue);
         model.addAttribute("deleteEnabled", deleteEnabled);

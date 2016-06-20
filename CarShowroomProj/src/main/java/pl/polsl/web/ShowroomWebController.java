@@ -31,7 +31,6 @@ public class ShowroomWebController extends  BaseWebController {
     @Autowired
     private WorkersController workersController;
 
-
     @RequestMapping(value ="/showroom")
     public String getShowrooms(Model model){
         if (Data.user == null) {

@@ -7,7 +7,7 @@
 <body>
 <div layout:fragment="main" style="margin: 0 auto; max-width: 1000px;">
     <div>
-        <div class="panel panel-default">
+        <div class="panel">
             <!-- Default panel contents -->
             <div class="panel-heading"><b>WYGENEROWANE FAKTURY</b>
                 <div class="form-group pull-right">
@@ -30,6 +30,8 @@
                         <td class="col-md-2">Termin płatności</td>
                         <td class="col-md-2">Forma płatności</td>
                         <td th:if="${deleteEnabled}" class="col-md-2">Usuń</td>
+                        <td class="col-md-2">Podglad</td>
+
                     </tr>
                     <tr class="warning no-result">
                         <td colspan="8"><i class="fa fa-warning"></i> Brak wyników</td>

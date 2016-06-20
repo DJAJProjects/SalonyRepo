@@ -86,7 +86,7 @@ public class Invoice {
     @ManyToOne
     @JoinColumn(name="id_payment_form")
     public Dictionary getPaymentForm() {
-        return invoiceType;
+        return paymentForm;
     }
 
     public void setPaymentForm(Dictionary idPaymentForm) {

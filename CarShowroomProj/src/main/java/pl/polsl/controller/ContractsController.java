@@ -58,7 +58,6 @@ public class ContractsController {
     }
 
     public List<Contract> findContracts(){
-        System.out.println("Użytkownik: " + Data.user.getPosition().getValue() + " " + Data.user.getPosition().getId());
         List<Contract> retList = null;
         if( Data.user.getPosition().getId() == 11)
             retList = contractsRepository.findForDirector(Data.user.getShowroom().getId());

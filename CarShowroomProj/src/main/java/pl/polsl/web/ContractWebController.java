@@ -50,6 +50,7 @@ public class ContractWebController extends BaseWebController{
      */
     @RequestMapping(value ="/invoiceGenerate", method = RequestMethod.GET)
     public String generateInvoice(Model model, @RequestParam("contract") int id, @RequestParam(value="invoice", required = false)Invoice invoice){
+        refreshMenuPrivileges(model);
         DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
         model.addAttribute("dateCreated",df.format(Calendar.getInstance().getTime()));
         Contract con = contractsController.findOne(id);
@@ -58,13 +59,14 @@ public class ContractWebController extends BaseWebController{
         model.addAttribute("paymentforms", dictionaryController.findAllPaymentForm());
         model.addAttribute("invoiceTypes", dictionaryController.findAllInvoiceType());
         if(invoice != null) {
+            model.addAttribute("invoice", invoice);
             model.addAttribute("paymentForm", invoice.getPaymentForm());
-            model.addAttribute("invoiceType", invoice.getInvoiceType());
+            model.addAttribute("invoiceType", invoice.getInvoiceType().getId());
             if(invoice.getPaymentDeadline()!=null){
-                model.addAttribute("paymentDeadline", invoice.getPaymentDeadline());
+                model.addAttribute("paymentDeadline", invoice.getPaymentDeadline().toString());
             }
             if(invoice.getDateSold() !=null) {
-                model.addAttribute("dataSold", invoice.getDateSold());
+                model.addAttribute("dateSold", invoice.getDateSold().toString());
             }
             model.addAttribute("disabledButtons", 1);
         }
@@ -155,6 +157,9 @@ public class ContractWebController extends BaseWebController{
     @RequestMapping(value = "/contactAdditions", method = RequestMethod.GET)
     public String addAdditions(Model model, @RequestParam(value="contract", required = false)Contract contractId,  @RequestParam(value="carId", required = false)Integer orderCarContract, @RequestParam(value="cannotAddPromotion", required = false)Integer cannotAddPromotion){
 
+        model.addAttribute("contracts", contractsController.findContracts());
+        refreshMenuPrivileges(model);
+
         model.addAttribute("invisibleCarList", 1);
         model.addAttribute("invisibleAccessoryList", 1);
         model.addAttribute("invisiblePromotionList", 1);
@@ -175,7 +180,7 @@ public class ContractWebController extends BaseWebController{
             viewMode = ViewMode.INSERT;
         }
 
-        model.addAttribute("contracts", contractsController.findContracts());
+//        model.addAttribute("contracts", contractsController.findContracts());
         model.addAttribute("contractors",contractorsController.findAllContractors());
 
         if(viewMode == ViewMode.EDIT || viewMode == ViewMode.VIEW_ALL){
