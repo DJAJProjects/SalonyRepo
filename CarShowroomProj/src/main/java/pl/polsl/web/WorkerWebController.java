@@ -75,9 +75,6 @@ public class WorkerWebController extends  BaseWebController {
             else{
                 model.addAttribute("privilegesPanelVisible", false);
             }
-
-
-
             return "worker";
 
     }
