@@ -27,9 +27,9 @@
                 <td class="col-md-2">Nazwa</td>
                 <td class="col-md-2">Serwisant</td>
                 <td class="col-md-2">Samochód</td>
-                <td class="col-md-2">Przedmiot serwisu</td>
-                <td class="con-md-2">Cena usługi [PLN]</td>
-                <td class="con-md-2">Data wykonania</td>
+                <td class="col-md-3">Przedmiot serwisu</td>
+                <!--<td class="con-md-2">Cena usługi [PLN]</td>-->
+                <!--<td class="con-md-2">Data wykonania</td>-->
                 <td th:if="${updateEnabled}" class="col-md-1 center-item">Edytuj</td>
                 <td th:if="${deleteEnabled}" class="col-md-1 center-item">Usuń</td>
                 <td class="col-md-1 center-item">Podgląd</td>
@@ -48,11 +48,11 @@
                 <td th:if="${service.serviceType.id}=='47'" th:text="${service.accessory.accessory.value}"></td>
                 <td th:if="${service.serviceType.id}=='31'" th:text="${service.subserviceType.value}"></td>
                 <td th:if="${service.serviceType.id}=='32'" th:text="${service.subserviceType.value}"></td>
-                <td th:text="${service.cost}"></td>
-                <td th:text="${service.dateConducted}"></td>
-                <td th:if="${updateEnabled}" class="center-item"><a href="services.html" th:href="@{'/editService/'+${service.id}+'#anch'}"><span class="glyphicon glyphicon-edit" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Edytuj"></span></a></td>
-                <td th:if="${deleteEnabled}" class="center-item"><a href="services.html" th:href="@{'/deleteService/'+${service.id}}"><span class="glyphicon glyphicon-remove" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Usuń"></span></a></td>
-                <td class="center-item"><a href="services.html" th:href="@{'/viewService/'+${service.id}+'#anch'}"><span class="glyphicon glyphicon-eye-open" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Podgląd"></span></a></td>
+                <!--<td th:text="${service.cost}"></td>-->
+                <!--<td th:text="${service.dateConducted}"></td>-->
+                <td th:if="${updateEnabled}" class="center-item"><a href="services.html" th:href="@{'/editService/'+${service.id}+'#anch'}"><span class="glyphicon glyphicon-edit" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Edytuj" style="height:100%;width:100%"></span></a></td>
+                <td th:if="${deleteEnabled}" class="center-item"><a href="services.html" th:href="@{'/deleteService/'+${service.id}}"><span class="glyphicon glyphicon-remove" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Usuń" style="height:100%;width:100%"></span></a></td>
+                <td class="center-item"><a href="services.html" th:href="@{'/viewService/'+${service.id}+'#anch'}"><span class="glyphicon glyphicon-eye-open" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Podgląd" style="height:100%;width:100%"></span></a></td>
             </tr>
             </tbody>
         </table>
@@ -63,8 +63,8 @@
     <a name="anch"></a>
     <form th:if="${controlsPanelVisible}" class="form-horizontal" role="form" method="post" action="/modifyServiceType#anch" th:object="${service}">
         <div class="form-group">
-            <label class="control-label col-sm-2">Typ serwisu:</label>
-            <div class="col-sm-10">
+            <label class="control-label col-sm-offset-2 col-sm-2">Typ serwisu:</label>
+            <div class="col-sm-4">
                 <select type="text" name="type" list="serviceList" required="required" class="form-control" aria-label="...">
                     <datalist id="serviceList">
                         <option th:disabled="${controlsDisabledPart1}"></option>
@@ -74,8 +74,8 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="control-label col-sm-2">Samochód:</label>
-            <div class="col-sm-10">
+            <label class="control-label col-sm-offset-2 col-sm-2">Samochód:</label>
+            <div class="col-sm-4">
                 <select type="text" name="idCar" placeholder="Wybierz samochód" list="carsList" required="required" class="form-control" aria-label="...">
                     <datalist id="carsList">
                         <option th:disabled="${controlsDisabledPart1}"></option>
@@ -85,7 +85,7 @@
             </div>
         </div>
         <div class="form-group">
-            <div class="col-sm-offset-2 col-sm-10">
+            <div class="col-sm-offset-4 col-sm-10">
                 <button type="submit" th:disabled="${controlsDisabledPart1}" class="btn btn-default" >Akceptuj</button>
                 <button type="reset" th:disabled="${controlsDisabledPart1}" class="btn btn-default">Anuluj zmiany</button>
             </div>
@@ -94,8 +94,8 @@
 
     <form th:if="${controlsPanelVisible}" class="form-horizontal" role="form" method="post" action="/modifyServiceObject#anch" th:object="${service}">
         <div class="form-group">
-            <label class="control-label col-sm-2">Przedmiot serwisu:</label>
-            <div class="col-sm-10">
+            <label class="control-label col-sm-offset-2 col-sm-2">Przedmiot serwisu:</label>
+            <div class="col-sm-4">
                 <select type="text" name="idServiceObject" list="list" required="required" class="form-control" aria-label="...">
                     <datalist id="list">
                         <option th:disabled="${controlsDisabledPart2}"></option>
@@ -105,28 +105,30 @@
                 </select>
             </div>
         </div>
-        <div class="col-sm-offset-2 col-sm-10">
-            <button th:disabled="${controlsDisabledPart2}" type="submit" class="btn btn-default">Ok</button>
+        <div class="form-group">
+            <div class="col-sm-offset-4 col-sm-10">
+                <button th:disabled="${controlsDisabledPart2}" type="submit" class="btn">Ok</button>
+            </div>
         </div>
     </form>
 
     <form th:if="${controlsPanelVisible}" class="form-horizontal" role="form" method="post" action="/modifyService#anch" th:object="${service}">
         <div class="form-group">
-            <label class="control-label col-sm-2">Koszt [PLN]:</label>`
-            <div class="col-sm-10">
+            <label class="control-label col-sm-offset-2 col-sm-2">Koszt [PLN]:</label>`
+            <div class="col-sm-4">
                 <input th:disabled="${controlsDisabledCost}" th:field="*{cost}" name="cost" type="number" min="0" max="999999" class="form-control" required="required"/>
             </div>
         </div>
         <div class="form-group">
-            <label class="control-label col-sm-2">Data wykonania serwisu:</label>
-            <div class="col-sm-10">
+            <label class="control-label col-sm-offset-2 col-sm-2">Data wykonania serwisu:</label>
+            <div class="col-sm-4">
                 <input id="date" onfocus="loadCurrentDate('max');" th:disabled="${controlsDisabledPart3}" th:field="*{dateConducted}"
                        name="dateConducted" type="date" class="form-control" min="2000-01-01" required="required"/>
             </div>
         </div>
         <div class="form-group">
-            <label class="control-label col-sm-2">Serwisant:</label>
-            <div class="col-sm-10">
+            <label class="control-label col-sm-offset-2 col-sm-2">Serwisant:</label>
+            <div class="col-sm-4">
                 <select type="text" name="idServiceman" placeholder="Wybierz serwisanta" list="servicemansList" required="required" class="form-control" aria-label="...">
                     <datalist id="servicemansList">
                         <option th:disabled="${controlsDisabledPart3}"></option>
@@ -137,9 +139,9 @@
         </div>
         <input type="hidden" style="display: none;" name="id" th:field="*{id}"/>
         <div class="form-group">
-            <div class="col-sm-offset-2 col-sm-10">
-                <button type="submit" th:disabled="${controlsDisabledPart3}" class="btn btn-default" >Akceptuj</button>
-                <button type="reset" th:disabled="${controlsDisabledPart3}" class="btn btn-default">Anuluj zmiany</button>
+            <div class="col-sm-offset-4 col-sm-10">
+                <button type="submit" th:disabled="${controlsDisabledPart3}" class="btn" >Akceptuj</button>
+                <button type="reset" th:disabled="${controlsDisabledPart3}" class="btn">Anuluj zmiany</button>
             </div>
         </div>
     </form>

@@ -53,18 +53,18 @@
                     <td th:text="${showroom.director.surname}"></td>
                     <td class="center-item" th:if="${updateEnabled}">
                         <a th:href="@{'/editShowroom/'+${showroom.id}+'#anch'}" >
-                            <span class="glyphicon glyphicon-pencil" aria-hidden="true" style="height:100%;width:100%">
+                            <span class="glyphicon glyphicon-pencil" aria-hidden="true" style="height:100%;width:100%" data-toggle="tooltip" data-placement="top" title="Edytuj">
                             </span>
                         </a>
                     </td>
                     <td class="center-item" th:if="${deleteEnabled}">
                         <a th:href="@{'/deleteShowroom/'+${showroom.id}}" onclick="return confirm_delete(this);"><!---->
-                            <span class="glyphicon glyphicon-remove" aria-hidden="true" style="height:100%;width:100%"></span>
+                            <span class="glyphicon glyphicon-remove" aria-hidden="true" style="height:100%;width:100%" data-toggle="tooltip" data-placement="top" title="Usuń"></span>
                         </a>
                     </td>
                     <td class="center-item">
                         <a th:href="@{'/viewShowroom/'+${showroom.id}+'#anch'}">
-                            <span class="glyphicon glyphicon-eye-open" aria-hidden="true" style="height:100%;width:100%">
+                            <span class="glyphicon glyphicon-eye-open" aria-hidden="true" style="height:100%;width:100%" data-toggle="tooltip" data-placement="top" title="Podgląd">
                             </span>
                         </a>
                     </td>

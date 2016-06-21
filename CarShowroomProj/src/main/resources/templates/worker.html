@@ -55,18 +55,18 @@
                 <td th:unless="${worker.showroom}" >brak</td>
                 <td class="center-item" th:if="${updateEnabled}">
                     <a th:href="@{'/editWorker/'+${worker.id}+'#anch'}" >
-                            <span class="glyphicon glyphicon-pencil" aria-hidden="true" style="height:100%;width:100%">
+                            <span class="glyphicon glyphicon-edit" style="height:100%;width:100%" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Edytuj">
                             </span>
                     </a>
                 </td>
                 <td class="center-item" th:if="${deleteEnabled}">
                     <a th:href="@{'/deleteWorker/'+${worker.id}}" onclick="return confirm_delete(this);">
-                        <span class="glyphicon glyphicon-remove" aria-hidden="true" style="height:100%;width:100%"></span>
+                        <span class="glyphicon glyphicon-remove" aria-hidden="true" style="height:100%;width:100%" data-toggle="tooltip" data-placement="top" title="Usuń"></span>
                     </a>
                 </td>
                 <td class="center-item">
                     <a th:href="@{'/viewWorker/'+${worker.id}+'#anch'}">
-                            <span class="glyphicon glyphicon-eye-open" aria-hidden="true" style="height:100%;width:100%">
+                            <span class="glyphicon glyphicon-eye-open" aria-hidden="true" style="height:100%;width:100%" data-toggle="tooltip" data-placement="top" title="Podgląd">
                             </span>
                     </a>
                 </td>
