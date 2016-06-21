@@ -122,7 +122,8 @@ public class WorkersController {
             md = MessageDigest.getInstance("SHA");
             String data = password;
             byte[] dataDigest = md.digest(data.getBytes());
-            Worker worker = new Worker(name,surname,payment, dateHired,dictionaryController.findOne(position),showroomsController.findOne(showroom),login, password);
+            String newPass = new String(dataDigest);
+            Worker worker = new Worker(name,surname,payment, dateHired,dictionaryController.findOne(position),showroomsController.findOne(showroom),login, newPass);
             if(error)
                 retWorker = worker;
             else {
