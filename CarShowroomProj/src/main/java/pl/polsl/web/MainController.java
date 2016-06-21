@@ -38,7 +38,7 @@ public class MainController extends BaseWebController {
 
     @RequestMapping(value = "signIn", method= RequestMethod.POST)
     public String signIn(Model model, @RequestParam(value = "login")String login, @RequestParam(value = "password")String password){
-        String realPass = null;
+        /*String realPass = null;
         try {
             MessageDigest md = MessageDigest.getInstance("SHA");
             String data = password;
@@ -46,9 +46,9 @@ public class MainController extends BaseWebController {
             realPass = new String(dataDigest);
         }catch (Exception ex){
             return "sign_in";
-        }
+        }*/
 
-        Data.user = workersController.findOne(login,realPass);
+        Data.user = workersController.findOne(login,password);
         if(Data.user!=null){
             Data.adminId = dictionaryController.findAdmin();
             Data.directorId = dictionaryController.findDirector();
