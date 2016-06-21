@@ -137,7 +137,7 @@ public class ShowroomWebController extends  BaseWebController {
             showroomsController.delete(id);
         return "redirect:/showroom/";
     }
-    @RequestMapping(value="/ResetShowroomChange")
+    @RequestMapping(value="/resetShowroomChange")
     public  String resetChange(){
         viewMode = ViewMode.DEFAULT;
         return "redirect:/showroom";

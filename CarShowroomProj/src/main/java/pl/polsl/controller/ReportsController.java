@@ -23,7 +23,7 @@ import java.util.concurrent.TimeUnit;
  * @version 1.0
  */
 @Component
-@Path("/raports")
+@Path("/reports")
 @Produces(MediaType.APPLICATION_JSON)
 public class ReportsController {
 

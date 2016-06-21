@@ -44,8 +44,6 @@ public class WorkerWebController extends  BaseWebController {
 
     @RequestMapping(value ="/worker")
     public String getWorkers(Model model){
-            boolean isAdmin = false;
-
             if (Data.user == null) {
                 model.asMap().clear();
                 model.addAttribute("userNotLoggedIn", true);
@@ -96,7 +94,6 @@ public class WorkerWebController extends  BaseWebController {
         if(!model.containsAttribute("error"))
            worker = new Worker();
         else{
-            System.out.println("error przy dodawaniu");
             worker = (Worker)model.asMap().get("worker");
             redirectAttributes.addFlashAttribute("positionId", worker.getPosition().getId());
             redirectAttributes.addFlashAttribute("error", model.asMap().get("error"));
@@ -106,16 +103,14 @@ public class WorkerWebController extends  BaseWebController {
             differentWorker = true;
 
         currentWorker = worker;
-
         redirectAttributes.addFlashAttribute("controlsPanelVisible", true);
         redirectAttributes.addFlashAttribute("controlsDisabled", false);
         redirectAttributes.addFlashAttribute("worker", worker);
         redirectAttributes.addFlashAttribute("positions", dictionaryController.findAllPositions().stream()
                 .filter(dictionary -> dictionary.getId()!=Data.adminId).collect(Collectors.toList()));
-        redirectAttributes.addFlashAttribute("showrooms", showroomsController.findAll());
+        redirectAttributes.addFlashAttribute("showrooms", showroomsController.findShowroomsRelatedToWorker(Data.user));
         redirectAttributes.addFlashAttribute("controlsLoginVisible", true);
         redirectAttributes.addFlashAttribute("controlsPasswordVisible", true);
-        System.out.println("Przeszło");
         if(differentWorker) {
             previousPrivilegesList = new ArrayList<Privileges>();
             currentPrivilegesList = new ArrayList<Privileges>();
@@ -166,7 +161,6 @@ public class WorkerWebController extends  BaseWebController {
     @RequestMapping(value ="/editWorker/{id}")
     public String editWorker(RedirectAttributes redirectAttributes, Model model, @PathVariable("id")int id){
         viewMode = ViewMode.EDIT;
-
         Worker worker;
         if(!model.containsAttribute("error"))
             worker = workersController.findOne(id);
@@ -187,7 +181,7 @@ public class WorkerWebController extends  BaseWebController {
         redirectAttributes.addFlashAttribute("worker", worker);
         redirectAttributes.addFlashAttribute("positions",  dictionaryController.findAllPositions().stream()
                 .filter(dictionary -> dictionary.getId() != Data.adminId).collect(Collectors.toList()));
-        redirectAttributes.addFlashAttribute("showrooms", showroomsController.findAll());
+        redirectAttributes.addFlashAttribute("showrooms", showroomsController.findShowroomsRelatedToWorker(Data.user));
         redirectAttributes.addFlashAttribute("controlsLoginVisible", false);
         redirectAttributes.addFlashAttribute("controlsPasswordVisible", false);
         if(worker.getPosition().getId() == Data.directorId && worker.getShowroom()!=null){
@@ -201,9 +195,7 @@ public class WorkerWebController extends  BaseWebController {
 
         redirectAttributes.addFlashAttribute("choosenPrivileges", currentPrivilegesList);
         redirectAttributes.addFlashAttribute("privileges", privilegesController.findPrivilegesNotRelatedToWorker(worker));
-
         differentWorker = false;
-
         return "redirect:/worker";
 
     }
@@ -348,5 +340,11 @@ public class WorkerWebController extends  BaseWebController {
     public  String resetPasswordChange(){
         viewMode = ViewMode.DEFAULT;
         return "redirect:/menu";
+    }
+
+    @RequestMapping(value="/resetWorkerChange")
+    public  String resetWorkerChange(){
+        viewMode = ViewMode.DEFAULT;
+        return "redirect:/worker";
     }
 }

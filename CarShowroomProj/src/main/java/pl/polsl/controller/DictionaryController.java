@@ -37,7 +37,7 @@ public class DictionaryController {
     }
 
     /**
-     * Rest method find dictionary object by id
+     * Rest method to find dictionary object by id
      * @param id
      * @return dictionary object data by json
      */
@@ -48,7 +48,7 @@ public class DictionaryController {
         return dictionaryRepository.findOne(id);}
 
     /**
-     * Method find all cities
+     * Method to find all cities
      * @return cities list
      */
     public List<Dictionary> findAllCities(){
@@ -56,7 +56,7 @@ public class DictionaryController {
     }
 
     /**
-     * Method find all countries
+     * Method to find all countries
      * @return countries list
      */
     public List<Dictionary> findAllCountries() {
@@ -64,14 +64,14 @@ public class DictionaryController {
     }
 
     /**
-     * Method find all positions
+     * Method to find all positions
      * @return positions list
      */
     public List<Dictionary> findAllPositions() { return dictionaryRepository.findAllTheSameType("position");
     }
 
     /**
-     * Method find all avaliable payment form
+     * Method to find all available payment form
      * @return payment form list
      */
     public List<Dictionary> findAllPaymentForm() {
@@ -79,14 +79,14 @@ public class DictionaryController {
     }
 
     /**
-     * Method find all avaliable invoice type
+     * Method to find all available invoice type
      * @return invoice type list
      */
     public List<Dictionary> findAllInvoiceType() {
         return dictionaryRepository.findAllTheSameType("invoice_type");
     }
     /**
-     * Method find all car names
+     * Method to find all car names
      * @return invoice car name
      */
     public List<Dictionary> findAllCarName() {
@@ -94,7 +94,7 @@ public class DictionaryController {
     }
 
     /**
-     * Method find all accessory names
+     * Method to find all accessory names
      * @return invoice accessory name
      */
     public List<Dictionary> findAllAccessories() {
@@ -102,7 +102,7 @@ public class DictionaryController {
     }
 
     /**
-     * Method find all modules
+     * Method to find all modules
      * @return modules list
      */
     public List<Dictionary> findAllModules() {
@@ -110,7 +110,7 @@ public class DictionaryController {
     }
 
     /**
-     * Method find all service
+     * Method to find all service
      * @return service list
      */
     public List<Dictionary> findAllService() {
@@ -126,19 +126,19 @@ public class DictionaryController {
     }
 
     /**
-     * Method find all types
+     * Method to find all types
      * @return types list
      */
     public List<String> findAllTypes() { return dictionaryRepository.findAllTypes();
     }
 
     /**
-     * Method for edit dictionary object
+     * Method to edit dictionary object
      * @param id dictionary id
      * @param type dictionary type
      * @param value dictionary value
-     * @param value2 dictionary value
-     * @param value3 dictionary value
+     * @param value2 alternative dictionary value
+     * @param value3 alternative dictionary value
      * @return edited dictionary object
      */
     public Dictionary updateDictionaryValue(int id, String type, String value, String value2, String value3) {
@@ -163,7 +163,7 @@ public class DictionaryController {
     }
 
     /**
-     * Method deleting one with dictionary object
+     * Method to delete object from table of dictionary objects
      * @param id given dictionary object
      */
     public void delete(int id) {
@@ -171,7 +171,7 @@ public class DictionaryController {
     }
 
     /**
-     * Method finding admin
+     * Method to find admin id
      * @return admin id
      */
     public int findAdmin() {
@@ -179,7 +179,7 @@ public class DictionaryController {
     }
 
     /**
-     * Method finding director
+     * Method to find director id
      * @return position id
      */
     public int findDirector() {

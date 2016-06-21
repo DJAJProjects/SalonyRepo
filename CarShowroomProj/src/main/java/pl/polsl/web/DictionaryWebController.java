@@ -109,7 +109,7 @@ public class DictionaryWebController extends BaseWebController{
         return "redirect:/dictionary/";
     }
 
-    @RequestMapping(value="/ResetDictionaryChange")
+    @RequestMapping(value="/resetDictionaryChange")
     public  String resetChange(){
         viewMode = ViewMode.DEFAULT;
         return "redirect:/dictionary";
