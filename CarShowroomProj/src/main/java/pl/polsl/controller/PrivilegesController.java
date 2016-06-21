@@ -157,5 +157,9 @@ public class PrivilegesController {
     }
 
 
+    public void deletePrivilege(int id){
+        privilegesRepository.delete(id);
+    }
+
 
 }

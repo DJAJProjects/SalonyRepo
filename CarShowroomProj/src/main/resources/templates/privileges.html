@@ -86,7 +86,7 @@
         <div class="form-group">
             <label class="control-label col-sm-2">Moduł:</label>
             <div class="col-sm-10">
-                <select name="city" th:disabled="${controlsDisabled}" class="form-control" aria-label="..." >
+                <select name="module" th:disabled="${controlsDisabled}" class="form-control" aria-label="..." >
                     <option th:value="-1" text="Wybierz moduł"></option>
                     <option th:each="c : ${modules}" th:value="${c.id}" th:text="${c.value}" th:selected="${c.id}"></option>
                 </select>
@@ -95,13 +95,13 @@
         <div class="form-group">
             <label class="control-label col-sm-2">Przegląd:</label>
             <div class="col-sm-2">
-                <input th:field="*{readPriv}" th:disabled="${controlsDisabled}"  name="name" type="checkbox" class="form-control"/>
+                <input th:field="*{readPriv}"  th:disabled="${controlsDisabled}"  name="name" type="checkbox" class="form-control"/>
             </div>
         </div>
         <div class="form-group">
             <label class="control-label col-sm-2">Dodawanie:</label>
             <div class="col-sm-2">
-                <input th:field="*{insertPriv}" th:disabled="${controlsDisabled}"  name="name" type="checkbox" class="form-control"/>
+                <input th:field="*{insertPriv}"  th:disabled="${controlsDisabled}"  name="name" type="checkbox" class="form-control"/>
             </div>
         </div>
         <div class="form-group">
@@ -113,7 +113,7 @@
         <div class="form-group">
             <label class="control-label col-sm-2">Usuwanie:</label>
             <div class="col-sm-2">
-                <input th:field="*{deletePriv}" th:disabled="${controlsDisabled}"  name="name" type="checkbox" class="form-control"/>
+                <input th:field="*{deletePriv}"  th:disabled="${controlsDisabled}"  name="name" type="checkbox" class="form-control"/>
             </div>
         </div>
 
