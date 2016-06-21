@@ -12,7 +12,9 @@ import pl.polsl.ViewMode;
 import pl.polsl.controller.InvoiceController;
 
 /**
- * Created by Julia on 2016-04-12.
+ * Invoices web controller class
+ * @author Julia Kubieniec
+ * @version 1.0
  */
 @Controller
 public class InvoiceWebController extends  BaseWebController{
@@ -21,6 +23,12 @@ public class InvoiceWebController extends  BaseWebController{
     private InvoiceController invoiceController;
     private ViewMode viewMode;
 
+    /**
+     * GET method for main invoices view
+     * @author Aleksandra Chronowska
+     * @param model actual model
+     * @return actual html view
+     */
     @RequestMapping(value = "/invoices", method = RequestMethod.GET)
     public String getInvoices(Model model) {
         if (Data.user == null) {
@@ -35,6 +43,11 @@ public class InvoiceWebController extends  BaseWebController{
         return "invoices";
     }
 
+    /**
+     * Method deleting clicked invoice
+     * @param id current invoice
+     * @return redirect for main invoice view
+     */
     @RequestMapping(value = "/deleteInvoice/{id}", method = RequestMethod.GET)
      public String deleteInvoice(@PathVariable("id")int id) {
         invoiceController.delete(id);

@@ -12,11 +12,17 @@ import java.sql.Date;
 import java.util.List;
 
 /**
- * Created by Aleksandra on 2016-04-07.
+ * Promotion class repository
+ * @author Aleksandra Chronowska
  */
 @Repository
 @Transactional
 public interface PromotionsRepository extends PagingAndSortingRepository<Promotion, Integer>  {
+    /**
+     * MEthod gets all current promotions
+     * @param date actual date
+     * @return actual list promotions
+     */
     @Query(value = "select promotion from Promotion promotion where promotion.dateStart < :date AND promotion.dateEnd > :date")
     public List<Promotion> findActual(@Param("date")Date date);
 }
