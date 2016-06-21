@@ -93,14 +93,20 @@ public class PrivilegesWebController extends BaseWebController{
         return "redirect:/privileges/";
     }
 
+
+    @RequestMapping(value = "/deletePrivileges/{id}")
+    public String deleteReport(@PathVariable("id")int id) {
+        privilegesController.deletePrivilege(id);
+        return "redirect:/privileges/";
+    }
     @RequestMapping(value ="/acceptModifyPrivileges", method = RequestMethod.POST)
     public String acceptModifyContractor(@RequestParam("id") int id,
                                          @RequestParam(value = "name") String name,
                                          @RequestParam(value = "module") int module,
-                                         @RequestParam(value = "read") boolean read,
-                                         @RequestParam(value = "insert") boolean insert,
-                                         @RequestParam(value = "update") boolean update,
-                                         @RequestParam(value = "delete") boolean delete){
+                                         @RequestParam(value = "readPriv", required = false) boolean read,
+                                         @RequestParam(value = "insertPriv", required = false) boolean insert,
+                                         @RequestParam(value = "updatePriv",required = false) boolean update,
+                                         @RequestParam(value = "deletePriv", required = false) boolean delete){
 
         //String name  = privileges.getName();
 

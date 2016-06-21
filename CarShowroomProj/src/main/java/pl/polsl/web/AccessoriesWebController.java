@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import pl.polsl.Data;
 import pl.polsl.ViewMode;
 import pl.polsl.controller.AccessoriesController;
 import pl.polsl.controller.DictionaryController;
@@ -37,13 +38,22 @@ public class AccessoriesWebController extends  BaseWebController {
 
     @RequestMapping(value = "/accessories")
     public String getAccessories(Model model) {
+        if (Data.user == null) {
+            model.asMap().clear();
+            model.addAttribute("userNotLoggedIn", true);
+            return "sign_in";
+        } else if (!privilegesController.getReadPriv(Data.accessoriesModuleValue, Data.user)) {
+            model.asMap().clear();
+            model.addAttribute("forbiddenAccess", true);
+        } else {
+            //   model.addAttribute("accessories",accessoriesController.findAll());
+            freeAccessory = accessoriesController.findFreeAccessories();
+        }
         viewMode = ViewMode.DEFAULT;
-     //   model.addAttribute("accessories",accessoriesController.findAll());
-        freeAccessory = accessoriesController.findFreeAccessories();
         model.addAttribute("accessories",freeAccessory);
         model.addAttribute("controlsPanelVisible", false);
         refreshMenuPrivileges(model);
-        analisePrivileges("Akcesoria");
+        analisePrivileges(Data.accessoriesModuleValue);
         model.addAttribute("insertEnabled", insertEnabled);
         model.addAttribute("updateEnabled", updateEnabled);
         model.addAttribute("deleteEnabled", deleteEnabled);
@@ -91,16 +101,19 @@ public class AccessoriesWebController extends  BaseWebController {
         if(viewMode == ViewMode.INSERT) {
             model.addAttribute("controlsPanelVisible", true);
             model.addAttribute("controlsDisabledPart1", false);
+            model.addAttribute("controlsDisabled",false);
             if(!flag) {
                 flag = true;
                 model.addAttribute("controlsDisabledPart2", true);
                 return "accessories";
             }
         } else if(viewMode == ViewMode.EDIT) {
+            model.addAttribute("controlsDisabled",false);
             model.addAttribute("controlsPanelVisible", true);
             model.addAttribute("controlsDisabledPart1", false);
             model.addAttribute("controlsDisabledPart2", true);
         } else if(viewMode == ViewMode.VIEW_ALL) {
+            model.addAttribute("controlsDisabled",true);
             model.addAttribute("controlsPanelVisible", true);
             model.addAttribute("controlsDisabledPart1", true);
             model.addAttribute("controlsDisabledPart2", true);
@@ -143,6 +156,12 @@ public class AccessoriesWebController extends  BaseWebController {
         } else if(viewMode == ViewMode.EDIT){
             accessoriesController.editAccessory(id,accessory.getAccessory().getId(),cost,assemblyCost);
         }
+        return "redirect:/accessories";
+    }
+
+    @RequestMapping(value="/resetAccessoriesChange")
+    public  String resetChange(){
+        viewMode = ViewMode.DEFAULT;
         return "redirect:/accessories";
     }
 

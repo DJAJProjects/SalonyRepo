@@ -86,8 +86,11 @@
         </div>
         <div class="form-group">
             <div class="col-sm-offset-4 col-sm-10">
-                <button type="submit" th:disabled="${controlsDisabledPart1}" class="btn btn-default" >Akceptuj</button>
-                <button type="reset" th:disabled="${controlsDisabledPart1}" class="btn btn-default">Anuluj zmiany</button>
+                <button type="submit" th:disabled="${controlsDisabledPart1}" class="btn btn-default" >Ok</button>
+                <!--<button type="reset" th:disabled="${controlsDisabledPart1}" class="btn btn-default">Anuluj zmiany</button>-->
+                <!--<a href="services.html" th:href="@{/resetServiceChange}">-->
+                    <!--<button type="button" th:disabled="${controlsDisabledPart1}" class="btn">Anuluj zmiany</button>-->
+                <!--</a>-->
             </div>
         </div>
     </form>
@@ -141,7 +144,10 @@
         <div class="form-group">
             <div class="col-sm-offset-4 col-sm-10">
                 <button type="submit" th:disabled="${controlsDisabledPart3}" class="btn" >Akceptuj</button>
-                <button type="reset" th:disabled="${controlsDisabledPart3}" class="btn">Anuluj zmiany</button>
+                <!--<button type="reset" th:disabled="${controlsDisabledPart3}" class="btn">Anuluj zmiany</button>-->
+                <a href="services.html" th:href="@{/resetServiceChange}">
+                    <button type="button" th:disabled="${controlsDisabled}" class="btn">Anuluj zmiany</button>
+                </a>
             </div>
         </div>
     </form>

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import pl.polsl.Data;
 import pl.polsl.ViewMode;
 import pl.polsl.controller.*;
 import pl.polsl.model.Accessory;
@@ -44,14 +45,23 @@ public class CarsWebController extends BaseWebController {
 
     @RequestMapping(value = "/cars", method = RequestMethod.GET)
     public String getCars(Model model) {
-        model.addAttribute("cars",carsController.findAllCars());
+        if (Data.user == null) {
+            model.asMap().clear();
+            model.addAttribute("userNotLoggedIn", true);
+            return "sign_in";
+        } else if (!privilegesController.getReadPriv(Data.carsModuleValue, Data.user)) {
+            model.asMap().clear();
+            model.addAttribute("forbiddenAccess", true);
+        } else {
+            model.addAttribute("cars",carsController.findAllCars());
+        }
         model.addAttribute("controlsPanelVisible", false);
         refreshMenuPrivileges(model);
         flag = false;
         orderedCar = false;
         accessorySet.clear();
         moduleOnlyCar = true;
-        analisePrivileges("Samochody");
+        analisePrivileges(Data.carsModuleValue);
         model.addAttribute("insertEnabled", insertEnabled);
         model.addAttribute("updateEnabled", updateEnabled);
         model.addAttribute("deleteEnabled", deleteEnabled);
@@ -220,6 +230,12 @@ public class CarsWebController extends BaseWebController {
             }
         }
         return "redirect:/carsDetails";
+    }
+
+    @RequestMapping(value="/resetCarsChange")
+    public  String resetChange(){
+        viewMode = ViewMode.DEFAULT;
+        return "redirect:/cars";
     }
 
 }

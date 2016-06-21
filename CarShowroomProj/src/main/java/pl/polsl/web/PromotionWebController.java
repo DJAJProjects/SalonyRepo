@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import pl.polsl.Data;
 import pl.polsl.ViewMode;
 import pl.polsl.controller.DictionaryController;
 import pl.polsl.controller.PromotionsController;
@@ -27,10 +28,19 @@ public class PromotionWebController extends BaseWebController {
 
     @RequestMapping(value = "/promotions")
     public String getAccessories(Model model) {
-        model.addAttribute("promotions",promotionsController.findAll());
+        if (Data.user == null) {
+            model.asMap().clear();
+            model.addAttribute("userNotLoggedIn", true);
+            return "sign_in";
+        } else if (!privilegesController.getReadPriv(Data.promotionModuleValue, Data.user)) {
+            model.asMap().clear();
+            model.addAttribute("forbiddenAccess", true);
+        } else {
+            model.addAttribute("promotions",promotionsController.findAll());
+        }
         model.addAttribute("controlsPanelVisible", false);
         refreshMenuPrivileges(model);
-        analisePrivileges("Promocje");
+        analisePrivileges(Data.promotionModuleValue);
         model.addAttribute("insertEnabled", insertEnabled);
         model.addAttribute("updateEnabled", updateEnabled);
         model.addAttribute("deleteEnabled", deleteEnabled);
@@ -95,6 +105,12 @@ public class PromotionWebController extends BaseWebController {
         } else if(viewMode == ViewMode.EDIT) {
             Promotion promotion = promotionsController.editPromotion(id, percValue, name, dateStart, dateEnd);
         }
+        return "redirect:/promotions";
+    }
+
+    @RequestMapping(value="/resetPromotionChange")
+    public  String resetChange(){
+        viewMode = ViewMode.DEFAULT;
         return "redirect:/promotions";
     }
 

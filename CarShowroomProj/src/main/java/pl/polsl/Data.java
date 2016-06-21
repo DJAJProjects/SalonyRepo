@@ -37,6 +37,10 @@ public class Data {
     public static final String invoiceModuleValue = "Sprzedaże";
     public static final String contractModuleValue = "Sprzedaże";
     public static final String showroomModuleValue = "Salony";
+    public static final String serviceModuleValue = "Serwisy";
+    public static final String promotionModuleValue = "Promocje";
+    public static final String carsModuleValue = "Samochody";
+    public static final String accessoriesModuleValue = "Akcesoria";
     //endregion
 
 
