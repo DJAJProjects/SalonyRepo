@@ -14,7 +14,6 @@ public class Accessory {
     private Integer cost;
     private Car car;
     private Integer assemblyCost;
-//    private Showroom showroom;
 
     public Accessory() {
     }

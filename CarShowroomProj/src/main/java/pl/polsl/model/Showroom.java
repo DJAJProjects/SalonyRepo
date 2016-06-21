@@ -39,7 +39,7 @@ public class Showroom {
         this.id = id;
     }
 
-    @ManyToOne()
+    @ManyToOne
     @JoinColumn(name = "id_city",nullable = false)
     public Dictionary getCity() {
         return city;

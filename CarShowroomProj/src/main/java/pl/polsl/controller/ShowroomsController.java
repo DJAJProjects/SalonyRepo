@@ -21,7 +21,7 @@ import java.util.List;
  * @version 1.0
  */
 @Service
-@Path("/showroom")
+@Path("/showrooms")
 @Produces(MediaType.APPLICATION_JSON)
 public class ShowroomsController {
 
@@ -43,8 +43,9 @@ public class ShowroomsController {
     public List<Showroom> findAll() {
         return Lists.newArrayList(showroomsRepository.findAll());
     }
+
     /**
-     * Rest method find showroom by id
+     * Rest method to find showroom by id
      * @param id
      * @return showroom data by json
      */
@@ -54,27 +55,37 @@ public class ShowroomsController {
     public Showroom findOne(int id){
         return showroomsRepository.findOne(id);
     }
+
     /**
-     * Method deleting showroom from given id
-     * @param id showroom id
+     * Method to delete showroom from given id
+     * @param id showroom id to remove
      */
     public void delete(int id){
         showroomsRepository.delete(id);
     }
 
+    /**
+     *Method to add showroom to database
+     * @param name showroom name
+     * @param street showroom street
+     * @param city showroom city
+     * @param country showroom country
+     * @param director showroom director
+     * @return created showroom
+     */
     public Showroom addShowroom(String name, String street, int city, int country, int director) {
         return showroomsRepository.save(new Showroom(name, street, dictionaryController.findOne(city), dictionaryController.findOne(country),workersController.findOne(director)));
     }
 
     /**
-     * Method adding to database
+     * Method to edit showroom in database
      * @param id showroom id
      * @param name showroom name
      * @param street showroom street
      * @param city showroom city
      * @param country showroom country
      * @param director showroom director
-     * @return new showroom object
+     * @return edited showroom
      */
     public Showroom updateShowroom(int id, String name, String street, int city, int country, int director) {
         Showroom showroom = showroomsRepository.findOne(id);

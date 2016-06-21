@@ -21,7 +21,7 @@ import java.util.List;
  * @version 1.0
  */
 @Component
-@Path("/accessories")
+@Path("/workers_privileges")
 @Produces(MediaType.APPLICATION_JSON)
 
 public class WorkersPrivilegesController {

@@ -101,7 +101,9 @@ public class Dictionary {
     public void setCountry(Set<Showroom> country) {
         this.country = country;
     }
+
     @OneToMany(mappedBy="city")
+    @JsonIgnore
     public Set<Showroom> getCity() {
         return city;
     }
@@ -111,6 +113,7 @@ public class Dictionary {
     }
 
     @OneToMany (mappedBy="invoiceType",cascade = CascadeType.REMOVE, fetch = FetchType.EAGER, orphanRemoval = false)
+    @JsonIgnore
     public Set<Invoice> getInvoiceType() {
         return invoiceType;
     }
@@ -120,6 +123,7 @@ public class Dictionary {
     }
 
     @OneToMany (mappedBy="paymentForm",cascade = CascadeType.REMOVE, fetch = FetchType.EAGER, orphanRemoval = false)
+    @JsonIgnore
     public Set<Invoice> getPaymentForm() {
         return paymentForm;
     }
@@ -129,6 +133,7 @@ public class Dictionary {
     }
 
     @OneToMany (mappedBy="carName")
+    @JsonIgnore
     public Set<Car> getCarName() {
         return carName;
     }
@@ -138,6 +143,7 @@ public class Dictionary {
     }
 
     @OneToMany (mappedBy="accessory",cascade = CascadeType.REMOVE, orphanRemoval = false)
+    @JsonIgnore
     public Set<Accessory> getAccessory() {
         return accessory;
     }
@@ -147,6 +153,7 @@ public class Dictionary {
     }
 
     @OneToMany(mappedBy="serviceType")
+    @JsonIgnore
     public Set<Service> getServices() {
         return serviceType;
     }
@@ -156,6 +163,7 @@ public class Dictionary {
     }
 
     @OneToMany(mappedBy = "position")
+    @JsonIgnore
     public Set<Worker> getPosition() {
         return position;
     }

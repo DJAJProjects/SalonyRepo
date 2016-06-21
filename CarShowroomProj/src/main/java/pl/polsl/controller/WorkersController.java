@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
  * @version 1.0
  */
 @Service
-@Path("/worksers")
+@Path("/workers")
 @Produces(MediaType.APPLICATION_JSON)
 public class WorkersController {
 
@@ -75,18 +75,18 @@ public class WorkersController {
     }
 
     /**
-     * Method findind free directors
-     * @return list of free workers -directors
+     * Method to find free directors
+     * @return list of free directors without any showroom
      */
     public List<Worker> findAllFreeDirectors() {
         return (List)workersRepository.findAllOneTypeWithoutShowroom(Data.directorId);
     }
 
     /**
-     * Method edit password
-     * @param userID
-     * @param pass
-     * @return boolean
+     * Method to change user's password
+     * @param userID user id to change password
+     * @param pass new password
+     * @return boolean true - if changing ends success
      */
     public boolean updatePassword(Integer userID, String pass){
         Worker worker = findOne(userID);
@@ -95,8 +95,8 @@ public class WorkersController {
     }
 
     /**
-     * Method adding a new worker to database
-     * @param error error
+     * Method to add a new worker to database or only create worker
+     * @param error error if error equals true, method ony create worker (method doesn't save in database)
      * @param name worker name
      * @param surname worker surname
      * @param payment worker payment
@@ -105,7 +105,7 @@ public class WorkersController {
      * @param showroom worker showroom
      * @param login worker login
      * @param password worker password
-     * @return new object
+     * @return new created object
      */
     public Worker addWorker(boolean error,
                             String name,
@@ -125,28 +125,28 @@ public class WorkersController {
             Worker worker = new Worker(name,surname,payment, dateHired,dictionaryController.findOne(position),showroomsController.findOne(showroom),login, password);
             if(error)
                 retWorker = worker;
-            else
+            else {
                 retWorker = workersRepository.save(worker);
 
-            //Dodawanie domyslnych uprawnien
-            Integer[] privKeys = null;
-            String posValue = retWorker.getPosition().getValue();
+                //Dodawanie domyslnych uprawnien
+                Integer[] privKeys = null;
+                String posValue = retWorker.getPosition().getValue();
 
-            if( posValue.equals(Data.servicemanValue))
-                privKeys = Data.defServicemanPrivKeys;
-            else if( posValue.equals(Data.salesmanValue))
-                privKeys = Data.defSalesmanPrivKeys;
-            else if( posValue.equals(Data.directorValue))
-                privKeys = Data.defDirectorPrivKeys;
-            else if( posValue.equals(Data.adminValue))
-                privKeys = Data.defAdminPrivKeys;
-            else return retWorker;
+                if (posValue.equals(Data.servicemanValue))
+                    privKeys = Data.defServicemanPrivKeys;
+                else if (posValue.equals(Data.salesmanValue))
+                    privKeys = Data.defSalesmanPrivKeys;
+                else if (posValue.equals(Data.directorValue))
+                    privKeys = Data.defDirectorPrivKeys;
+                else if (posValue.equals(Data.adminValue))
+                    privKeys = Data.defAdminPrivKeys;
+                else return retWorker;
 
-            for(int privKey : privKeys){
-                Privileges priv = privilegesController.findOne(privKey);
-                workersPrivilegesController.addWorkersPrivileges(retWorker, priv);
+                for (int privKey : privKeys) {
+                    Privileges priv = privilegesController.findOne(privKey);
+                    workersPrivilegesController.addWorkersPrivileges(retWorker, priv);
+                }
             }
-
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
             return null;
@@ -154,8 +154,8 @@ public class WorkersController {
         return retWorker;
     }
     /**
-     * Method updating a new worker
-     * @param error error
+     * Method to update worker in database or only in application
+     * @param error error if error equals true, method ony update worker (method doesn't save any change in database)
      * @param name worker name
      * @param surname worker surname
      * @param payment worker payment
@@ -186,7 +186,7 @@ public class WorkersController {
     }
 
     /**
-     * Method find one worker from current data
+     * Method to find one worker from current data. Method is needed to sing in
      * @param login worker login
      * @param password worker password
      * @return worker
@@ -198,13 +198,14 @@ public class WorkersController {
     /**
      * Method finding all of serviceman
      * @return serviceman list
+     * @author Julia Kubieniec
      */
     public List<Worker> findAllServicemans() {
         return (List)workersRepository.findAllServicemans(12);
     }
 
     /**
-     * Method check if login is unique
+     * Method to check if login is unique (doestn.y extist in database)
      * @param login new login
      * @return null - is login is unique
      */
@@ -213,7 +214,7 @@ public class WorkersController {
     }
 
     /**
-     * Method updating worker
+     * Method to update worker position after change showroom director in showroom module
      * @param idWorker worker id
      * @param idShowroom worker showroom id
      * @return worker edited object
@@ -241,9 +242,10 @@ public class WorkersController {
     }
 
     /**
-     * Method finding privilages for worker
+     * Method to find privilages for worker
      * @param worker worker
      * @return list of pirvilages
+     * @author Jakub Wieczorek
      */
     public List<Privileges> findPrivilegesOfWorker(Worker worker) {
         return privilegesController.findPrivilegesOfWorker(worker);

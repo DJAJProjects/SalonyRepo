@@ -21,7 +21,7 @@ import java.util.List;
  * @version 1.0
  */
 @Component
-@Path("/contracts")
+@Path("/contractors")
 @Produces(MediaType.APPLICATION_JSON)
 
 public class ContractorsController {
