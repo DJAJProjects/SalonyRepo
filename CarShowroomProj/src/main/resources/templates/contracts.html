@@ -208,7 +208,7 @@
                 <!-- Go to make invoice-->
                 <div th:unless="${contract}" class="form-group">
                     <button th:disabled="${disabledButtons}" type="submit" class="btn btn-default">Akceptuj</button>
-                    <a th:disabled="${disabledButtons}" class="btn btn-default" href="contracts.html" th:href="@{/contracts}">Anuluj</a>
+                    <a th:disabled="${disabledButtons}" class="btn" href="contracts.html" th:href="@{/contracts}">Anuluj</a>
                 </div>
             </form>
 
@@ -217,7 +217,7 @@
                 <form class="form-horizontal" role="form" method="post" action="/chooseGenerateOption">
                     <input type="hidden" name="contract_id" th:value="${contract.id}"/>
                     <button th:disabled="${disabledConfirmButton}" type="submit" class="btn btn-default">Generuj fakture</button>
-                    <a th:disabled="${disabledConfirmButton}" class="btn btn-default" href="contracts.html" th:href="@{/contracts}">Zakończ</a>
+                    <a th:disabled="${disabledConfirmButton}" class="btn" href="contracts.html" th:href="@{/contracts}">Zakończ</a>
                     <div th:text="${error != null} ? ${error}" class="label label-danger"></div>
                 </form>
             </div>

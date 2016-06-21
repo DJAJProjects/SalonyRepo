@@ -11,6 +11,7 @@
 <body>
 <div layout:fragment="main" style="margin: 0 auto; max-width: 1000px;">
 
+    <br/>
     <div class="form-horizontal">
         <div class="form-group">
             <label class="control-label col-sm-4">Data sprzedaży:</label>
@@ -45,21 +46,21 @@
 
         <div class="form-group">
             <label class="control-label col-sm-4">Termin płatności:</label>
-            <div class="col-sm-8">
+            <div class="col-sm-4">
                 <input th:unless="${invoice}" th:disabled="${disabledButtons}" name = "date" type="date" class="form-control" min="2010-01-01" required="required"/>
                 <input th:if="${invoice}" th:disabled="${disabledButtons}" th:value ="${paymentDeadline}" name = "date" type="date" class="datepicker form-control"/>
             </div>
         </div>
         <div class="form-group">
             <label class="control-label col-sm-4">Data wykonania transakcji:</label>
-            <div class="col-sm-8">
+            <div class="col-sm-4">
                 <input th:unless="${invoice}" th:disabled="${disabledButtons}" name = "dateSold" type="date" class="form-control" min="2010-01-01" required="required"/>
                 <input th:if="${invoice}" th:disabled="${disabledButtons}" th:value ="${dateSold}"  name = "dateSold" type="date" class="datepicker form-control"/>
             </div>
         </div>
         <div class="form-group">
             <label class="control-label col-sm-4">Typ płatności:</label>
-            <div class="col-sm-8">
+            <div class="col-sm-4">
                 <select th:disabled="${disabledButtons}" name="paymentForm" class="form-control" aria-label="..." required="required">
                     <option value="" text="Płatność:"></option>
                     <option th:if="${invoice}"  th:each="c : ${paymentforms}" th:value="${c.id}" th:text="${c.value}" th:selected="${c.id}==${paymentForm.id}"></option>
@@ -69,7 +70,7 @@
         </div>
         <div class="form-group">
             <label class="control-label col-sm-4">Typ faktury:</label>
-            <div class="col-sm-8">
+            <div class="col-sm-4">
                 <select th:disabled="${disabledButtons}" name="invoiceType" class="form-control" aria-label="..." required="required">
                     <option value="" text="Faktura:"></option>
                     <option th:if="${invoice}" th:each="c : ${invoiceTypes}" th:value="${c.id}" th:text="${c.value}" th:selected="${c.id}==${invoiceType}"></option>
@@ -79,7 +80,7 @@
         </div>
         <div class="form-group">
             <div class="col-sm-offset-4 col-sm-8">
-                <button th:disabled="${disabledButtons}" type="submit" class="btn btn-default">Zatwierdź</button>
+                <button th:disabled="${disabledButtons}" type="submit" class="btn">Zatwierdź</button>
             </div>
         </div>
         <div th:text="${error != null} ? ${error}" class="label label-danger"></div>

@@ -6,6 +6,7 @@
 </head>
 <body>
 <div layout:fragment="main" style="margin: 0 auto; max-width: 1000px;">
+    <br/>
     <div>
         <div class="panel">
             <!-- Default panel contents -->
@@ -17,24 +18,25 @@
             </div>
 
             <!-- Table -->
-            <table class="table tablesorter table-hover table-bordered results" id="mytable">
+            <table class="table tablesorter table-hover results" id="mytable">
                 <!-- head row -->
                 <thead>
                     <tr style="font-weight: bold;">
-                        <td class="col-md-2">Typ</td>
-                        <td class="col-md-2">Sprzedający</td>
-                        <td class="col-md-2">Kontrahent</td>
-                        <td class="col-md-2">Data utworzenia</td>
-                        <td class="col-md-2">Data sprzedaży</td>
-                        <td class="col-md-2">Kwota</td>
-                        <td class="col-md-2">Termin płatności</td>
-                        <td class="col-md-2">Forma płatności</td>
-                        <td th:if="${deleteEnabled}" class="col-md-2">Usuń</td>
-                        <td class="col-md-2">Podglad</td>
+                        <td class="col-md-2 change-on-hand">Typ</td>
+                        <td class="col-md-2 change-on-hand">Sprzedający</td>
+                        <td class="col-md-2 change-on-hand">Kontrahent</td>
+                        <!--<td class="col-md-2">Data utworzenia</td>-->
+                        <td class="col-md-2 change-on-hand">Data sprzedaży</td>
+                        <td class="col-md-2 change-on-hand">Kwota [PLN]</td>
+                        <!--<td class="col-md-2">Termin płatności</td>-->
+                        <!--<td class="col-md-2">Forma płatności</td>-->
+                        <td th:if="${deleteEnabled}" class="col-md-1 center-item">Usuń</td>
+                        <td class="col-md-1 center-item">Podglad</td>
 
                     </tr>
-                    <tr class="warning no-result">
-                        <td colspan="8"><i class="fa fa-warning"></i> Brak wyników</td>
+                    <!-- Show when result not found -->
+                    <tr class="no-result">
+                        <td colspan="7"><b>Brak wyników wyszukiwania</b></td>
                     </tr>
                 </thead>
                 <tbody>
@@ -42,13 +44,13 @@
                         <td th:text="${invoice.invoiceType.value}"></td>
                         <td th:text="${invoice.contract.worker.surname}"></td>
                         <td th:text="${invoice.contract.contractor.surname}"></td>
-                        <td th:text="${invoice.dateCreated}"></td>
+                        <!--<td th:text="${invoice.dateCreated}"></td>-->
                         <td th:text="${invoice.dateSold}"></td>
                         <td th:text="${invoice.contract.totalCost}"></td>
-                        <td th:text="${invoice.paymentDeadline}"></td>
-                        <td th:text="${invoice.paymentForm.value}"></td>
-                        <td th:if="${deleteEnabled}" ><a href="invoices.html" th:href="@{'/deleteInvoice/'+${invoice.id}}"><span class="glyphicon glyphicon-remove" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Usuń"></span></a></td>
-                        <td><a href="invoice_generate.html" th:href="@{'/viewInvoice/'+${invoice.id}}"><span class="glyphicon glyphicon-eye-open" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Usuń"></span></a></td>
+                        <!--<td th:text="${invoice.paymentDeadline}"></td>-->
+                        <!--<td th:text="${invoice.paymentForm.value}"></td>-->
+                        <td class="center-item"  th:if="${deleteEnabled}" ><a href="invoices.html" th:href="@{'/deleteInvoice/'+${invoice.id}}"><span class="glyphicon glyphicon-remove" style="height:100%;width:100%" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Usuń"></span></a></td>
+                        <td class="center-item" ><a href="invoice_generate.html" th:href="@{'/viewInvoice/'+${invoice.id}}"><span class="glyphicon glyphicon-eye-open" style="height:100%;width:100%" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Usuń"></span></a></td>
                     </tr>
                 </tbody>
             </table>
