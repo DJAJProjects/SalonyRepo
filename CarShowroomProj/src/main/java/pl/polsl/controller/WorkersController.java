@@ -67,8 +67,10 @@ public class WorkersController {
         return (List)workersRepository.findAllOneTypeWithoutShowroom(Data.directorId);
     }
 
-    public void updatePassword(Integer userID, String pass){
-
+    public boolean updatePassword(Integer userID, String pass){
+        Worker worker = findOne(userID);
+        worker.setPassword(pass);
+        return workersRepository.save(worker)!=null;
     }
 
     public Worker addWorker(boolean error,

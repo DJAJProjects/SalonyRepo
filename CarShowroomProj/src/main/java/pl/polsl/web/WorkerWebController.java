@@ -105,14 +105,18 @@ public class WorkerWebController extends  BaseWebController {
         redirectAttributes.addFlashAttribute("showrooms", showroomsController.findAll());
         redirectAttributes.addFlashAttribute("controlsLoginVisible", true);
         redirectAttributes.addFlashAttribute("controlsPasswordVisible", true);
-
+        System.out.println("Przeszło");
         if(differentWorker) {
             previousPrivilegesList = new ArrayList<Privileges>();
             currentPrivilegesList = new ArrayList<Privileges>();
         }
+        System.out.println("Joł");
 
         redirectAttributes.addFlashAttribute("choosenPrivileges", currentPrivilegesList);
+        System.out.println("Hello");
         redirectAttributes.addFlashAttribute("privileges", privilegesController.findPrivilegesNotRelatedToWorker(worker));
+        System.out.println("JUHU");
+
         return "redirect:/worker";
     }
 
@@ -322,8 +326,10 @@ public class WorkerWebController extends  BaseWebController {
         }else if(!oldPassword.equals(Data.user.getPassword()))
             model.addAttribute("error", "Podano nieprawidłowe hasło");
         else {
-            workersController.updatePassword(Data.user.getId(), newPassword);
-            model.addAttribute("info", "Zmieniono hasło");
+            if(workersController.updatePassword(Data.user.getId(), newPassword))
+                model.addAttribute("info", "Zmieniono hasło");
+            else
+                model.addAttribute("error", "Niestety nie udało się dodac obiektu do bazy");
         }
         refreshMenuPrivileges(model);
         return "password";
