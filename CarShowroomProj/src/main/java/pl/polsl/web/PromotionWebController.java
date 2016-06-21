@@ -108,4 +108,10 @@ public class PromotionWebController extends BaseWebController {
         return "redirect:/promotions";
     }
 
+    @RequestMapping(value="/resetPromotionChange")
+    public  String resetChange(){
+        viewMode = ViewMode.DEFAULT;
+        return "redirect:/promotions";
+    }
+
 }

@@ -85,7 +85,10 @@
         <div class="form-group">
             <div class="col-sm-offset-4 col-sm-10">
                 <button type="submit" th:disabled="${controlsDisabled}" class="btn" >Akceptuj</button>
-                <button type="reset" th:disabled="${controlsDisabled}" class="btn">Anuluj zmiany</button>
+                <!--<button type="reset" th:disabled="${controlsDisabled}" class="btn">Anuluj zmiany</button>-->
+                <a href="promotions.html" th:href="@{/resetPromotionChange}">
+                    <button type="button" th:disabled="${controlsDisabled}" class="btn">Anuluj zmiany</button>
+                </a>
             </div>
         </div>
     </form>

@@ -98,7 +98,10 @@
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
                 <button type="submit" th:disabled="${controlsDisabledPart2}" class="btn btn-default" >Akceptuj</button>
-                <button type="reset" th:disabled="${controlsDisabledPart2}" class="btn btn-default">Anuluj zmiany</button>
+                <!--<button type="reset" th:disabled="${controlsDisabledPart2}" class="btn btn-default">Anuluj zmiany</button>-->
+                <a href="accessories.html" th:href="@{/resetAccessoriesChange}">
+                    <button type="button" th:disabled="${controlsDisabled}" class="btn">Anuluj zmiany</button>
+                </a>
             </div>
         </div>
     </form>

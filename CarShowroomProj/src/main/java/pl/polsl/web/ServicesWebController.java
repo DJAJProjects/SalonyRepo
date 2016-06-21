@@ -82,6 +82,7 @@ public class ServicesWebController extends BaseWebController {
         model.addAttribute("serviceObjects",dictionaryController.findAllSubservice());
         model.addAttribute("controlsDisabledCost",true);
         if(viewMode == ViewMode.EDIT || viewMode == ViewMode.INSERT) {
+            model.addAttribute("controlsDisabled",false);
             if(editPart1 && !editPart2) {
                 model.addAttribute("controlsDisabledPart1",true);
                 model.addAttribute("controlsDisabledPart2",false);
@@ -116,6 +117,7 @@ public class ServicesWebController extends BaseWebController {
             model.addAttribute("controlsDisabledPart1",true);
             model.addAttribute("controlsDisabledPart2",true);
             model.addAttribute("controlsDisabledPart3",true);
+            model.addAttribute("controlsDisabled",true);
         }
         model.addAttribute("service",service);
         model.addAttribute("serviceTypeId",service.getServiceType().getId());
@@ -270,6 +272,12 @@ public class ServicesWebController extends BaseWebController {
                 servicesController.editService(id, service.getServiceType().getId(), idServiceman, service.getCar().getId(), 0, service.getSubserviceType().getId(), service.getCost(), dateConducted, 0);
             }
         }
+        return "redirect:/services";
+    }
+
+    @RequestMapping(value="/resetServiceChange")
+    public  String resetChange(){
+        viewMode = ViewMode.DEFAULT;
         return "redirect:/services";
     }
 
