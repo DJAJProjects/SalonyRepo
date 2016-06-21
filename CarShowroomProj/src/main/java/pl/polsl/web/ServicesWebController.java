@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.View;
+import pl.polsl.Data;
 import pl.polsl.ViewMode;
 import pl.polsl.controller.*;
 import pl.polsl.model.Accessory;
@@ -50,10 +51,19 @@ public class ServicesWebController extends BaseWebController {
 
     @RequestMapping(value = "/services")
     public String getServices(Model model) {
-        model.addAttribute("services",servicesController.findAll());
+        if (Data.user == null) {
+            model.asMap().clear();
+            model.addAttribute("userNotLoggedIn", true);
+            return "sign_in";
+        } else if (!privilegesController.getReadPriv(Data.serviceModuleValue, Data.user)) {
+            model.asMap().clear();
+            model.addAttribute("forbiddenAccess", true);
+        } else {
+            model.addAttribute("services",servicesController.findAll());
+        }
         model.addAttribute("controlsPanelVisible", false);
         refreshMenuPrivileges(model);
-        analisePrivileges("Serwisy");
+        analisePrivileges(Data.serviceModuleValue);
         model.addAttribute("insertEnabled", insertEnabled);
         model.addAttribute("updateEnabled", updateEnabled);
         model.addAttribute("deleteEnabled", deleteEnabled);

@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import pl.polsl.Data;
 import pl.polsl.ViewMode;
 import pl.polsl.controller.AccessoriesController;
 import pl.polsl.controller.DictionaryController;
@@ -37,13 +38,22 @@ public class AccessoriesWebController extends  BaseWebController {
 
     @RequestMapping(value = "/accessories")
     public String getAccessories(Model model) {
+        if (Data.user == null) {
+            model.asMap().clear();
+            model.addAttribute("userNotLoggedIn", true);
+            return "sign_in";
+        } else if (!privilegesController.getReadPriv(Data.accessoriesModuleValue, Data.user)) {
+            model.asMap().clear();
+            model.addAttribute("forbiddenAccess", true);
+        } else {
+            //   model.addAttribute("accessories",accessoriesController.findAll());
+            freeAccessory = accessoriesController.findFreeAccessories();
+        }
         viewMode = ViewMode.DEFAULT;
-     //   model.addAttribute("accessories",accessoriesController.findAll());
-        freeAccessory = accessoriesController.findFreeAccessories();
         model.addAttribute("accessories",freeAccessory);
         model.addAttribute("controlsPanelVisible", false);
         refreshMenuPrivileges(model);
-        analisePrivileges("Akcesoria");
+        analisePrivileges(Data.accessoriesModuleValue);
         model.addAttribute("insertEnabled", insertEnabled);
         model.addAttribute("updateEnabled", updateEnabled);
         model.addAttribute("deleteEnabled", deleteEnabled);
