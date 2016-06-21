@@ -101,16 +101,19 @@ public class AccessoriesWebController extends  BaseWebController {
         if(viewMode == ViewMode.INSERT) {
             model.addAttribute("controlsPanelVisible", true);
             model.addAttribute("controlsDisabledPart1", false);
+            model.addAttribute("controlsDisabled",false);
             if(!flag) {
                 flag = true;
                 model.addAttribute("controlsDisabledPart2", true);
                 return "accessories";
             }
         } else if(viewMode == ViewMode.EDIT) {
+            model.addAttribute("controlsDisabled",false);
             model.addAttribute("controlsPanelVisible", true);
             model.addAttribute("controlsDisabledPart1", false);
             model.addAttribute("controlsDisabledPart2", true);
         } else if(viewMode == ViewMode.VIEW_ALL) {
+            model.addAttribute("controlsDisabled",true);
             model.addAttribute("controlsPanelVisible", true);
             model.addAttribute("controlsDisabledPart1", true);
             model.addAttribute("controlsDisabledPart2", true);
@@ -153,6 +156,12 @@ public class AccessoriesWebController extends  BaseWebController {
         } else if(viewMode == ViewMode.EDIT){
             accessoriesController.editAccessory(id,accessory.getAccessory().getId(),cost,assemblyCost);
         }
+        return "redirect:/accessories";
+    }
+
+    @RequestMapping(value="/resetAccessoriesChange")
+    public  String resetChange(){
+        viewMode = ViewMode.DEFAULT;
         return "redirect:/accessories";
     }
 

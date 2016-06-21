@@ -232,4 +232,10 @@ public class CarsWebController extends BaseWebController {
         return "redirect:/carsDetails";
     }
 
+    @RequestMapping(value="/resetCarsChange")
+    public  String resetChange(){
+        viewMode = ViewMode.DEFAULT;
+        return "redirect:/cars";
+    }
+
 }
