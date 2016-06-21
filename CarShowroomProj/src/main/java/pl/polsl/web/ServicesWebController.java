@@ -53,12 +53,17 @@ public class ServicesWebController extends BaseWebController {
         model.addAttribute("services",servicesController.findAll());
         model.addAttribute("controlsPanelVisible", false);
         refreshMenuPrivileges(model);
+        analisePrivileges("Serwisy");
+        model.addAttribute("insertEnabled", insertEnabled);
+        model.addAttribute("updateEnabled", updateEnabled);
+        model.addAttribute("deleteEnabled", deleteEnabled);
         flag = false;
         return "services";
     }
 
     @RequestMapping(value = "/servicesDetails", method = RequestMethod.GET)
     public String servicesDetails(Model model) {
+        refreshMenuPrivileges(model);
         model.addAttribute("controlsPanelVisible", true);
         model.addAttribute("services",servicesController.findAll());
         model.addAttribute("types",dictionaryController.findAllService());

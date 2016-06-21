@@ -115,8 +115,8 @@ public class Dictionary {
         return invoiceType;
     }
 
-    public void setInvoiceType(Set<Invoice> paymentForm) {
-        this.invoiceType = paymentForm;
+    public void setInvoiceType(Set<Invoice> invoiceType) {
+        this.invoiceType = invoiceType;
     }
 
     @OneToMany (mappedBy="paymentForm",cascade = CascadeType.REMOVE, fetch = FetchType.EAGER, orphanRemoval = false)

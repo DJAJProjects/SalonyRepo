@@ -1,7 +1,7 @@
 package pl.polsl.model;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.sql.Date;
 
 /**
  * Created by Aleksandra Chronowska on 04.04.2016.
@@ -86,7 +86,7 @@ public class Invoice {
     @ManyToOne
     @JoinColumn(name="id_payment_form")
     public Dictionary getPaymentForm() {
-        return invoiceType;
+        return paymentForm;
     }
 
     public void setPaymentForm(Dictionary idPaymentForm) {

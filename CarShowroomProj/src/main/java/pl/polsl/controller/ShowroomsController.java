@@ -14,13 +14,12 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-
 
 /**
- * Created by Dominika Błasiak on 07.04.2016.
+ * Showroom Controller class
+ * @author Dominika Błasiak
+ * @version 1.0
  */
-
 @Service
 @Path("/showroom")
 @Produces(MediaType.APPLICATION_JSON)
@@ -34,19 +33,31 @@ public class ShowroomsController {
 
     @Autowired
     private WorkersController workersController;
+    /**
+     * Rest get method
+     * @author Aleksadra Chronowska
+     * @return list of all showrooms
+     */
     @GET
     @Produces({MediaType.APPLICATION_JSON})
     public List<Showroom> findAll() {
         return Lists.newArrayList(showroomsRepository.findAll());
     }
-
+    /**
+     * Rest method find showroom by id
+     * @param id
+     * @return showroom data by json
+     */
     @GET
     @Path("/{id}")
     @Produces({MediaType.APPLICATION_JSON})
     public Showroom findOne(int id){
         return showroomsRepository.findOne(id);
     }
-
+    /**
+     * Method deleting showroom from given id
+     * @param id showroom id
+     */
     public void delete(int id){
         showroomsRepository.delete(id);
     }
@@ -55,6 +66,16 @@ public class ShowroomsController {
         return showroomsRepository.save(new Showroom(name, street, dictionaryController.findOne(city), dictionaryController.findOne(country),workersController.findOne(director)));
     }
 
+    /**
+     * Method adding to database
+     * @param id showroom id
+     * @param name showroom name
+     * @param street showroom street
+     * @param city showroom city
+     * @param country showroom country
+     * @param director showroom director
+     * @return new showroom object
+     */
     public Showroom updateShowroom(int id, String name, String street, int city, int country, int director) {
         Showroom showroom = showroomsRepository.findOne(id);
         showroom.setName(name);
@@ -65,6 +86,11 @@ public class ShowroomsController {
         return  showroomsRepository.save(showroom);
     }
 
+    /**
+     * Method gets visible showrooms for actual user
+     * @param worker actual user
+     * @return list of visible showrooms
+     */
     public List<Showroom> findShowroomsRelatedToWorker(Worker worker) {
         List<Showroom> retList = null;
         if (worker.getPosition().getId() == Data.directorId) {

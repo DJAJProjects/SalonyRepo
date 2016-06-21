@@ -11,10 +11,12 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
 /**
+ * Contract controller class
  * Created by Aleksandra on 2016-04-07.
  */
 @Component
@@ -37,28 +39,74 @@ public class ContractsController {
     @Autowired
     private InvoiceController invoiceController;
 
+    /**
+     * Rest get method
+     * @author Aleksadra Chronowska
+     * @return list of all contracts
+     */
     @GET
     @Produces({MediaType.APPLICATION_JSON})
     public List<Contract> findAllContracts() {
         return Lists.newArrayList(contractsRepository.findAll());
     }
 
+    /**
+     * Rest method find contract by id
+     * @param id
+     * @return contractor data by json
+     */
     @GET
     @Path("/{id}")
     @Produces({MediaType.APPLICATION_JSON})
     public Contract findOne(int id){
         return contractsRepository.findOne(id);}
 
+    /**
+     * Method deleting current contract with given id
+     * @param id contract id
+     */
     public void delete(int id) {
         contractsRepository.delete(id);
     }
+    /**
+     * Method save object in repository.
+     * @author Aleksadra Chronowska
+     * @param con contract id
+     */
     public Contract edit(Contract con) {
         return contractsRepository.save(con);
     }
 
-    public void SetList(Contract contract) {
+    /**
+     * Method for finding contracts, which can be visible for actual signin user
+     * @return contracts list
+     */
+    public List<Contract> findContracts(){
+        List<Contract> retList = null;
+        if( Data.user.getPosition().getId() == 11)
+            retList = contractsRepository.findForDirector(Data.user.getShowroom().getId());
+        else if(Data.user.getPosition().getId() == 10) {
+            retList = contractsRepository.findForWorker(Data.user.getId());
+        }
+        else if(Data.user.getPosition().getId() == 12) {
+            retList = contractsRepository.findForServisman(Data.user);
+        }
+        else if(Data.user.getPosition().getId() == Data.adminId)
+            retList =  findAllContracts();
+        if(retList == null)retList = new ArrayList<Contract>();
 
+        return retList;
     }
+
+    /**
+     * Method updating current contract
+     * @param contract curret contract
+     * @param carList saved choosen car list
+     * @param accessoryList saved choosen accessory list
+     * @param promotionList saved choosen promotion list
+     * @param contractor contractor
+     * @return edited object
+     */
     public Contract updateContract(Contract contract, Set<Car>carList, Set<Accessory>accessoryList,Set<Promotion> promotionList, int contractor){
         final int[] totalCost = {0};
         contract.setCarList(carList);
@@ -83,11 +131,10 @@ public class ContractsController {
             promotion = promotionsController.findOne(promotion.getId());
             promotion.getContracts().add(contract);
             totalCost[0] = totalCost[0] - (int) totalCost[0] * promotion.getPercValue()/100;
-            accessoriesController.edit(promotion.getId());
+            promotionsController.edit(promotion);
         });
 
         contract.setTotalCost(totalCost[0]);
-        //TODO mokeup
         contract.setWorker(Data.user);
 
         if(contract.getInvoice() != null) {
@@ -100,11 +147,27 @@ public class ContractsController {
 
         return contractsRepository.save(contract);
     }
+
+    /**
+     * Method creating new contract
+     @param carList saved choosen car list
+      * @param accessoryList saved choosen accessory list
+     * @param promotionList saved choosen promotion list
+     * @param contractor contractor
+     * @return new contract object
+     */
     public Contract addNew(Set<Car>carList, Set<Accessory>accessoryList,Set<Promotion> promotionList, int contractor) {
         Contract contract= new Contract();
         return updateContract(contract, carList, accessoryList, promotionList, contractor);
     }
 
+    /**
+     * Method used for order car, create temporaty contract object
+     * @param carList saved choosen car list
+     * @param accessoryList saved choosen accessory list
+     * @param promotionList saved choosen promotion list
+     * @return
+     */
     public Contract makeTemporaryContract(Set<Car>carList,Set<Promotion>promotionList, Set<Accessory>accessoryList) {
         Contract contract = new Contract();
         contract.setId(findAllContracts().size() + 1);

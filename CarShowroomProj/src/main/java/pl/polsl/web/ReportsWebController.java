@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pl.polsl.Data;
 import pl.polsl.ViewMode;
 import pl.polsl.controller.*;
@@ -20,7 +21,6 @@ import java.sql.Date;
 @Controller
 public class ReportsWebController extends BaseWebController {
 
-    private ViewMode viewMode;
 
     @Autowired
     private ReportsController reportsController;
@@ -30,41 +30,55 @@ public class ReportsWebController extends BaseWebController {
 
     @RequestMapping(value ="/reports")
     public String getReports(Model model){
+
+
+
+        if(viewMode == ViewMode.DEFAULT){
+            model.addAttribute("controlsPanelVisible", false);
+        }
+        else{
+            if(model.containsAttribute("report")) {
+                model.addAttribute("controlsPanelVisible", true);
+            }
+            else{
+                viewMode = ViewMode.DEFAULT;
+                model.addAttribute("controlsPanelVisible", false);
+            }
+        }
+
         model.addAttribute("reports", reportsController.findReportsRelatedToWorker(Data.user));
+
         refreshMenuPrivileges(model);
         return "reports";
     }
 
     @RequestMapping(value ="/viewReport/{id}")
-    public String viewReport(Model model, @PathVariable("id")int id) {
+    public String viewReport(RedirectAttributes redirectAttributes, @PathVariable("id")int id) {
 
         viewMode = ViewMode.VIEW_ALL;
 
         Report report = reportsController.findOne(id);
+        redirectAttributes.addFlashAttribute("showroom", report.getShowroom().getId());
+        redirectAttributes.addFlashAttribute("report", report);
+        redirectAttributes.addFlashAttribute("dateBeggining", new Date(report.getDateBeggining().getTime()));
+        redirectAttributes.addFlashAttribute("dateEnd", new Date(report.getDateEnd().getTime()));
+        redirectAttributes.addFlashAttribute("showrooms", showroomsController.findAll());
+        redirectAttributes.addFlashAttribute("controlsDisabled", true);
 
-        model.addAttribute("showroom", report.getShowroom().getId());
-        model.addAttribute("report", report);
-        model.addAttribute("reports", reportsController.findReportsRelatedToWorker(Data.user));
-        model.addAttribute("showrooms", showroomsController.findAll());
-        model.addAttribute("controlsPanelVisible", true);
-        model.addAttribute("controlsDisabled", true);
-
-        return "reports";
+        return "redirect:/reports";
     }
 
     @RequestMapping(value ="/addReport")
-    public String addReports(Model model){
+    public String addReports(RedirectAttributes redirectAttributes){
 
         viewMode = ViewMode.INSERT;
 
         Report report = new Report();
 
-        model.addAttribute("report", report);
-        model.addAttribute("controlsPanelVisible", true);
-        model.addAttribute("controlsDisabled", false);
-        model.addAttribute("reports", reportsController.findReportsRelatedToWorker(Data.user));
-        model.addAttribute("showrooms", showroomsController.findAll());
-        return "reports";
+        redirectAttributes.addFlashAttribute("report", report);
+        redirectAttributes.addFlashAttribute("controlsDisabled", false);
+        redirectAttributes.addFlashAttribute("showrooms", showroomsController.findAll());
+        return "redirect:/reports";
     }
 
     @RequestMapping(value = "/deleteReport/{id}")
@@ -81,8 +95,10 @@ public class ReportsWebController extends BaseWebController {
                              @RequestParam(value = "dateEnd") String dateEnd ){
         if(viewMode == ViewMode.INSERT){
             Report report = reportsController.addReport(name, showroom, content, Date.valueOf(dateBeggining),Date.valueOf(dateEnd));
+            viewMode = ViewMode.VIEW_ALL;
             return "redirect:/viewReport/"+report.getId();
         }
+        viewMode = ViewMode.DEFAULT;
         return "redirect:/reports";
 
 

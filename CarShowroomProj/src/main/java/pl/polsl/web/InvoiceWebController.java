@@ -7,11 +7,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import pl.polsl.Data;
 import pl.polsl.ViewMode;
-import pl.polsl.controller.ContractsController;
 import pl.polsl.controller.InvoiceController;
-
-import java.io.Console;
 
 /**
  * Created by Julia on 2016-04-12.
@@ -25,7 +23,14 @@ public class InvoiceWebController extends  BaseWebController{
 
     @RequestMapping(value = "/invoices", method = RequestMethod.GET)
     public String getInvoices(Model model) {
-        model.addAttribute("invoices",invoiceController.findAll());
+        if (Data.user == null) {
+            model.asMap().clear();
+            model.addAttribute("userNotLoggedIn", true);
+            return "sign_in";
+        }
+        model.addAttribute("invoices",invoiceController.findInvoices());
+        analisePrivileges(Data.invoiceModuleValue);
+        model.addAttribute("deleteEnabled", deleteEnabled);
         refreshMenuPrivileges(model);
         return "invoices";
     }

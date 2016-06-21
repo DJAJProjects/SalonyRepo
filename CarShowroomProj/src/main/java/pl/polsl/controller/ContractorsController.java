@@ -16,7 +16,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Kuba on 2016-04-15.
+ * Contractor Controller class
+ * @author Jakub Wieczorek
+ * @version 1.0
  */
 @Component
 @Path("/contracts")
@@ -29,12 +31,22 @@ public class ContractorsController {
     @Autowired
     private DictionaryRepository dictionaryRepository;
 
+    /**
+     * Rest get method
+     * @author Aleksadra Chronowska
+     * @return list of all contractors
+     */
     @GET
     @Produces({MediaType.APPLICATION_JSON})
     public List<Contractor> findAllContractors() {
         return Lists.newArrayList(contractorsRepository.findAll());
     }
 
+    /**
+     * Rest method find contractor by id
+     * @param id
+     * @return contractor data by json
+     */
     @GET
     @Path("/{id}")
     @Produces({MediaType.APPLICATION_JSON})
@@ -54,10 +66,27 @@ public class ContractorsController {
                                                     dictionaryRepository.findOne(country), street));
     }
 
+    /**
+     * Method deleting one contractor from given id
+     * @param id contractor id
+     */
     public void deleteContractor(int id){
         contractorsRepository.delete(id);
     }
 
+    /**
+     * Method for edit contractor object
+     * @param id contractor id
+     * @param name contractor name
+     * @param surname contractor surname
+     * @param pesel contractor pesel
+     * @param nip contractor nip
+     * @param regon contractor regon
+     * @param city contractor city
+     * @param country contractor country
+     * @param street contractor street
+     * @return edit contractor object
+     */
     public Contractor updateContractor(int id,
                                      String name,
                                      String surname,
@@ -79,6 +108,11 @@ public class ContractorsController {
         return  contractorsRepository.save(contractor);
     }
 
+    /**
+     * Method finding all contractors related to given worker
+     * @param worker current worker
+     * @return contractors list
+     */
     public List<Contractor> findContractorsRelatedToWorker(Worker worker){
         List<Contractor> retList;
         int positionId = worker.getPosition().getId();

@@ -8,12 +8,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import pl.polsl.Data;
 import pl.polsl.ViewMode;
 import pl.polsl.controller.*;
 import pl.polsl.model.*;
 
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -50,6 +50,7 @@ public class ContractWebController extends BaseWebController{
      */
     @RequestMapping(value ="/invoiceGenerate", method = RequestMethod.GET)
     public String generateInvoice(Model model, @RequestParam("contract") int id, @RequestParam(value="invoice", required = false)Invoice invoice){
+        refreshMenuPrivileges(model);
         DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
         model.addAttribute("dateCreated",df.format(Calendar.getInstance().getTime()));
         Contract con = contractsController.findOne(id);
@@ -58,13 +59,14 @@ public class ContractWebController extends BaseWebController{
         model.addAttribute("paymentforms", dictionaryController.findAllPaymentForm());
         model.addAttribute("invoiceTypes", dictionaryController.findAllInvoiceType());
         if(invoice != null) {
+            model.addAttribute("invoice", invoice);
             model.addAttribute("paymentForm", invoice.getPaymentForm());
-            model.addAttribute("invoiceType", invoice.getInvoiceType());
+            model.addAttribute("invoiceType", invoice.getInvoiceType().getId());
             if(invoice.getPaymentDeadline()!=null){
-                model.addAttribute("paymentDeadline", invoice.getPaymentDeadline());
+                model.addAttribute("paymentDeadline", invoice.getPaymentDeadline().toString());
             }
             if(invoice.getDateSold() !=null) {
-                model.addAttribute("dataSold", invoice.getDateSold());
+                model.addAttribute("dateSold", invoice.getDateSold().toString());
             }
             model.addAttribute("disabledButtons", 1);
         }
@@ -79,23 +81,15 @@ public class ContractWebController extends BaseWebController{
     public String newInvoice(RedirectAttributes redirectAttributes, @RequestParam("contract_id") int contractId, @RequestParam("paymentForm") int paymentFormId, @RequestParam("invoiceType") int invoiceTypeId, @RequestParam(value="date", required = false)String date,  @RequestParam(value="dateSold", required = false)String dateSold) {
         Invoice invoice = invoiceController.addNew(contractsController.findOne(contractId),paymentFormId, invoiceTypeId);
         contractsController.findOne(contractId).setInvoice(invoice);
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
 
         if(date != "") {
-            System.out.println(date);
-            try {
-                Date d = sdf.parse(date);
-                invoice.setPaymentDeadline(d);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
+                java.sql.Date sqlDate=  java.sql.Date.valueOf(date);
+                invoice.setPaymentDeadline(sqlDate);
         }
-        if(dateSold != null)
-        try {
-            Date ds = sdf.parse(dateSold);
-            invoice.setPaymentDeadline(ds);
-        } catch (ParseException e) {
-            e.printStackTrace();
+        if(dateSold != null) {
+            java.sql.Date sqlDateSold = java.sql.Date.valueOf(dateSold);
+            invoice.setDateSold(sqlDateSold);
+
         }
         contractsController.edit(contractsController.findOne(contractId));
         return "redirect:/contracts";
@@ -107,16 +101,16 @@ public class ContractWebController extends BaseWebController{
      */
     @RequestMapping(value ="/confirmContract", method = RequestMethod.POST)
     public String addInvoice(RedirectAttributes redirectAttributes, @RequestParam("client") int clientId) {
-
         Contract con;
         if(viewMode == ViewMode.EDIT) {
+
             con = contractsController.updateContract(contract, carList, accessoryList, promotionList, clientId);
 
         }
         else
             con = contractsController.addNew(carList, accessoryList, promotionList, clientId);
+        viewMode = ViewMode.VIEW_AFTER_INSERT;
         redirectAttributes.addAttribute("contract",con);
-
         return "redirect:/contactAdditions";
     }
 
@@ -135,8 +129,23 @@ public class ContractWebController extends BaseWebController{
     public String all(Model model){
         viewMode = ViewMode.DEFAULT;
         contract = null;
-        model.addAttribute("contracts", contractsController.findAllContracts());
         model.addAttribute("carView",0);
+
+        if (Data.user == null) {
+            model.asMap().clear();
+            model.addAttribute("userNotLoggedIn", true);
+            return "sign_in";
+        } else if (!privilegesController.getReadPriv(Data.contractModuleValue, Data.user)) {
+            model.asMap().clear();
+            model.addAttribute("forbiddenAccess", true);
+        } else {
+            model.addAttribute("contracts", contractsController.findContracts());
+        }
+
+        analisePrivileges(Data.contractModuleValue);
+        model.addAttribute("insertEnabled", insertEnabled);
+        model.addAttribute("updateEnabled", updateEnabled);
+        model.addAttribute("deleteEnabled", deleteEnabled);
         refreshMenuPrivileges(model);
         return "contracts";
     }
@@ -146,7 +155,19 @@ public class ContractWebController extends BaseWebController{
      *
      */
     @RequestMapping(value = "/contactAdditions", method = RequestMethod.GET)
-    public String addAdditions(Model model, @RequestParam(value="contract", required = false)Contract contractId,  @RequestParam(value="carId", required = false)Integer orderCarContract){
+    public String addAdditions(Model model, @RequestParam(value="contract", required = false)Contract contractId,  @RequestParam(value="carId", required = false)Integer orderCarContract, @RequestParam(value="cannotAddPromotion", required = false)Integer cannotAddPromotion){
+
+        model.addAttribute("contracts", contractsController.findContracts());
+        refreshMenuPrivileges(model);
+
+        model.addAttribute("invisibleCarList", 1);
+        model.addAttribute("invisibleAccessoryList", 1);
+        model.addAttribute("invisiblePromotionList", 1);
+
+        if(cannotAddPromotion != null)
+            model.addAttribute("cannotAddPromotion",1);
+        else
+            model.addAttribute("cannotAddPromotion",0);
 
         if(contractId!=null)
             model.addAttribute("contract", contractId);
@@ -159,7 +180,7 @@ public class ContractWebController extends BaseWebController{
             viewMode = ViewMode.INSERT;
         }
 
-        model.addAttribute("contracts", contractsController.findAllContracts());
+//        model.addAttribute("contracts", contractsController.findContracts());
         model.addAttribute("contractors",contractorsController.findAllContractors());
 
         if(viewMode == ViewMode.EDIT || viewMode == ViewMode.VIEW_ALL){
@@ -167,32 +188,50 @@ public class ContractWebController extends BaseWebController{
             accessoryList = contract.getAccessoryList();
             promotionList = contract.getPromotions();
             model.addAttribute("contractor",contract.getContractor());
-
-            if(viewMode == ViewMode.VIEW_ALL)
-                model.addAttribute("disabledButtons", 1);
         }
-        else
+
+        if(viewMode == ViewMode.VIEW_ALL || viewMode == ViewMode.VIEW_AFTER_INSERT){
+            model.addAttribute("disabledButtons", 1);
+            if(viewMode == ViewMode.VIEW_ALL)
+                model.addAttribute("disabledConfirmButton", 1);
+        }
+         else {
             model.addAttribute("disabledButtons", 0);
+            model.addAttribute("disabledConfirmButton", 0);
+        }
 
         model.addAttribute("carView",1);
 
         Set<Car>carsAvaliable = carsController.findCarAvaliable(carList);
-        if( carsAvaliable!=null)
+        System.out.println(carsAvaliable);
+
+        if(carsAvaliable.size() != 0)
             model.addAttribute("cars",carsAvaliable);
+        else
+            model.addAttribute("invisibleCarList", 0);
+        if(orderCarContract != null)
+            model.addAttribute("invisibleCarList", 1);
 
         model.addAttribute("choosenCar", carList);
         model.addAttribute("choosenAccessories", accessoryList);
         model.addAttribute("choosenPromotion", promotionList);
 
         Set<Accessory>accessoriesAvaliable = accessoriesController.findAccessoriesAvaliable(accessoryList);
-        if(accessoriesAvaliable != null)
+        if(accessoriesAvaliable.size() != 0)
             model.addAttribute("accessories", accessoriesAvaliable);
+        else
+            model.addAttribute("invisibleAccessoryList", 0);
 
-        List<Promotion>promotionAvaliable = promotionsController.findActual(new Date(), promotionList);
-        if(promotionAvaliable.size() != 0) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String stringDate= dateFormat.format(new Date());
+        java.sql.Date sqlDate=  java.sql.Date.valueOf(stringDate);
+
+        List<Promotion>promotionAvaliable = promotionsController.findActual(sqlDate, promotionList);
+        if(promotionAvaliable.size() != 0)
             model.addAttribute("promotions",promotionAvaliable);
+        else
+            model.addAttribute("invisiblePromotionList", 0);
 
-        }
         return "contracts";
     }
 
@@ -210,7 +249,6 @@ public class ContractWebController extends BaseWebController{
     public String displayContract(RedirectAttributes redirectAttributes, @PathVariable("id")int id){
         viewMode = ViewMode.VIEW_ALL;
         this.contract = contractsController.findOne(id);
-//        redirectAttributes.addAttribute("contract",contractsController.findOne(id));
         return "redirect:/contactAdditions/";
     }
 
@@ -218,7 +256,6 @@ public class ContractWebController extends BaseWebController{
     public String editContract(RedirectAttributes redirectAttributes, @PathVariable("id")int id){
         viewMode = ViewMode.EDIT;
         this.contract = contractsController.findOne(id);
-//        redirectAttributes.addAttribute("contract",contractsController.findOne(id));
         return "redirect:/contactAdditions/";
     }
 
@@ -273,7 +310,11 @@ public class ContractWebController extends BaseWebController{
     @RequestMapping(value ="/addPromotion", method = RequestMethod.POST)
     public String newPromotion(RedirectAttributes redirectAttributes, @RequestParam("promotion") int promotion) {
         Promotion prom = promotionsController.findOne(promotion);
-        promotionList.add(prom);
+        if(accessoryList.size() == 0 && carList.size() == 0)
+            redirectAttributes.addAttribute("cannotAddPromotion", 1);
+        else{
+            promotionList.add(prom);
+        }
         return "redirect:/contactAdditions";
     }
 

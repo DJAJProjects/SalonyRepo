@@ -8,7 +8,7 @@ import pl.polsl.model.Promotion;
 import pl.polsl.model.Report;
 import pl.polsl.model.Worker;
 
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 
 /**

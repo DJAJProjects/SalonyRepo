@@ -30,11 +30,16 @@ public class PromotionWebController extends BaseWebController {
         model.addAttribute("promotions",promotionsController.findAll());
         model.addAttribute("controlsPanelVisible", false);
         refreshMenuPrivileges(model);
+        analisePrivileges("Promocje");
+        model.addAttribute("insertEnabled", insertEnabled);
+        model.addAttribute("updateEnabled", updateEnabled);
+        model.addAttribute("deleteEnabled", deleteEnabled);
         return "promotions";
     }
 
     @RequestMapping(value ="/addNewPromotion")
     public String addNewPromotion(Model model){
+        refreshMenuPrivileges(model);
         Promotion promotion = new Promotion();
         viewMode = ViewMode.INSERT;
         model.addAttribute("promotion",promotion);
@@ -52,6 +57,7 @@ public class PromotionWebController extends BaseWebController {
 
     @RequestMapping(value = "/editPromotion/{id}")
     public String editPromotion(Model model, @PathVariable("id")int id) {
+        refreshMenuPrivileges(model);
         viewMode = ViewMode.EDIT;
         model.addAttribute("promotions",promotionsController.findAll());
         Promotion promotion = promotionsController.findOne(id);
@@ -67,6 +73,7 @@ public class PromotionWebController extends BaseWebController {
 
     @RequestMapping(value = "/viewPromotion/{id}")
     public String viewPromotion(Model model, @PathVariable("id")int id) {
+        refreshMenuPrivileges(model);
         viewMode = ViewMode.VIEW_ALL;
         model.addAttribute("promotions",promotionsController.findAll());
         Promotion promotion = promotionsController.findOne(id);

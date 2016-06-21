@@ -53,7 +53,7 @@
         <div class="form-group">
             <label class="control-label col-sm-4">Data wykonania transakcji:</label>
             <div class="col-sm-8">
-                <input th:unless="${invoice}" th:disabled="${disabledButtons}" name = "dateSold" type="date" class="form-control" min="2010-01-01"/>
+                <input th:unless="${invoice}" th:disabled="${disabledButtons}" name = "dateSold" type="date" class="form-control" min="2010-01-01" required="required"/>
                 <input th:if="${invoice}" th:disabled="${disabledButtons}" th:value ="${dateSold}"  name = "dateSold" type="date" class="datepicker form-control"/>
             </div>
         </div>
@@ -61,9 +61,9 @@
             <label class="control-label col-sm-4">Typ płatności:</label>
             <div class="col-sm-8">
                 <select th:disabled="${disabledButtons}" name="paymentForm" class="form-control" aria-label="..." required="required">
-                    <option th:value="-1" text="Płatność:"></option>
-                    <option th:unless="${invoice}" th:each="c : ${paymentforms}" th:value="${c.id}" th:text="${c.value}" th:selected="${c.id}"></option>
+                    <option value="" text="Płatność:"></option>
                     <option th:if="${invoice}"  th:each="c : ${paymentforms}" th:value="${c.id}" th:text="${c.value}" th:selected="${c.id}==${paymentForm.id}"></option>
+                    <option th:unless="${invoice}" th:each="c : ${paymentforms}" th:value="${c.id}" th:text="${c.value}"></option>
                 </select>
             </div>
         </div>
@@ -71,9 +71,9 @@
             <label class="control-label col-sm-4">Typ faktury:</label>
             <div class="col-sm-8">
                 <select th:disabled="${disabledButtons}" name="invoiceType" class="form-control" aria-label="..." required="required">
-                    <option th:value="-1" text="Faktura:"></option>
-                    <option th:unless="${invoice}" th:each="c : ${invoiceTypes}" th:value="${c.id}" th:text="${c.value}" th:selected="${c.id}"></option>
-                    <option th:if="${invoice}" th:each="c : ${invoiceTypes}" th:value="${c.id}" th:text="${c.value}" th:selected="${c.id}==${invoiceType.id}"></option>
+                    <option value="" text="Faktura:"></option>
+                    <option th:if="${invoice}" th:each="c : ${invoiceTypes}" th:value="${c.id}" th:text="${c.value}" th:selected="${c.id}==${invoiceType}"></option>
+                    <option th:unless="${invoice}" th:each="c : ${invoiceTypes}" th:value="${c.id}" th:text="${c.value}"></option>
                 </select>
             </div>
         </div>
@@ -82,6 +82,7 @@
                 <button th:disabled="${disabledButtons}" type="submit" class="btn btn-default">Zatwierdź</button>
             </div>
         </div>
+        <div th:text="${error != null} ? ${error}" class="label label-danger"></div>
     </form>
 </div>
 </body>

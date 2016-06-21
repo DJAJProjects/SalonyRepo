@@ -4,7 +4,6 @@ import jersey.repackaged.com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.polsl.Data;
-import pl.polsl.model.Contractor;
 import pl.polsl.model.Privileges;
 import pl.polsl.model.Worker;
 import pl.polsl.repository.WorkersRepository;
@@ -22,9 +21,10 @@ import java.util.stream.Collectors;
 
 
 /**
- * Created by Dominika Błasiak on 07.04.2016.
+ * Workers Controller class
+ * @author Dominika Błasiak
+ * @version 1.0
  */
-
 @Service
 @Path("/worksers")
 @Produces(MediaType.APPLICATION_JSON)
@@ -44,35 +44,73 @@ public class WorkersController {
 
     @Autowired
     private ShowroomsController showroomsController;
-
+    /**
+     * Rest get method
+     * @author Aleksadra Chronowska
+     * @return list of all workers
+     */
 
     @GET
     @Produces({MediaType.APPLICATION_JSON})
     public List<Worker> findAll() {
         return Lists.newArrayList(workersRepository.findAll());
     }
-
+    /**
+     * Rest method find worker by id
+     * @param id
+     * @return worker data by json
+     */
     @GET
     @Path("/{id}")
     @Produces({MediaType.APPLICATION_JSON})
     public Worker findOne(int id){
         return workersRepository.findOne(id);
     }
-
+    /**
+     * Method deleting worker from given id
+     * @param id worker id
+     */
     public void deleteOne(int id){
         workersRepository.delete(id);
     }
 
+    /**
+     * Method findind free directors
+     * @return list of free workers -directors
+     */
     public List<Worker> findAllFreeDirectors() {
         return (List)workersRepository.findAllOneTypeWithoutShowroom(Data.directorId);
     }
 
+<<<<<<< HEAD
     public boolean updatePassword(Integer userID, String pass){
         Worker worker = findOne(userID);
         worker.setPassword(pass);
         return workersRepository.save(worker)!=null;
+=======
+    /**
+     * Method edit password
+     * @param userID
+     * @param pass
+     */
+    public void updatePassword(Integer userID, String pass){
+
+>>>>>>> origin/develeop
     }
 
+    /**
+     * Method adding a new worker to database
+     * @param error error
+     * @param name worker name
+     * @param surname worker surname
+     * @param payment worker payment
+     * @param dateHired worker data hired
+     * @param position worker position
+     * @param showroom worker showroom
+     * @param login worker login
+     * @param password worker password
+     * @return new object
+     */
     public Worker addWorker(boolean error,
                             String name,
                             String surname,
@@ -119,7 +157,18 @@ public class WorkersController {
         }
         return retWorker;
     }
+    /**
+     * Method updating a new worker
+     * @param error error
+     * @param name worker name
+     * @param surname worker surname
+     * @param payment worker payment
+     * @param dateHired worker data hired
+     * @param position worker position
+     * @param showroom worker showroom
 
+     * @return edited object
+     */
     public Worker updateWorker(boolean error,
                                int id,
                                String name,
@@ -140,24 +189,50 @@ public class WorkersController {
         return workersRepository.save(worker);
     }
 
+    /**
+     * Method find one worker from current data
+     * @param login worker login
+     * @param password worker password
+     * @return worker
+     */
     public Worker findOne(String login, String password) {
         return workersRepository.findOne(login, password);
     }
 
+    /**
+     * Method finding all of serviceman
+     * @return serviceman list
+     */
     public List<Worker> findAllServicemans() {
         return (List)workersRepository.findAllServicemans(12);
     }
 
+    /**
+     * Method check if login is unique
+     * @param login new login
+     * @return null - is login is unique
+     */
     public boolean checkIfLoginIsUnique(String login) {
         return workersRepository.getWorkerByLogin(login)==null;
     }
 
+    /**
+     * Method updating worker
+     * @param idWorker worker id
+     * @param idShowroom worker showroom id
+     * @return worker edited object
+     */
     public Worker updateWorker(int idWorker, int idShowroom) {
         Worker worker = workersRepository.findOne(idWorker);
         worker.setShowroom(showroomsController.findOne(idShowroom));
         return workersRepository.save(worker);
     }
 
+    /**
+     * Method gets visible workers for actual user
+     * @param worker actual user
+     * @return list of visible workers
+     */
     public List<Worker> findWorkersRelatedToWorker(Worker worker){
         List<Worker> retList = null;
         if( worker.getPosition().getId() == Data.directorId)
@@ -169,6 +244,11 @@ public class WorkersController {
         return retList;
     }
 
+    /**
+     * Method finding privilages for worker
+     * @param worker worker
+     * @return list of pirvilages
+     */
     public List<Privileges> findPrivilegesOfWorker(Worker worker) {
         return privilegesController.findPrivilegesOfWorker(worker);
     }

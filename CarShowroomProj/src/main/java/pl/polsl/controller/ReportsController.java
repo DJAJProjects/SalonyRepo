@@ -17,11 +17,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-
 /**
- * Created by Kuba on 02.04.2016.
+ * Reports Controller class
+ * @author Jakub Wieczorek
+ * @version 1.0
  */
-
 @Component
 @Path("/raports")
 @Produces(MediaType.APPLICATION_JSON)
@@ -45,26 +45,48 @@ public class ReportsController {
     @Transactional
     public Report findReport(int id){
         return reportsRepository.findOne(id);}
-
+    /**
+     * Rest get method
+     * @author Aleksadra Chronowska
+     * @return list of all reports
+     */
     @GET
     @Produces({MediaType.APPLICATION_JSON})
     public List<Report> findAllRaports() {
         return Lists.newArrayList(reportsRepository.findAll());
     }
 
-
+    /**
+     * Rest method find reports by id
+     * @param id
+     * @return reports data by json
+     */
 
     @GET
     @Path("/{id}")
     @Produces({MediaType.APPLICATION_JSON})
     public Report findOne(int id){
+        System.out.println(id);
+        System.out.println("RAPORT: " + reportsRepository.findOne(id).getName());
         return reportsRepository.findOne(id);
     }
-
+    /**
+     * Method deleting current report with given id
+     * @param id report id
+     */
     public void deleteReport(int id){
         reportsRepository.delete(id);
     }
 
+    /**
+     * Method addind report to database
+     * @param name report name
+     * @param showroomId report showroom id
+     * @param content report content
+     * @param dateBeggining report data beggining
+     * @param dateEnd report date end
+     * @return new object
+     */
     public Report addReport(String name,
                             int showroomId ,
                             String content,
@@ -98,6 +120,10 @@ public class ReportsController {
         return reportsRepository.save(new Report(name, targetShowroom,content, dateBeggining, dateEnd));
     }
 
+    /**
+     * Method finding all reports visilible for actual user
+     * @return all visilible reports
+     */
     public List<Report> findReportsRelatedToWorker(Worker worker){
         List<Report> retList;
         String position = worker.getPosition().getValue();

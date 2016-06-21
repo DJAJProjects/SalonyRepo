@@ -3,7 +3,6 @@ package pl.polsl.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
-import java.text.DecimalFormat;
 import java.sql.Date;
 
 /**
@@ -95,7 +94,7 @@ public class Service {
     }
 
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn (name = "id_serviceman")
     public Worker getServiceman() {
         return serviceman;
@@ -106,7 +105,7 @@ public class Service {
     }
 
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn (name = "id_car")
     public Car getCar() {
         return car;
@@ -117,7 +116,7 @@ public class Service {
     }
 
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn (name = "id_type")
     public Dictionary getServiceType() {
         return serviceType;
@@ -138,7 +137,7 @@ public class Service {
     }
 
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn (name = "id_subtype")
     public Dictionary getSubserviceType() {
         return subserviceType;

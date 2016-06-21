@@ -65,11 +65,16 @@ public class WorkerWebController extends  BaseWebController {
                 model.addAttribute("deleteDirector", false);
 
             if(Data.user.getPosition().getValue().equals(Data.adminValue)){
-                isAdmin = true;
+                if(viewMode == ViewMode.INSERT){
+                    model.addAttribute("privilegesPanelVisible", false);
+                }
+                else{
+                    model.addAttribute("privilegesPanelVisible", true);
+                }
             }
-
-            model.addAttribute("privilegesPanelVisible", isAdmin);
-
+            else{
+                model.addAttribute("privilegesPanelVisible", false);
+            }
             return "worker";
 
     }
@@ -97,6 +102,11 @@ public class WorkerWebController extends  BaseWebController {
             redirectAttributes.addFlashAttribute("error", model.asMap().get("error"));
         }
 
+        if(currentWorker == null || currentWorker.getId() != worker.getId())
+            differentWorker = true;
+
+        currentWorker = worker;
+
         redirectAttributes.addFlashAttribute("controlsPanelVisible", true);
         redirectAttributes.addFlashAttribute("controlsDisabled", false);
         redirectAttributes.addFlashAttribute("worker", worker);
@@ -113,10 +123,14 @@ public class WorkerWebController extends  BaseWebController {
         System.out.println("Joł");
 
         redirectAttributes.addFlashAttribute("choosenPrivileges", currentPrivilegesList);
+<<<<<<< HEAD
         System.out.println("Hello");
         redirectAttributes.addFlashAttribute("privileges", privilegesController.findPrivilegesNotRelatedToWorker(worker));
         System.out.println("JUHU");
 
+=======
+        redirectAttributes.addFlashAttribute("privileges", privilegesController.findAll());
+>>>>>>> origin/develeop
         return "redirect:/worker";
     }
 
