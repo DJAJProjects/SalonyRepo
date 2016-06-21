@@ -19,7 +19,9 @@ import pl.polsl.model.Worker;
 import java.util.List;
 
 /**
- * Created by Dominika Błasiak on 08.04.2016.
+ * Showroom web controller class
+ * @author Dominika Błasiak
+ * @version 1.0
  */
 @Controller
 public class ShowroomWebController extends  BaseWebController {

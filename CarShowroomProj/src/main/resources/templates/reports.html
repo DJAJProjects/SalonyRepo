@@ -5,8 +5,11 @@
 </head>
 <body>
 <div layout:fragment="main" style="margin: 0 auto; max-width: 1000px;">
-    <div class="btn-group" role="group" aria-label="..." style="margin: 20px 0;">
-        <button type="button" class="btn btn-default"><a href="#anch" th:href="@{/addReport#anch}">Dodaj raport</a></button>
+    <br/>
+    <div th:if="${insertEnabled}"> <!-- -->
+        <div class="btn-group" role="group" aria-label="..." style="margin: 20px 0;">
+            <a th:href="@{/addReport#anch}"><button type="button" class="btn">Dodaj raport</button></a>
+        </div>
     </div>
     <div>
         <div class="panel">
@@ -19,44 +22,45 @@
             </div>
 
             <!-- Table -->
-            <table class="table tablesorter table-hover table-bordered results" id="mytable">
+            <table class="table tablesorter table-hover results" id="mytable">
                 <!-- head row -->
                 <thead>
                     <tr style="font-weight: bold;">
-                        <td class="col-md-1 change-on-hand">#</td>
-                        <td class="col-md-2 change-on-hand">Nazwa</td>
+                        <td class="col-md-1 change-on-hand center-item">#</td>
+                        <td class="col-md-6 change-on-hand">Nazwa</td>
                         <td class="col-md-3 change-on-hand">Salon</td>
-                        <td class="col-md-1">Usuń</td>
-                        <td class="col-md-1">Podgląd</td>
+                        <td class="col-md-1 center-item">Usuń</td>
+                        <td class="col-md-1 center-item">Podgląd</td>
                     </tr>
-                    <tr class="warning no-result">
-                        <td colspan="8"><i class="fa fa-warning"></i> No result</td>
+                    <tr class="no-result">
+                        <td colspan="5"><b>Brak wyników wyszukiwania</b></td>
                     </tr>
                 </thead>
                 <tbody>
                     <tr th:each="report,stat : ${reports}">
-                        <td th:text="${stat.count}"></td>
+                        <td class="center-item" th:text="${stat.count}"></td>
                         <td th:text="${report.name}"></td>
                         <td th:text="${report.showroom.name}"></td>
-                        <td><a href="reports.html" th:href="@{'/deleteReport/'+${report.id}}"><span class="glyphicon glyphicon-minus" aria-hidden="true"></span></a></td>
-                        <td><a href="contractors.html" th:href="@{'/viewReport/'+${report.id}}"><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span></a></td>
+                        <td class="center-item"><a href="reports.html" th:href="@{'/deleteReport/'+${report.id}}"><span class="glyphicon glyphicon-minus" aria-hidden="true" style="height:100%;width:100%"></span></a></td>
+                        <td class="center-item"><a href="contractors.html" th:href="@{'/viewReport/'+${report.id}+'#anch'}"><span class="glyphicon glyphicon-eye-open" aria-hidden="true" style="height:100%;width:100%"></span></a></td>
                     </tr>
                 </tbody>
             </table>
         </div>
     </div>
     <br/>
+    <a th:if="${controlsPanelVisible}" name="anch"></a>
     <form th:if="${controlsPanelVisible}"  class="form-horizontal" role="form" method="post" action="/acceptModifyReport" th:object="${report}">
         <input type="hidden" style="display: none;" name="id" th:field="*{id}"/>
         <div class="form-group">
-            <label class="control-label col-sm-2">Nazwa:</label>
-            <div class="col-sm-10">
+            <label class="control-label col-sm-offset-2 col-sm-2">Nazwa:</label>
+            <div class="col-sm-4">
                 <input th:field="*{name}" th:disabled="${controlsDisabled}"  name="name" type="text" class="form-control" placeholder="Wprowadź nazwę raportu"/>
             </div>
         </div>
         <div class="form-group">
-            <label class="control-label col-sm-2">Salon:</label>
-            <div class="col-sm-10">
+            <label class="control-label col-sm-offset-2 col-sm-2">Salon:</label>
+            <div class="col-sm-4">
                 <select name="showroom"  th:disabled="${controlsDisabled}" type="text" placeholder="Wybierz salon" class="form-control" aria-label="..." required="required">
                     <datalist id="showroomAddList">
                         <option th:each="showroom : ${showrooms}" th:value="${showroom.id}" th:text="${showroom.name}"></option>
@@ -65,27 +69,27 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="control-label col-sm-2">Data początkowa:</label>
-            <div class="col-sm-10">
+            <label class="control-label col-sm-offset-2 col-sm-2">Data początkowa:</label>
+            <div class="col-sm-4">
                 <input th:value="${dateBeggining}" th:disabled="${controlsDisabled}"  name="dateBeggining" type="date" class="form-control" placeholder="Wprowadź datę początkową" required="required"/>
             </div>
         </div>
         <div class="form-group">
-            <label class="control-label col-sm-2">Data końcowa:</label>
-            <div class="col-sm-10">
+            <label class="control-label col-sm-offset-2 col-sm-2">Data końcowa:</label>
+            <div class="col-sm-4">
                 <input th:value="${dateEnd}" th:disabled="${controlsDisabled}" name="dateEnd"  type="date" class="form-control" placeholder="Wprowadź datę końcową" required="required"/>
             </div>
         </div>
         <div class="form-group">
-            <label class="control-label col-sm-2">Zawartość raportu:</label>
-            <div class="col-sm-10">
+            <label class="control-label col-sm-offset-2 col-sm-2">Zawartość raportu:</label>
+            <div class="col-sm-4">
                 <textarea th:field="*{content}" th:disabled="${controlsDisabled}" rows="10"  name="content" class="form-control" />
             </div>
         </div>
         <div class="form-group">
-            <div class="col-sm-offset-2 col-sm-10">
-                <button type="submit" th:disabled="${controlsDisabled}" class="btn btn-default" >Generuj</button>
-                <button type="reset" th:disabled="${controlsDisabled}" class="btn btn-default">Anuluj zmiany</button>
+            <div class="col-sm-offset-4 col-sm-10">
+                <button type="submit" th:disabled="${controlsDisabled}" class="btn" >Generuj</button>
+                <button type="reset" th:disabled="${controlsDisabled}" class="btn">Anuluj zmiany</button>
 
             </div>
         </div>

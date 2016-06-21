@@ -14,7 +14,9 @@ import pl.polsl.controller.DictionaryController;
 import pl.polsl.model.Dictionary;
 
 /**
- * Created by Dominika Błasiak on 02.05.2016.
+ * Dictionary web controller class
+ * @author Dominika Błasiak
+ * @version 1.0
  */
 @Controller
 public class DictionaryWebController extends BaseWebController{

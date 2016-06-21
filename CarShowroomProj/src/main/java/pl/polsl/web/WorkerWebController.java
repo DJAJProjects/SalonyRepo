@@ -20,7 +20,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Created by Dominika Błasiak on 09.04.2016.
+ * Worker web controller class
+ * @author Dominika Błasiak
+ * @version 1.0
  */
 @Controller
 public class WorkerWebController extends  BaseWebController {
@@ -42,8 +44,15 @@ public class WorkerWebController extends  BaseWebController {
     private WorkersPrivilegesController workersPrivilegesController;
 
 
+    /**
+     * GET method for return worker view
+     * @param model actual web model
+     * @return worker view
+     */
     @RequestMapping(value ="/worker")
     public String getWorkers(Model model){
+
+        //Check if user is signed in
             if (Data.user == null) {
                 model.asMap().clear();
                 model.addAttribute("userNotLoggedIn", true);
@@ -77,6 +86,12 @@ public class WorkerWebController extends  BaseWebController {
 
     }
 
+    /**
+     * Method to delete worker
+     * @param redirectAttributes redirect attributes
+     * @param id worker id to remove
+     * @return redirect to getWorker method
+     */
     @RequestMapping(value ="/deleteWorker/{id}")
     public String deleteWorker(RedirectAttributes redirectAttributes,@PathVariable("id")int id){
         Worker worker = workersController.findOne(id);
@@ -87,6 +102,12 @@ public class WorkerWebController extends  BaseWebController {
         return "redirect:/worker/";
     }
 
+    /**
+     * Method to display add worker view
+     * @param redirectAttributes
+     * @param model model view
+     * @return redirect to getWorker method
+     */
     @RequestMapping(value ="/addWorker")
     public String addWorker(RedirectAttributes redirectAttributes, Model model){
         viewMode = ViewMode.INSERT;
@@ -124,6 +145,12 @@ public class WorkerWebController extends  BaseWebController {
         return "redirect:/worker";
     }
 
+    /**
+     * Method to display view about worker details
+     * @param redirectAttributes
+     * @param id id worker to display
+     * @return redirect to getWorker method
+     */
     @RequestMapping(value ="/viewWorker/{id}")
     public String displayWorker(RedirectAttributes redirectAttributes, @PathVariable("id")int id) {
         viewMode = ViewMode.VIEW_ALL;
@@ -158,6 +185,13 @@ public class WorkerWebController extends  BaseWebController {
         return "redirect:/worker";
     }
 
+    /**
+     * Method to display edit worker view
+     * @param redirectAttributes
+     * @param model model view
+     * @param id worker id to edit
+     * @return redirect to getWorker method
+     */
     @RequestMapping(value ="/editWorker/{id}")
     public String editWorker(RedirectAttributes redirectAttributes, Model model, @PathVariable("id")int id){
         viewMode = ViewMode.EDIT;
@@ -200,6 +234,20 @@ public class WorkerWebController extends  BaseWebController {
 
     }
 
+    /**
+     * Method to save worker to database
+     * @param redirectAttributes
+     * @param id worker id
+     * @param name worker name
+     * @param surname worker surname
+     * @param payment worker payment
+     * @param dateHired worker data hired
+     * @param position worker position
+     * @param showroom worker showroom
+     * @param login worker login
+     * @param password worker password
+     * @return redirect to getWorker method
+     */
     @RequestMapping(value ="/acceptModifyWorker", method = RequestMethod.POST)
     public String editWorker(RedirectAttributes redirectAttributes, @RequestParam("id") int id,
                                @RequestParam("name") String name,
@@ -253,8 +301,12 @@ public class WorkerWebController extends  BaseWebController {
         return "redirect:/worker/";
     }
 
-    // DLA UPRAWNIEN
-
+    /**
+     * @author Jakub Wieczorek
+     * @param redirectAttributes
+     * @param privilege
+     * @return
+     */
     @RequestMapping(value ="/addPrivilege", method = RequestMethod.POST)
     public String addPrivilege(RedirectAttributes redirectAttributes, @RequestParam("privilege") int privilege) {
         Privileges priv = privilegesController.findOne(privilege);
@@ -307,6 +359,12 @@ public class WorkerWebController extends  BaseWebController {
         }
         return ret;
     }
+
+    /**
+     * Method to display change pasword view
+     * @param model view model
+     * @return change password view  - "password.html"
+     */
     @RequestMapping(value ="/changePassword")
     public String changePassword(Model model){
         if (Data.user == null) {
@@ -317,6 +375,15 @@ public class WorkerWebController extends  BaseWebController {
         refreshMenuPrivileges(model);
         return "password";
     }
+
+    /**
+     * Method to change if password is correct and change one in database
+     * @param model model view
+     * @param oldPassword old password
+     * @param newPassword new password
+     * @param confirmPassword confirm password
+     * @return redirect to getWorker method
+     */
     @RequestMapping(value ="/changePassword", method = RequestMethod.POST)
     public String changePassword(Model model,
                                  @RequestParam(value="oldPassword") String oldPassword,
@@ -336,12 +403,21 @@ public class WorkerWebController extends  BaseWebController {
         return "password";
     }
 
+
+    /**
+     * Method to cancel changing password
+     * @return redirect to main menu
+     */
     @RequestMapping(value="/resetPasswordChange")
     public  String resetPasswordChange(){
         viewMode = ViewMode.DEFAULT;
         return "redirect:/menu";
     }
 
+    /**
+     * Method to cancel worker edit or add
+     * @return redirect to getWorker method
+     */
     @RequestMapping(value="/resetWorkerChange")
     public  String resetWorkerChange(){
         viewMode = ViewMode.DEFAULT;
