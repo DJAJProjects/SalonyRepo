@@ -11,6 +11,8 @@ import pl.polsl.controller.DictionaryController;
 import pl.polsl.controller.PrivilegesController;
 import pl.polsl.controller.WorkersController;
 
+import java.security.MessageDigest;
+
 
 /**
  * Created by Dominika Błasiak on 2016-04-09.
@@ -36,6 +38,16 @@ public class MainController extends BaseWebController {
 
     @RequestMapping(value = "signIn", method= RequestMethod.POST)
     public String signIn(Model model, @RequestParam(value = "login")String login, @RequestParam(value = "password")String password){
+        /*String realPass = null;
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA");
+            String data = password;
+            byte[] dataDigest = md.digest(data.getBytes());
+            realPass = new String(dataDigest);
+        }catch (Exception ex){
+            return "sign_in";
+        }*/
+
         Data.user = workersController.findOne(login,password);
         if(Data.user!=null){
             Data.adminId = dictionaryController.findAdmin();
