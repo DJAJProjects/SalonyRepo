@@ -11,24 +11,38 @@ import pl.polsl.model.Dictionary;
 import java.util.List;
 
 /**
- * Created by Dominika Błasiak on 2016-04-07.
+ * Repository class for dictionary module
+ * @author Dominika Błasiak
  */
 @Repository
 @Transactional
 public interface DictionaryRepository extends PagingAndSortingRepository<Dictionary, Integer>{
+
+    /**
+     * Find all object of the same type
+     * @param type
+     * @return
+     */
     @Query(value = "SELECT dictionary " +
                    "FROM Dictionary dictionary " +
                    "WHERE dictionary.type = :type")
     public List<Dictionary> findAllTheSameType(@Param("type")String type);
 
+    /**
+     * Find all type
+     * @return
+     */
     @Query(value = "SELECT DISTINCT type " +
                    "FROM Dictionary dictionary")
     List<String> findAllTypes();
 
+    /**
+     * Find position id
+     * @param type type position
+     * @returnpostion id
+     */
     @Query(value = "SELECT dictionary.id " +
             "FROM Dictionary dictionary WHERE dictionary.value = :type")
     int findPositionId(@Param("type")String type);
 
-//    @Query(value = "select types from AttachmentType types where types.type = :name")
-//    public AttachmentType findAttachmentType(@Param("name")String name);
 }

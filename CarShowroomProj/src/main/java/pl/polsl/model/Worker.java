@@ -5,12 +5,20 @@ import java.sql.Date;
 import java.util.Set;
 
 /**
- * Created by Dominika Błasiak on 04.04.2016.
+ * Model class for worker
+ * @author Dominika Błasiak
+ * @version 1.0
  */
 @Entity
 @Table(name="workers", schema = "salonydb")
 public class Worker {
+    /**
+     * Worker id
+     */
     private int id;
+    /**
+     * Worker name
+     */
     private String name;
     private String surname;
     private Dictionary position;

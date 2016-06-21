@@ -33,6 +33,11 @@ public class ShowroomWebController extends  BaseWebController {
     @Autowired
     private WorkersController workersController;
 
+    /**
+     * GET method for return showroom view
+     * @param model actual web model
+     * @return showroom view
+     */
     @RequestMapping(value ="/showroom")
     public String getShowrooms(Model model){
         if (Data.user == null) {
@@ -53,6 +58,12 @@ public class ShowroomWebController extends  BaseWebController {
         return "showroom";
     }
 
+    /**
+     * Method to display edit showroom view
+     * @param redirectAttributes
+     * @param id showroom id to edit
+     * @return redirect to getShowrooms method
+     */
     @RequestMapping(value ="/editShowroom/{id}")
     public String editShowroom(RedirectAttributes redirectAttributes, @PathVariable("id")int id){
         viewMode = ViewMode.EDIT;
@@ -74,6 +85,12 @@ public class ShowroomWebController extends  BaseWebController {
     }
 
 
+    /**
+     * Method to display view about showroom details
+     * @param redirectAttributes
+     * @param id id showroom to display
+     * @return redirect to getShowrooms method
+     */
     @RequestMapping(value ="/viewShowroom/{id}")
     public String viewShowroom(RedirectAttributes redirectAttributes, @PathVariable("id")int id) {
         viewMode = ViewMode.VIEW_ALL;
@@ -92,6 +109,17 @@ public class ShowroomWebController extends  BaseWebController {
         return "redirect:/showroom/";
     }
 
+    /**
+     * Method to save showroom to database
+     * @param redirectAttributes
+     * @param id showroom id
+     * @param name showroom name
+     * @param street showroom street
+     * @param city showroom city
+     * @param country showroom country
+     * @param director showroom directory
+     * @return redirect to getShowrooms method
+     */
     @RequestMapping(value ="/acceptModifyShowroom", method = RequestMethod.POST)
     public String editShowroom(RedirectAttributes redirectAttributes,
                                @RequestParam("id") int id,
@@ -117,6 +145,11 @@ public class ShowroomWebController extends  BaseWebController {
         return "redirect:/showroom/";
     }
 
+    /**
+     * Method to display add showroom view
+     * @param redirectAttributes
+     * @return redirect to getShowroom method
+     */
     @RequestMapping(value ="/addShowroom")
     public String addShowroom(RedirectAttributes redirectAttributes){
         viewMode = ViewMode.INSERT;
@@ -130,6 +163,12 @@ public class ShowroomWebController extends  BaseWebController {
         return "redirect:/showroom/";
     }
 
+    /**
+     * Method to delete showroom
+     * @param redirectAttributes redirect attributes
+     * @param id showroom id to remove
+     * @return redirect to getShowroom method
+     */
     @RequestMapping(value ="/deleteShowroom/{id}")
     public String deleteShowroom(RedirectAttributes redirectAttributes, @PathVariable("id")int id){
         Showroom showroom = showroomsController.findOne(id);
@@ -139,6 +178,11 @@ public class ShowroomWebController extends  BaseWebController {
             showroomsController.delete(id);
         return "redirect:/showroom/";
     }
+
+    /**
+     * Method to cancel showroom edit or add
+     * @return redirect to getShowrooms method
+     */
     @RequestMapping(value="/resetShowroomChange")
     public  String resetChange(){
         viewMode = ViewMode.DEFAULT;

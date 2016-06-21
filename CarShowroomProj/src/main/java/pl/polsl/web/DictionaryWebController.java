@@ -23,6 +23,11 @@ public class DictionaryWebController extends BaseWebController{
     @Autowired
     private DictionaryController dictionaryController;
 
+    /**
+     * GET method for return dictionary view
+     * @param model actual web model
+     * @return dictionary view
+     */
     @RequestMapping(value ="/dictionary")
     public String getDictionaries(Model model) {
         model.addAttribute("dictionaries", dictionaryController.findAll());
@@ -44,6 +49,11 @@ public class DictionaryWebController extends BaseWebController{
         return "dictionary";
     }
 
+    /**
+     * Method to display edit dictionary view
+     * @param redirectAttributes
+     * @return redirect to getDictionary method
+     */
     @RequestMapping(value ="/editDictionary/{id}")
     public String editDictionary(RedirectAttributes redirectAttributes, @PathVariable("id")int id){
         viewMode = ViewMode.EDIT;
@@ -54,6 +64,11 @@ public class DictionaryWebController extends BaseWebController{
         return "redirect:/dictionary/";
     }
 
+    /**
+     * Method to display dictionary details view
+     * @param redirectAttributes
+     * @return redirect to getDictionary method
+     */
     @RequestMapping(value ="/viewDictionary/{id}")
     public String viewDictionary(RedirectAttributes redirectAttributes, @PathVariable("id")int id) {
         viewMode = ViewMode.VIEW_ALL;
@@ -64,6 +79,16 @@ public class DictionaryWebController extends BaseWebController{
         return "redirect:/dictionary/";
     }
 
+    /**
+     * Method to save dictionary to database
+     * @param redirectAttributes
+     * @param id dictionary id
+     * @param type dictionary type
+     * @param value dictionary value
+     * @param value2 dictionary alternative value
+     * @param value3 dictionary alternative value
+     * @return redirect to getDictionary method
+     */
     @RequestMapping(value ="/acceptModifyDictionary", method = RequestMethod.POST)
     public String addOrEditDictionary(RedirectAttributes redirectAttributes, @RequestParam("id") int id,
                                @RequestParam("type") String type,
@@ -84,6 +109,11 @@ public class DictionaryWebController extends BaseWebController{
         return "redirect:/dictionary/";
     }
 
+    /**
+     * Method to display add dictionary view
+     * @param redirectAttributes
+     * @return redirect to getDictionary method
+     */
     @RequestMapping(value ="/addDictionary")
     public String addDictionary(RedirectAttributes redirectAttributes){
         viewMode = ViewMode.INSERT;
@@ -94,6 +124,12 @@ public class DictionaryWebController extends BaseWebController{
         return "redirect:/dictionary/";
     }
 
+    /**
+     * Method to delete dictionary
+     * @param redirectAttributes redirect attributes
+     * @param id dictionary id to remove
+     * @return redirect to getDictionary method
+     */
     @RequestMapping(value ="/deleteDictionary/{id}")
     public String deleteDictionary(RedirectAttributes redirectAttributes, @PathVariable("id")int id) {
         Dictionary dictionary = dictionaryController.findOne(id);

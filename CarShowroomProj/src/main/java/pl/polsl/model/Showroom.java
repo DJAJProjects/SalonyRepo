@@ -4,7 +4,9 @@ import javax.persistence.*;
 import java.util.Set;
 
 /**
- * Created by Dominika Błasiak on 04.04.2016.
+ * Model class for showroom
+ * @author Dominika Błasiak
+ * @version 1.0
  */
 @Entity
 @Table(name="showrooms", schema = "salonydb")

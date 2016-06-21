@@ -6,16 +6,35 @@ import javax.persistence.*;
 import java.util.Set;
 
 /**
- * Created by Kuba on 04.04.2016.
+ * Model class for dictionary
+ * @author Dominika Błasiak
+ * @version 1.0
  */
 @Entity
 @Table(name="dictionary", schema = "salonydb")
 public class Dictionary {
+    /**
+     * Dictionary id
+     */
     private int id;
+    /**
+     * Dictionary type
+     */
     private String type;
+    /**
+     * Dictionary value
+     */
     private String value;
+    /**
+     * Dictionary alternative value
+     */
     private String value2;
+    /**
+     * Dictionary alternative value
+     */
     private String value3;
+
+    //region related set to dictionary
     private Set<Showroom> country;
     private Set<Showroom> city;
     private Set<Invoice> invoiceType;
@@ -24,6 +43,7 @@ public class Dictionary {
     private Set<Accessory>accessory;
     private Set<Service> serviceType;
     private Set<Worker> position;
+    //endregion
     public Dictionary(){}
 
     public Dictionary(int id, String type, String value, String value2) {
