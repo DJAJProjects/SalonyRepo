@@ -120,17 +120,12 @@ public class WorkerWebController extends  BaseWebController {
             previousPrivilegesList = new ArrayList<Privileges>();
             currentPrivilegesList = new ArrayList<Privileges>();
         }
-        System.out.println("Joł");
 
         redirectAttributes.addFlashAttribute("choosenPrivileges", currentPrivilegesList);
-<<<<<<< HEAD
-        System.out.println("Hello");
-        redirectAttributes.addFlashAttribute("privileges", privilegesController.findPrivilegesNotRelatedToWorker(worker));
-        System.out.println("JUHU");
+   //     redirectAttributes.addFlashAttribute("privileges", privilegesController.findPrivilegesNotRelatedToWorker(worker));
 
-=======
         redirectAttributes.addFlashAttribute("privileges", privilegesController.findAll());
->>>>>>> origin/develeop
+
         return "redirect:/worker";
     }
 

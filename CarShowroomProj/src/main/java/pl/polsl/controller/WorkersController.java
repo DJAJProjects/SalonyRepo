@@ -82,20 +82,16 @@ public class WorkersController {
         return (List)workersRepository.findAllOneTypeWithoutShowroom(Data.directorId);
     }
 
-<<<<<<< HEAD
-    public boolean updatePassword(Integer userID, String pass){
-        Worker worker = findOne(userID);
-        worker.setPassword(pass);
-        return workersRepository.save(worker)!=null;
-=======
     /**
      * Method edit password
      * @param userID
      * @param pass
+     * @return boolean
      */
-    public void updatePassword(Integer userID, String pass){
-
->>>>>>> origin/develeop
+    public boolean updatePassword(Integer userID, String pass){
+        Worker worker = findOne(userID);
+        worker.setPassword(pass);
+        return workersRepository.save(worker)!=null;
     }
 
     /**
