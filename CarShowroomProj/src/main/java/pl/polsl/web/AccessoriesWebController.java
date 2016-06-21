@@ -82,6 +82,7 @@ public class AccessoriesWebController extends  BaseWebController {
 
     @RequestMapping(value = "/accessoryDetails", method = RequestMethod.GET)
     public String accessoryDetails(Model model){
+        refreshMenuPrivileges(model);
         model.addAttribute("accessory",accessory);
      //   model.addAttribute("accessories",accessoriesController.findAll());
         model.addAttribute("accessories",freeAccessory);

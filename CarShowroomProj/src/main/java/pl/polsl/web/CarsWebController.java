@@ -60,6 +60,7 @@ public class CarsWebController extends BaseWebController {
 
     @RequestMapping(value = "/carsDetails", method = RequestMethod.GET)
     public String carsDetails(Model model, @RequestParam(value="contract", required = false)Integer contract) {
+        refreshMenuPrivileges(model);
         if(orderedCar){
             model.addAttribute("ordered", 1);
             model.addAttribute("disabledOrdered", 1);

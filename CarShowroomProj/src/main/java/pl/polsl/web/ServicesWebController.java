@@ -63,6 +63,7 @@ public class ServicesWebController extends BaseWebController {
 
     @RequestMapping(value = "/servicesDetails", method = RequestMethod.GET)
     public String servicesDetails(Model model) {
+        refreshMenuPrivileges(model);
         model.addAttribute("controlsPanelVisible", true);
         model.addAttribute("services",servicesController.findAll());
         model.addAttribute("types",dictionaryController.findAllService());
