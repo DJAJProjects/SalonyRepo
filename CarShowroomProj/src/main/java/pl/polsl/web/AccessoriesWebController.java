@@ -18,7 +18,8 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Created by Julia on 2016-04-28.
+ * @author Julia Kubieniec
+ * @version 1.0
  */
 @Controller
 public class AccessoriesWebController extends  BaseWebController {

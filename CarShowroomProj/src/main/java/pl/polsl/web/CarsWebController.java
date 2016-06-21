@@ -168,6 +168,7 @@ public class CarsWebController extends BaseWebController {
         }
         flag = true;
         if(orderedCar) {
+            System.out.println("ordered car" + orderedCar);
             car.setOrdered(1);
         }
 
@@ -175,7 +176,7 @@ public class CarsWebController extends BaseWebController {
     }
 
     @RequestMapping(value = "/modifyCar", method = RequestMethod.POST)
-    public String modifyCar(RedirectAttributes redirectAttributes, @RequestParam("id") int id,
+    public String modifyCar(RedirectAttributes redirectAttributes, @RequestParam("id") Integer id,
                             @RequestParam(value="ordered", required = false)Integer order,
                             @RequestParam(value="contract", required = false)Integer contract) {
         if(moduleOnlyCar) {
@@ -186,6 +187,7 @@ public class CarsWebController extends BaseWebController {
             }
             return "redirect:/cars";
         }
+        System.out.println("car order: " + car.getOrdered());
        if(car.getOrdered()!=null) {
            if (car.getOrdered() == 1) {
                Car addCar = carsController.addCar(car.getCarName().getId(), car.getProdDate(), car.getShowroom().getId(), car.getCost(), 1, null, accessorySet);

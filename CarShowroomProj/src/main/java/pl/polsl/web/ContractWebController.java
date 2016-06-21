@@ -18,7 +18,9 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
- * Created by Aleksandra on 2016-04-07.
+ *  Contract Web Controller class
+ *  @author Aleksandra Chronowska
+ *  @version 1.0
  */
 @Controller
 public class ContractWebController extends BaseWebController{
@@ -43,10 +45,12 @@ public class ContractWebController extends BaseWebController{
 
     public static Contract contract;
 
-
     /**
-     * INVOICE MAIN VIEW
-     *
+     * GET method for generate invoices view
+     * @param model actual web model
+     * @param id new contract id
+     * @param invoice invoice parameter for view mode
+     * @return invoice generate view
      */
     @RequestMapping(value ="/invoiceGenerate", method = RequestMethod.GET)
     public String generateInvoice(Model model, @RequestParam("contract") int id, @RequestParam(value="invoice", required = false)Invoice invoice){
@@ -74,8 +78,9 @@ public class ContractWebController extends BaseWebController{
     }
 
     /**
-     * NEW INVOICE(FACTURE)
-     *
+     * POST Method adding new invoice to database
+     * @param redirectAttributes redirect attributes
+     * @return redirect to main contracts view
      */
     @RequestMapping(value ="/generateNew", method = RequestMethod.POST)
     public String newInvoice(RedirectAttributes redirectAttributes, @RequestParam("contract_id") int contractId, @RequestParam("paymentForm") int paymentFormId, @RequestParam("invoiceType") int invoiceTypeId, @RequestParam(value="date", required = false)String date,  @RequestParam(value="dateSold", required = false)String dateSold) {
@@ -96,8 +101,10 @@ public class ContractWebController extends BaseWebController{
     }
 
     /**
-     * SUBMIT NEW CONTRACT, ADD TO DATABASE
-     *
+     * POST Method adding new contract to database
+     *@param redirectAttributes redirect attributes
+     *@param clientId contractors id
+     *@return redirect to main adding contract view
      */
     @RequestMapping(value ="/confirmContract", method = RequestMethod.POST)
     public String addInvoice(RedirectAttributes redirectAttributes, @RequestParam("client") int clientId) {
@@ -114,6 +121,12 @@ public class ContractWebController extends BaseWebController{
         return "redirect:/contactAdditions";
     }
 
+    /**
+     * POST method for choosing if is only akcept or invoice will be generated
+     * @param redirectAttributes redirect attributes
+     * @param contract created new contract
+     * @return redirect to invoice generate view
+     */
     @RequestMapping(value ="/chooseGenerateOption", method = RequestMethod.POST)
     public String chooseOption(RedirectAttributes redirectAttributes, @RequestParam("contract_id") int contract){
 
@@ -122,7 +135,9 @@ public class ContractWebController extends BaseWebController{
     }
 
     /**
-     * MAIN CONTRACT VIEW
+     * GET Method for main contract view
+     * @param model actual model
+     * @return main contract view
      *
      */
     @RequestMapping(value ="/contracts", method = RequestMethod.GET)
@@ -151,8 +166,12 @@ public class ContractWebController extends BaseWebController{
     }
 
     /**
-     * MAIN ADDING CONTRACT VIEW
-     *
+     * GET main method for adding contract view
+     * @param model actual web model
+     * @param contractId contract id
+     * @param orderCarContract if car was ordered, allows adding ordered car to contract car list
+     * @param cannotAddPromotion check if car or accessory was choosen, if not - promotion is not possible
+     * @return main adding contract view
      */
     @RequestMapping(value = "/contactAdditions", method = RequestMethod.GET)
     public String addAdditions(Model model, @RequestParam(value="contract", required = false)Contract contractId,  @RequestParam(value="carId", required = false)Integer orderCarContract, @RequestParam(value="cannotAddPromotion", required = false)Integer cannotAddPromotion){
@@ -172,7 +191,10 @@ public class ContractWebController extends BaseWebController{
         if(contractId!=null)
             model.addAttribute("contract", contractId);
 
-        //ZAMOWIENIA, powrot do sprzedazy z id nowego samochodu
+        /**
+         *  ZAMOWIENIA, powrot do sprzedazy z id nowego samochodu
+         */
+
         if(orderCarContract != null) {
             carList.addAll(contract.getCarList());
             accessoryList.addAll(contract.getAccessoryList());
@@ -180,7 +202,6 @@ public class ContractWebController extends BaseWebController{
             viewMode = ViewMode.INSERT;
         }
 
-//        model.addAttribute("contracts", contractsController.findContracts());
         model.addAttribute("contractors",contractorsController.findAllContractors());
 
         if(viewMode == ViewMode.EDIT || viewMode == ViewMode.VIEW_ALL){
@@ -239,12 +260,24 @@ public class ContractWebController extends BaseWebController{
      * CONTRACT OPERATION
      *
      */
+
+    /**
+     * Method deleting choosen contract from database
+     * @param id choosen contract
+     * @return redirect main contract view
+     */
     @RequestMapping(value ="/deleteContract/{id}")
     public String deleteContract(@PathVariable("id")int id){
         contractsController.delete(id);
         return "redirect:/contracts/";
     }
 
+    /**
+     * Method allow show all of contract details, save  view all view mode
+     * @param redirectAttributes redirect attributes
+     * @param id visible contract id
+     * @return redirect to main adding contract view
+     */
     @RequestMapping(value ="/viewContract/{id}")
     public String displayContract(RedirectAttributes redirectAttributes, @PathVariable("id")int id){
         viewMode = ViewMode.VIEW_ALL;
@@ -252,6 +285,12 @@ public class ContractWebController extends BaseWebController{
         return "redirect:/contactAdditions/";
     }
 
+    /**
+     * Method init edit choosen contract and save edit view mode
+     * @param redirectAttributes
+     * @param id contract id
+     * @return redirect to main adding contract view
+     */
     @RequestMapping(value ="/editContract/{id}")
     public String editContract(RedirectAttributes redirectAttributes, @PathVariable("id")int id){
         viewMode = ViewMode.EDIT;
@@ -259,6 +298,10 @@ public class ContractWebController extends BaseWebController{
         return "redirect:/contactAdditions/";
     }
 
+    /**
+     * Method init adding new contracts, save insert view mode
+     * @return redirect to main adding contract view
+     */
     @RequestMapping(value ="/addContract")
     public String addContract(){
         viewMode = ViewMode.INSERT;
@@ -270,8 +313,14 @@ public class ContractWebController extends BaseWebController{
     }
 
     /**
-     * REMOVE CHOOSEN ADDITIONS
+     * REMOVE  ADDITIONS
      *
+     */
+
+    /**
+     * Method deleting choosen car from contracts car list
+     * @param id car id
+     * @return redirect to main adding contract view
      */
     @RequestMapping(value ="/deleteChoosenCar/{id}")
     public String deleteCarFromList(@PathVariable("id")int id){
@@ -279,12 +328,22 @@ public class ContractWebController extends BaseWebController{
         return "redirect:/contactAdditions/";
     }
 
+    /**
+     * Method deleting choosen accessory from contracts accessories list
+     * @param id accessory id
+     * @return redirect to main adding contract view
+     */
     @RequestMapping(value ="/deleteChoosenAccessories/{id}")
     public String deleteAccessory(@PathVariable("id")int id){
         accessoryList.remove(accessoryList.stream().filter(x-> (x.getId() == id)).findAny().get());
         return "redirect:/contactAdditions/";
     }
 
+    /**
+     * MEthod deleting choosen promotion from contract promotion list
+     * @param id promotion id
+     * @return redirect to main adding contract view
+     */
     @RequestMapping(value ="/deleteChoosenPromotion/{id}")
     public String deletePromotion(@PathVariable("id")int id){
         promotionList.remove(promotionList.stream().filter(x-> (x.getId() == id)).findAny().get());
@@ -292,14 +351,29 @@ public class ContractWebController extends BaseWebController{
     }
 
     /**
-     * CHOOSE ADDITIONS
+     *  ADDITIONS
      *
+     */
+
+    /**
+     * POST Method adding actual, choosen car to temporary list
+     * car was saved later after acept
+     * @param redirectAttributes redirect attrubutres
+     * @param car choosen car
+     * @return redirect to main adding contract view
      */
     @RequestMapping(value ="/addCar", method = RequestMethod.POST)
     public String newCar(RedirectAttributes redirectAttributes, @RequestParam("car") int car) {
         carList.add(carsController.findOne(car));
         return "redirect:/contactAdditions";
     }
+
+    /**
+     * POST method transfer for adding car view
+     * Allows order choosen car
+     * @param redirectAttributes redirect attributes
+     * @return redirect adding new car view
+     */
     @RequestMapping(value ="/orderCar", method = RequestMethod.POST)
     public String orderCar(RedirectAttributes redirectAttributes) {
         this.contract = contractsController.makeTemporaryContract(carList, promotionList, accessoryList);
@@ -307,6 +381,13 @@ public class ContractWebController extends BaseWebController{
         return "redirect:/addNewCar";
     }
 
+    /**
+     * POST Method adding actual promotion to temporary list
+     * promorion was saved later after acept
+     * @param redirectAttributes redirect attributes
+     * @param promotion choosen promotion
+     * @return redirect to main adding contract view
+     */
     @RequestMapping(value ="/addPromotion", method = RequestMethod.POST)
     public String newPromotion(RedirectAttributes redirectAttributes, @RequestParam("promotion") int promotion) {
         Promotion prom = promotionsController.findOne(promotion);
@@ -318,6 +399,12 @@ public class ContractWebController extends BaseWebController{
         return "redirect:/contactAdditions";
     }
 
+    /**
+     * POST Method adding accessory to temporary list, accessory was saved later
+     * @param redirectAttributes redirect attributes
+     * @param accessory choosen accessory
+     * @return redirect to main adding contract view
+     */
     @RequestMapping(value ="/addAccessory", method = RequestMethod.POST)
     public String newAccesory(RedirectAttributes redirectAttributes, @RequestParam("accessory") int accessory) {
         Accessory part = accessoriesController.findOne(accessory);
