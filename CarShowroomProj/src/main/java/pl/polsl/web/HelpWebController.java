@@ -137,6 +137,7 @@ public class HelpWebController extends BaseWebController {
 
     @RequestMapping(value = "/helpDetails", method = RequestMethod.GET)
     public String helpDetails(Model model){
+        refreshMenuPrivileges(model);
         model.addAttribute("module", getAvaiableModules());
         model.addAttribute("controlsPanelVisible",true);
         model.addAttribute("help",help);

@@ -58,10 +58,10 @@ public class ReportsWebController extends BaseWebController {
         viewMode = ViewMode.VIEW_ALL;
 
         Report report = reportsController.findOne(id);
-
         redirectAttributes.addFlashAttribute("showroom", report.getShowroom().getId());
         redirectAttributes.addFlashAttribute("report", report);
-
+        redirectAttributes.addFlashAttribute("dateBeggining", new Date(report.getDateBeggining().getTime()));
+        redirectAttributes.addFlashAttribute("dateEnd", new Date(report.getDateEnd().getTime()));
         redirectAttributes.addFlashAttribute("showrooms", showroomsController.findAll());
         redirectAttributes.addFlashAttribute("controlsDisabled", true);
 
