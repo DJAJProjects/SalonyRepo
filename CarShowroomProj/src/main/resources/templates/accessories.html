@@ -98,18 +98,12 @@
         </div>
         <input type="hidden" style="display: none;" name="id" th:field="*{id}"/>
         <div class="form-group">
-<<<<<<< HEAD
-            <div class="col-sm-offset-4 col-sm-10">
-                <button type="submit" th:disabled="${controlsDisabledPart2}" class="btn" >Akceptuj</button>
-                <button type="reset" th:disabled="${controlsDisabledPart2}" class="btn">Anuluj zmiany</button>
-=======
             <div class="col-sm-offset-2 col-sm-10">
                 <button type="submit" th:disabled="${controlsDisabledPart2}" class="btn btn-default" >Akceptuj</button>
                 <!--<button type="reset" th:disabled="${controlsDisabledPart2}" class="btn btn-default">Anuluj zmiany</button>-->
                 <a href="accessories.html" th:href="@{/resetAccessoriesChange}">
                     <button type="button" th:disabled="${controlsDisabled}" class="btn">Anuluj zmiany</button>
                 </a>
->>>>>>> 66b668767eef8bf883bb1fe5f1f0bad88be3f293
             </div>
         </div>
     </form>

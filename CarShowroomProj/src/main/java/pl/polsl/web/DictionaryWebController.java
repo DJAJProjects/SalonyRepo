@@ -111,6 +111,10 @@ public class DictionaryWebController extends BaseWebController{
         return "redirect:/dictionary/";
     }
 
+    /**
+     * Method to cancel dictionary edit or add
+     * @return redirect to getDictionary method
+     */
     @RequestMapping(value="/resetDictionaryChange")
     public  String resetChange(){
         viewMode = ViewMode.DEFAULT;
