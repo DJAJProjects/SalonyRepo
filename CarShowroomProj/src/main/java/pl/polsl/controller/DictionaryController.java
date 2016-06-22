@@ -38,6 +38,7 @@ public class DictionaryController {
 
     /**
      * Rest method to find dictionary object by id
+     * @author Aleksadra Chronowska
      * @param id
      * @return dictionary object data by json
      */

@@ -50,40 +50,38 @@ public class WorkerWebController extends  BaseWebController {
      * @return worker view
      */
     @RequestMapping(value ="/worker")
-    public String getWorkers(Model model){
+    public String getWorkers(Model model) {
 
         //Check if user is signed in
-            if (Data.user == null) {
-                model.asMap().clear();
-                model.addAttribute("userNotLoggedIn", true);
-                return "sign_in";
-            } else if (!privilegesController.getReadPriv(Data.workerModuleValue, Data.user)) {
-                model.asMap().clear();
-                model.addAttribute("forbiddenAccess", true);
-            } else {
-                model.addAttribute("workers", workersController.findWorkersRelatedToWorker(Data.user));
-            }
-            analisePrivileges(Data.workerModuleValue);
-            model.addAttribute("insertEnabled", insertEnabled);
-            model.addAttribute("updateEnabled", updateEnabled);
-            model.addAttribute("deleteEnabled", deleteEnabled);
-            refreshMenuPrivileges(model);
-            if(!model.containsAttribute("deleteDirector"))
-                model.addAttribute("deleteDirector", false);
+        if (Data.user == null) {
+            model.asMap().clear();
+            model.addAttribute("userNotLoggedIn", true);
+            return "sign_in";
+        } else if (!privilegesController.getReadPriv(Data.workerModuleValue, Data.user)) {
+            model.asMap().clear();
+            model.addAttribute("forbiddenAccess", true);
+        } else {
+            model.addAttribute("workers", workersController.findWorkersRelatedToWorker(Data.user));
+        }
+        analisePrivileges(Data.workerModuleValue);
+        model.addAttribute("insertEnabled", insertEnabled);
+        model.addAttribute("updateEnabled", updateEnabled);
+        model.addAttribute("deleteEnabled", deleteEnabled);
+        refreshMenuPrivileges(model);
+        if (!model.containsAttribute("deleteDirector"))
+            model.addAttribute("deleteDirector", false);
 
-            if(Data.user.getPosition().getValue().equals(Data.adminValue)){
-                if(viewMode == ViewMode.INSERT){
-                    model.addAttribute("privilegesPanelVisible", false);
-                }
-                else{
-                    model.addAttribute("privilegesPanelVisible", true);
-                }
-            }
-            else{
+        if (Data.user.getPosition().getValue().equals(Data.adminValue)) {
+            if (viewMode == ViewMode.INSERT) {
                 model.addAttribute("privilegesPanelVisible", false);
+            } else {
+                model.addAttribute("privilegesPanelVisible", true);
             }
-            return "worker";
-
+        } else {
+            model.addAttribute("privilegesPanelVisible", false);
+        }
+        model.addAttribute("classActiveWorkers", "active");
+        return "worker";
     }
 
     /**
@@ -113,7 +111,7 @@ public class WorkerWebController extends  BaseWebController {
         viewMode = ViewMode.INSERT;
         Worker worker;
         if(!model.containsAttribute("error"))
-           worker = new Worker();
+            worker = new Worker();
         else{
             worker = (Worker)model.asMap().get("worker");
             redirectAttributes.addFlashAttribute("positionId", worker.getPosition().getId());
@@ -138,7 +136,7 @@ public class WorkerWebController extends  BaseWebController {
         }
 
         redirectAttributes.addFlashAttribute("choosenPrivileges", currentPrivilegesList);
-   //     redirectAttributes.addFlashAttribute("privileges", privilegesController.findPrivilegesNotRelatedToWorker(worker));
+        //     redirectAttributes.addFlashAttribute("privileges", privilegesController.findPrivilegesNotRelatedToWorker(worker));
 
         redirectAttributes.addFlashAttribute("privileges", privilegesController.findAll());
 
@@ -250,14 +248,14 @@ public class WorkerWebController extends  BaseWebController {
      */
     @RequestMapping(value ="/acceptModifyWorker", method = RequestMethod.POST)
     public String editWorker(RedirectAttributes redirectAttributes, @RequestParam("id") int id,
-                               @RequestParam("name") String name,
-                               @RequestParam(value = "surname") String surname,
-                               @RequestParam(value = "payment") int payment,
-                               @RequestParam(value="dateHired") Date dateHired,
-                               @RequestParam(value = "position")int position,
-                               @RequestParam(value = "showroom")int showroom,
-                               @RequestParam(value = "login")String login,
-                               @RequestParam(value = "password")String password) {
+                             @RequestParam("name") String name,
+                             @RequestParam(value = "surname") String surname,
+                             @RequestParam(value = "payment") int payment,
+                             @RequestParam(value="dateHired") Date dateHired,
+                             @RequestParam(value = "position")int position,
+                             @RequestParam(value = "showroom")int showroom,
+                             @RequestParam(value = "login")String login,
+                             @RequestParam(value = "password")String password) {
         differentWorker = true;
         if (viewMode == ViewMode.EDIT) {
             Worker worker = workersController.updateWorker(false, id, name, surname, payment, dateHired, position, showroom);

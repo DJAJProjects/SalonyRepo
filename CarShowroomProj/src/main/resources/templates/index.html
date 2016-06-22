@@ -16,7 +16,8 @@
           th:href="@{/bootstrap/css/bootstrap.min.css}"/>
     <script src="http://cdn.jsdelivr.net/webjars/bootstrap/3.2.0/js/bootstrap.min.js"
             th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
-
+    <script th:src="@{https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js}"></script>
+    <script th:src="@{http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js}"></script>
     <link rel="stylesheet" type="text/css" href="../static/styles/style.css" th:href="@{/../styles/style.css}"/>
     <link rel="stylesheet" type="text/css" href="../static/styles/bootstrap_style.css" th:href="@{/../styles/bootstrap_style.css}"/>
     <script type="text/javascript" src="../static/javascript/validation.js" th:src="@{/../javascript/validation.js}"></script>
@@ -52,25 +53,64 @@
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
     <header layout:fragment="content" id="nav-menu" style="margin:0 auto">
-        <nav >
-            <ul style="margin: 0 auto;  max-width:1260px;">
-                <a href="menu.html"  th:href="@{/menu}"><li role="presentation" >MENU</li></a>
-                <a href="showroom.html" th:if="${showroomsVisible}" th:href="@{/showroom}"><li role="presentation" >SALONY</li></a>
-                <a href="worker.html" th:if="${workersVisible}" th:href="@{/worker}"><li role="presentation" >PRACOWNICY</li></a>
-                <a href="contracts.html" th:if="${contractsVisible}" th:href="@{/contracts}"><li role="presentation" >SPRZEDAŻE</li></a>
-                <a href="contractors.html" th:if="${contractorsVisible}" th:href="@{/contractors}"><li role="presentation" >Klienci</li></a>
-                <a href="invoices.html" th:if="${invoicesVisible}" th:href="@{/invoices}"><li role="presentation" >Faktury</li></a>
-                <a href="cars.html" th:if="${carsVisible}" th:href="@{/cars}"><li role="presentation" >Samochody</li></a>
-                <a href="reports.html" th:if="${reportsVisible}" th:href="@{/reports}"><li role="presentation" >Raporty</li></a>
-                <a href="accessories.html" th:if="${accessoriesVisible}" th:href="@{/accessories}"><li role="presentation" >Akcesoria</li></a>
-                <a href="promotions.html" th:if="${promotionsVisible}" th:href="@{/promotions}"><li role="presentation" >Promocje</li></a>
-                <a href="services.html" th:if="${servicesVisible}" th:href="@{/services}"><li role="presentation" >Serwis</li></a>
-                <a href="dictionary.html" th:if="${dictionaryVisible}" th:href="@{/dictionary}"><li role="presentation" >Słownik</li></a>
-                <a href="privileges.html" th:if="${privilegesVisible}" th:href="@{/privileges}"><li role="presentation" >Uprawnienia</li></a>
-            </ul>
-            <div class="my-block"></div>
-            <hr/>
+        <nav class="navbar navbar-inverse">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand active" style="color: white;" th:href="@{/menu}">MENU</a>
+                </div>
+                <ul class="nav navbar-nav">
+                    <li th:class="${classActiveShowrooms}"><a href="#" th:if="${showroomsVisible}" th:href="@{/showroom}">SALONY</a></li>
+                    <li th:class="${classActiveWorkers}"><a th:if="${workersVisible}" th:href="@{/worker}">Pracownicy</a></li>
+                    <li th:class="${classActiveContracts}"><a th:if="${contractsVisible}" th:href="@{/contracts}">sprzedaże</a></li>
+                    <li th:class="${classActiveContractors}"><a th:if="${contractorsVisible}" th:href="@{/contractors}">klienci</a></li>
+                    <li th:class="${classActivePromotions}"><a th:if="${promotionsVisible}" th:href="@{/promotions}">Promocje</a></li>
+                    <li th:class="${classActiveCars}"><a th:if="${carsVisible}" th:href="@{/cars}">Samochody</a></li>
+                    <li th:class="${classActiveReports}"><a th:if="${reportsVisible}" th:href="@{/reports}">Raporty</a></li>
+                    <li th:class="${classActiveAccessories}"><a th:if="${accessoriesVisible}" th:href="@{/accessories}">akcesoria</a></li>
+                    <li th:class="${classActiveInvoices}"><a th:if="${invoicesVisible}" th:href="@{/invoices}">faktury</a></li>
+                    <li th:class="${classActiveServices}"><a th:if="${servicesVisible}" th:href="@{/services}">serwisy</a></li>
+                    <li th:class="${classActivePrivileges}"><a th:if="${privilegesVisible}" th:href="@{/privileges}">uprawnienia</a></li>
+                    <li th:class="${classActiveDictionary}"><a href="#" th:if="${dictionaryVisible}" th:href="@{/dictionary}">słownik</a></li>
+                    <li class="dropdown" style="float: right;"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Opcje<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li class="option"><a th:href="@{/help}"><span class="glyphicon glyphicon-book"></span> Pomoc</a></li>
+                            <li class="option"><a th:href="@{/changePassword}"><span class="glyphicon glyphicon-pencil"></span> Zmień hasło</a></li>
+                            <li class="option"><a th:href="@{/logOut}"><span class="glyphicon glyphicon-log-out"></span> Wyloguj</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
         </nav>
+        <!--<nav >-->
+            <!--<ul style="margin: 0 auto;  max-width:1260px;">-->
+                <!--<a href="menu.html"  ><li role="presentation" >MENU</li></a>-->
+                <!--<a href="showroom.html" th:if="${showroomsVisible}" th:href="@{/showroom}"><li role="presentation" >SALONY</li></a>-->
+                <!--<a href="worker.html" th:if="${workersVisible}" th:href="@{/worker}"><li role="presentation" >PRACOWNICY</li></a>-->
+                <!--<a href="contracts.html" th:if="${contractsVisible}" th:href="@{/contracts}"><li role="presentation" >SPRZEDAŻE</li></a>-->
+                <!--<a href="contractors.html" th:if="${contractorsVisible}" th:href="@{/contractors}"><li role="presentation" >Klienci</li></a>-->
+                <!--<a href="invoices.html" th:if="${invoicesVisible}" th:href="@{/invoices}"><li role="presentation" >Faktury</li></a>-->
+                <!--<a href="cars.html" th:if="${carsVisible}" th:href="@{/cars}"><li role="presentation" >Samochody</li></a>-->
+                <!--<a href="reports.html" th:if="${reportsVisible}" th:href="@{/reports}"><li role="presentation" >Raporty</li></a>-->
+                <!--<a href="accessories.html" th:if="${accessoriesVisible}" th:href="@{/accessories}"><li role="presentation" >Akcesoria</li></a>-->
+                <!--<a href="promotions.html" th:if="${promotionsVisible}" th:href="@{/promotions}"><li role="presentation" >Promocje</li></a>-->
+                <!--<a href="services.html" th:if="${servicesVisible}" th:href="@{/services}"><li role="presentation" >Serwis</li></a>-->
+                <!--<a href="dictionary.html" th:if="${dictionaryVisible}" th:href="@{/dictionary}"><li role="presentation" >Słownik</li></a>-->
+                <!--<a href="privileges.html" th:if="${privilegesVisible}" th:href="@{/privileges}"><li role="presentation" >Uprawnienia</li></a>-->
+                <!--<li role="presentation" >-->
+                    <!--<div class="dropdown">-->
+                        <!--<button type="button" data-toggle="dropdown">Dropdown Example-->
+                            <!--<span class="caret"></span></button>-->
+                        <!--<ul class="dropdown-menu">-->
+                            <!--<li><a href="#">HTML</a></li>-->
+                            <!--<li><a href="#">CSS</a></li>-->
+                            <!--<li><a href="#">JavaScript</a></li>-->
+                        <!--</ul>-->
+                    <!--</div>-->
+                <!--</li>-->
+            <!--</ul>-->
+            <!--<div class="my-block"></div>-->
+            <!--<hr/>-->
+        <!--</nav>-->
         <div class="empty"></div>
     </header>
     <div th:unless="${forbiddenAccess}" layout:fragment="main">

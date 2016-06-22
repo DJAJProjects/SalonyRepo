@@ -58,8 +58,7 @@ public class ReportsWebController extends BaseWebController {
         }
 
         model.addAttribute("reports", reportsController.findReportsRelatedToWorker(Data.user));
-
-
+        model.addAttribute("classActiveReports","active");
         refreshMenuPrivileges(model);
         return "reports";
     }

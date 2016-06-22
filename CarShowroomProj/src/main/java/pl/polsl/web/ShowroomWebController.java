@@ -54,6 +54,9 @@ public class ShowroomWebController extends  BaseWebController {
         model.addAttribute("insertEnabled", insertEnabled);
         model.addAttribute("updateEnabled", updateEnabled);
         model.addAttribute("deleteEnabled", deleteEnabled);
+        model.addAttribute("classActiveShowrooms","active");
+        System.out.println(workersController.findAllFreeDirectors().size());
+        model.addAttribute("directorCount", workersController.findAllFreeDirectors().size());
         refreshMenuPrivileges(model);
         return "showroom";
     }

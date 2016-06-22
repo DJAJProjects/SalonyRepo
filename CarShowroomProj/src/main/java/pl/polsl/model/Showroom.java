@@ -11,14 +11,41 @@ import java.util.Set;
 @Entity
 @Table(name="showrooms", schema = "salonydb")
 public class Showroom {
+    /**
+     * Showroom id
+     */
     private int id;
+    /**
+     * Showroom name
+     */
     private String name;
+    /**
+     * Showroom street
+     */
     private String street;
+    /**
+     * Showroom city
+     */
     private Dictionary city;
+    /**
+     * Showroom country
+     */
     private Dictionary country;
+    /**
+     * Showroom director
+     */
     private Worker director;
+    /**
+     * Set of workers which is related to showroom
+     */
     private Set<Worker> workers;
+    /**
+     * Set of cars which is related to showroom
+     */
     private Set<Car> cars;
+    /**
+     * Set of reports which is related to showroom
+     */
     private Set<Report> reports;
 
     public Showroom(){}

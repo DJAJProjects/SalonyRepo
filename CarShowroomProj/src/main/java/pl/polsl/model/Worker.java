@@ -20,13 +20,37 @@ public class Worker {
      * Worker name
      */
     private String name;
+    /**
+     * Worker surname
+     */
     private String surname;
+    /**
+     * Worker position
+     */
     private Dictionary position;
+    /**
+     * Worker showroom where worker works
+     */
     private Showroom showroom;
+    /**
+     * Worker payment
+     */
     private int payment;
+    /**
+     * Worker date hired
+     */
     private Date dateHired;
+    /**
+     * Set of cars which is related to worker
+     */
     private Set<Contract> contractList;
+    /**
+     * Worker login
+     */
     private String login;
+    /**
+     * Worker password
+     */
     private String password;
 
     public Worker(String name, String surname, int payment, Date dateHired, Dictionary position, Showroom showroom, String login, String password) {

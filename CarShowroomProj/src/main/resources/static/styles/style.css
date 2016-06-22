@@ -1,39 +1,61 @@
-#nav-menu{
-    box-sizing: border-box;
-    width:100%;
-    background-color: #3F5765/*#EFEFEF*/;
-    display: inline-block;
-}
-#nav-menu ul{
-    padding: 20px 0px;
-}
-/* Jasny blok pod menu*/
-.my-block{
-    clear: both;
-    height:10px;
-    width:100%;
-    background-color: #EFEFEF;
-}
-#nav-menu a{
-    text-align: center;
-    display: inline;
-    float: left;
-    color:#EFEFEF;
-    line-height: 50px;
-    padding: 0px 12px;
+.navbar{
     text-transform: uppercase;
-    list-style: none;
+    background-color: #2B3A42;
 }
-
-#nav-menu a:hover{
+.nav>li>a {;
+    padding: 30px 10px;
+}
+.navbar-brand {
+    padding: 30px 15px;
+    color: #EFEFEF;
+}
+.navbar-inverse .navbar-nav>li>a {
+    color: #EFEFEF;
+}
+.navbar-inverse .navbar-nav>.active>a, .navbar-inverse .navbar-nav>.active>a:focus,.navbar-inverse .navbar-nav>.active>a:hover{
+    background-color: #3F5765;
     color: #FF530D;
-    text-decoration: none;
-    -webkit-transition: color 500ms linear;
-    -moz-transition: color 500ms linear;
-    -o-transition: color 500ms linear;
-    -ms-transition: color 500ms linear;
-    background-color: #EFEFEF;
 }
+.dropdown-menu>li>a:hover .glyphicon{
+    color:#FF530D;
+
+}
+/*#nav-menu{*/
+    /*box-sizing: border-box;*/
+    /*width:100%;*/
+    /*background-color: #3F5765!*#EFEFEF*!;*/
+    /*display: inline-block;*/
+/*}*/
+/*#nav-menu ul{*/
+    /*padding: 20px 0px;*/
+/*}*/
+/*!* Jasny blok pod menu*!*/
+/*.my-block{*/
+    /*clear: both;*/
+    /*height:10px;*/
+    /*width:100%;*/
+    /*background-color: #EFEFEF;*/
+/*}*/
+/*#nav-menu a{*/
+    /*text-align: center;*/
+    /*display: inline;*/
+    /*float: left;*/
+    /*color:#EFEFEF;*/
+    /*line-height: 50px;*/
+    /*padding: 0px 12px;*/
+    /*text-transform: uppercase;*/
+    /*list-style: none;*/
+/*}*/
+
+/*#nav-menu a:hover{*/
+    /*color: #FF530D;*/
+    /*text-decoration: none;*/
+    /*-webkit-transition: color 500ms linear;*/
+    /*-moz-transition: color 500ms linear;*/
+    /*-o-transition: color 500ms linear;*/
+    /*-ms-transition: color 500ms linear;*/
+    /*background-color: #EFEFEF;*/
+/*}*/
 
 hr{
     margin: 0;

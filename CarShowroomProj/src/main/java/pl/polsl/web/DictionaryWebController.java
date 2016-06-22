@@ -46,6 +46,7 @@ public class DictionaryWebController extends BaseWebController{
         model.addAttribute("updateEnabled", updateEnabled);
         model.addAttribute("deleteEnabled", deleteEnabled);
         refreshMenuPrivileges(model);
+        model.addAttribute("classActiveDictionary","active");
         return "dictionary";
     }
 

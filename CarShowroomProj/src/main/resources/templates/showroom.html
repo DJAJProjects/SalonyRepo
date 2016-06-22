@@ -6,6 +6,9 @@
     function print_error() {
         alert("Salon jest powiązany z innymi rekordami. Nie mozna go usunąć");
     }
+    function print_error_director() {
+        alert("Nie ma wolnych dyrektorów, którzy mogliby zaopiekować się salonem");
+    }
 </script>
 </head>
 <body  th:attr="onload=${deleteShowroomError!=null ? 'print_error()' : null}">
@@ -13,7 +16,9 @@
     <br/>
     <div th:if="${insertEnabled}" >
         <div class="btn-group" role="group" aria-label="..." style="margin: 20px 0;">
-            <a th:href="@{/addShowroom#anch}"><button type="button" class="btn">Dodaj salon</button></a>
+            <a th:if="${directorCount &gt; 0}" th:href="@{/addShowroom#anch}"><button type="button" class="btn">Dodaj salon</button></a>
+            <a th:unless="${directorCount &gt; 0}"><button type="button" class="btn" onclick="print_error_director()">Dodaj salon</button></a>
+
         </div>
     </div>
     <div class="panel">

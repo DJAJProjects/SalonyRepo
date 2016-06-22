@@ -48,6 +48,7 @@ public class ShowroomsController {
      * Rest method to find showroom by id
      * @param id
      * @return showroom data by json
+     * @author Aleksadra Chronowska
      */
     @GET
     @Path("/{id}")
@@ -74,7 +75,9 @@ public class ShowroomsController {
      * @return created showroom
      */
     public Showroom addShowroom(String name, String street, int city, int country, int director) {
-        return showroomsRepository.save(new Showroom(name, street, dictionaryController.findOne(city), dictionaryController.findOne(country),workersController.findOne(director)));
+        Showroom showroom = showroomsRepository.save(new Showroom(name, street, dictionaryController.findOne(city), dictionaryController.findOne(country),workersController.findOne(director)));
+        workersController.updateWorker(director,showroom.getId());
+        return showroom;
     }
 
     /**

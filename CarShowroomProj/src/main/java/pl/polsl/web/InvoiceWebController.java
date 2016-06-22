@@ -40,6 +40,7 @@ public class InvoiceWebController extends  BaseWebController{
         analisePrivileges(Data.invoiceModuleValue);
         model.addAttribute("deleteEnabled", deleteEnabled);
         refreshMenuPrivileges(model);
+        model.addAttribute("classActiveInvoices","active");
         return "invoices";
     }
 

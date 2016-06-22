@@ -44,6 +44,7 @@ public class WorkersController {
 
     @Autowired
     private ShowroomsController showroomsController;
+
     /**
      * Rest get method
      * @author Aleksadra Chronowska
@@ -59,6 +60,7 @@ public class WorkersController {
      * Rest method find worker by id
      * @param id
      * @return worker data by json
+     * @author Aleksadra Chronowska
      */
     @GET
     @Path("/{id}")
@@ -129,7 +131,7 @@ public class WorkersController {
             else {
                 retWorker = workersRepository.save(worker);
 
-                //Dodawanie domyslnych uprawnien
+                //Add default privileges
                 Integer[] privKeys = null;
                 String posValue = retWorker.getPosition().getValue();
 
@@ -197,7 +199,7 @@ public class WorkersController {
     }
 
     /**
-     * Method finding all of serviceman
+     * Method to find all of serviceman
      * @return serviceman list
      * @author Julia Kubieniec
      */
@@ -206,7 +208,7 @@ public class WorkersController {
     }
 
     /**
-     * Method to check if login is unique (doestn.y extist in database)
+     * Method to check if login is unique (doesn't exist in database)
      * @param login new login
      * @return null - is login is unique
      */
@@ -243,9 +245,9 @@ public class WorkersController {
     }
 
     /**
-     * Method to find privilages for worker
+     * Method to find privileges for worker
      * @param worker worker
-     * @return list of pirvilages
+     * @return list of privileges
      * @author Jakub Wieczorek
      */
     public List<Privileges> findPrivilegesOfWorker(Worker worker) {

@@ -34,7 +34,7 @@ public class Dictionary {
      */
     private String value3;
 
-    //region related set to dictionary
+    //region set of objects related to dictionary
     private Set<Showroom> country;
     private Set<Showroom> city;
     private Set<Invoice> invoiceType;
@@ -44,14 +44,8 @@ public class Dictionary {
     private Set<Service> serviceType;
     private Set<Worker> position;
     //endregion
-    public Dictionary(){}
 
-    public Dictionary(int id, String type, String value, String value2) {
-        this.id = id;
-        this.type = type;
-        this.value = value;
-        this.value2 = value2;
-    }
+    public Dictionary(){}
 
     public Dictionary(int id, String type, String value, String value2, String value3) {
         this.id = id;

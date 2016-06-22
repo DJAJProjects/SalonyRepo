@@ -162,6 +162,7 @@ public class ContractWebController extends BaseWebController{
         model.addAttribute("updateEnabled", updateEnabled);
         model.addAttribute("deleteEnabled", deleteEnabled);
         refreshMenuPrivileges(model);
+        model.addAttribute("classActiveContracts","active");
         return "contracts";
     }
 

@@ -57,6 +57,7 @@ public class MainController extends BaseWebController {
         else{
             model.addAttribute("error",true);
         }
+        model.addAttribute("classActiveMenu","active");
         return "sign_in";
     }
 

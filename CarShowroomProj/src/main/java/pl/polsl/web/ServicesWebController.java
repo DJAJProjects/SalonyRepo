@@ -67,6 +67,7 @@ public class ServicesWebController extends BaseWebController {
         model.addAttribute("insertEnabled", insertEnabled);
         model.addAttribute("updateEnabled", updateEnabled);
         model.addAttribute("deleteEnabled", deleteEnabled);
+        model.addAttribute("classActiveServices","active");
         flag = false;
         return "services";
     }

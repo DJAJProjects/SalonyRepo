@@ -47,7 +47,7 @@ public class PrivilegesWebController extends BaseWebController{
         }
 
         model.addAttribute("privilegesGroups", privilegesController.findAll());
-
+        model.addAttribute("classActivePrivileges","active");
         refreshMenuPrivileges(model);
         return "privileges";
     }
