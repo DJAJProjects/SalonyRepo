@@ -171,7 +171,7 @@ public class ReportsWebController extends BaseWebController {
         try {
             System.out.println(buffer.toString());
             String k = buffer.toString();
-            OutputStream file = new FileOutputStream(new File("C:\\Users\\Dominika Błasiak\\Desktop\\pdfy\\plik.pdf"));
+            OutputStream file = new FileOutputStream(new File("C:\\Users\\Dominika Błasiak\\Desktop\\raport_pdf\\raport_"+id+".pdf"));
             Document document = new Document();
             PdfWriter.getInstance(document, file);
             document.open();
