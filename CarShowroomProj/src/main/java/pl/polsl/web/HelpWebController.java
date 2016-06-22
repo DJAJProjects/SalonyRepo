@@ -16,6 +16,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import pl.polsl.Data;
 import pl.polsl.Help;
+import pl.polsl.ViewMode;
 import pl.polsl.controller.*;
 import pl.polsl.model.Dictionary;
 
@@ -145,5 +146,11 @@ public class HelpWebController extends BaseWebController {
         model.addAttribute("updateEnabled", updateEnabled);
         model.addAttribute("deleteEnabled", deleteEnabled);
         return "help";
+    }
+
+    @RequestMapping(value="/resetView")
+    public  String resetView(){
+        viewMode = ViewMode.DEFAULT;
+        return "redirect:/help";
     }
 }
