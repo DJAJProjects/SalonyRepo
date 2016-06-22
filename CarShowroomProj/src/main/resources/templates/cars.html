@@ -92,8 +92,8 @@
         </div>
         <div class="form-group">
             <div class="col-sm-offset-4 col-sm-10">
-                <button type="submit" th:disabled="${controlsDisabledPart1}" class="btn " >Akceptuj</button>
-                <button type="reset" th:disabled="${controlsDisabledPart1}" class="btn">Anuluj zmiany</button>
+                <button type="submit" th:disabled="${controlsDisabledPart1}" class="btn " >Ok</button>
+                <!--<button type="reset" th:disabled="${controlsDisabledPart1}" class="btn">Anuluj zmiany</button>-->
             </div>
         </div>
     </form>
@@ -157,13 +157,19 @@
         </div>
         <input type="hidden" style="display: none;" name="id" th:field="*{id}"/>
         <div class="form-group">
-            <div class="col-sm-offset-4 col-sm-10">
-                <button type="submit" th:disabled="${controlsCostDisabled}" class="btn btn-default" >Akceptuj</button>
-                <button type="reset" th:disabled="${controlsCostDisabled}" class="btn btn-default">Anuluj zmiany</button>
-            </div>
         </div>
     </form>
     <br/>
+    <div th:if="${controlsPanelVisible}" class="col-sm-offset-4 col-sm-10">
+        <button type="submit" th:disabled="${controlsCostDisabled}" class="btn btn-default" >Akceptuj</button>
+        <div th:if="${ordered}"><a href="contracts.html" th:href="@{/contactAdditions}+'#anch'"><button type="button" class="btn">Anuluj zamówienie</button></a></div>
+        <div th:unless="${ordered}">
+            <a href="cars.html" th:href="@{/resetCarsChange}">
+                <button type="button" th:disabled="${controlsDisabledRemoveChange}" class="btn">Anuluj zmiany</button>
+            </a>
+        </div>
+        <!--<div th:unless="${ordered}"><button type="reset" th:disabled="${controlsCostDisabled}" class="btn btn-default">Anuluj zmiany</button></div>-->
+    </div>
 </div>
 </body>
 </html>

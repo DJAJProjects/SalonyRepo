@@ -86,6 +86,7 @@ public class CarsWebController extends BaseWebController {
 
         if(viewMode == ViewMode.INSERT) {
             model.addAttribute("controlsDisabled", false);
+            model.addAttribute("controlsDisabledRemoveChange",false);
             if(!orderedCar)
                 model.addAttribute("disabledOrdered", 0);
             if(!flag) {
@@ -95,9 +96,11 @@ public class CarsWebController extends BaseWebController {
                 return "cars";
             }
         } else if(viewMode == ViewMode.EDIT) {
+            model.addAttribute("controlsDisabledRemoveChange",false);
             model.addAttribute("controlsDisabled", false);
             model.addAttribute("disabledOrdered", 0);
         } else if(viewMode == ViewMode.VIEW_ALL) {
+            model.addAttribute("controlsDisabledRemoveChange",true);
             model.addAttribute("controlsDisabled", true);
             model.addAttribute("controlsCostDisabled",true);
             model.addAttribute("disabledOrdered", 0);
