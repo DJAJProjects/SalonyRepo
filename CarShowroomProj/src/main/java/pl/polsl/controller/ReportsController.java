@@ -111,9 +111,9 @@ public class ReportsController {
         content = "";
         content += name + "\n";
         content += "Raport dotyczy: " + showroomName + "\n";
-        content += "Ilość samochodów: " + cars.size() + "\n";
-        content += "Ilość pracowników: " + workers.size()+ "\n";
-        content += "Dochód: " + income + "\n";
+        content += "Ilosc samochodow: " + cars.size() + "\n";
+        content += "Ilosc pracownikow: " + workers.size()+ "\n";
+        content += "Dochod: " + income + "\n";
         content += "Wydatki: " + outcome + "\n";
         content += "Zysk: " + profit;
 

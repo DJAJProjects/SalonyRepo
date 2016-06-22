@@ -1,5 +1,8 @@
 package pl.polsl.web;
 
+import com.itextpdf.text.Document;
+import com.itextpdf.text.html.simpleparser.HTMLWorker;
+import com.itextpdf.text.pdf.PdfWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +16,9 @@ import pl.polsl.ViewMode;
 import pl.polsl.controller.*;
 import pl.polsl.model.Report;
 
+import java.io.*;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.sql.Date;
 
 /**
@@ -28,10 +34,15 @@ public class ReportsWebController extends BaseWebController {
     @Autowired
     private ShowroomsController showroomsController;
 
+    private boolean generatePdfLoop = false;
+
+    private InputStream is;
+
     @RequestMapping(value ="/reports")
     public String getReports(Model model){
 
-
+        analisePrivileges("reports");
+        model.addAttribute("insertEnabled", true);// hehe
 
         if(viewMode == ViewMode.DEFAULT){
             model.addAttribute("controlsPanelVisible", false);
@@ -47,6 +58,7 @@ public class ReportsWebController extends BaseWebController {
         }
 
         model.addAttribute("reports", reportsController.findReportsRelatedToWorker(Data.user));
+
 
         refreshMenuPrivileges(model);
         return "reports";
@@ -64,6 +76,7 @@ public class ReportsWebController extends BaseWebController {
         redirectAttributes.addFlashAttribute("dateEnd", new Date(report.getDateEnd().getTime()));
         redirectAttributes.addFlashAttribute("showrooms", showroomsController.findAll());
         redirectAttributes.addFlashAttribute("controlsDisabled", true);
+
 
         return "redirect:/reports";
     }
@@ -100,8 +113,76 @@ public class ReportsWebController extends BaseWebController {
         }
         viewMode = ViewMode.DEFAULT;
         return "redirect:/reports";
+    }
+    @RequestMapping(value ="/generateReport2/{id}")
+    public String generateReport2(Model model, @PathVariable("id")int id) {
+        viewMode = ViewMode.VIEW_ALL;
+        System.out.println("JOł" + id);
+        Report report = reportsController.findOne(id);
+        model.addAttribute("showroom", report.getShowroom().getId());
+        //report.getContent().replaceAll("\n","<br/>");
+        model.addAttribute("report", report);
+        model.addAttribute("dateBeggining", new Date(report.getDateBeggining().getTime()));
+        model.addAttribute("dateEnd", new Date(report.getDateEnd().getTime()));
+        model.addAttribute("showrooms", showroomsController.findAll());
+        model.addAttribute("controlsDisabled", true);
+        return "report_generate";
+    }
+    @RequestMapping(value ="/generateReport/{id}")
+    public String generateReport(Model model, @PathVariable("id")int id) {
+        viewMode = ViewMode.VIEW_ALL;
+        System.out.println("JOł" + id);
+        Report report = reportsController.findOne(id);
+        model.addAttribute("showroom", report.getShowroom().getId());
+        //report.getContent().replaceAll("\n","<br/>");
+        model.addAttribute("report", report);
+        model.addAttribute("dateBeggining", new Date(report.getDateBeggining().getTime()));
+        model.addAttribute("dateEnd", new Date(report.getDateEnd().getTime()));
+        model.addAttribute("showrooms", showroomsController.findAll());
+        model.addAttribute("controlsDisabled", true);
 
+        URL url = null;
+        StringBuffer buffer = null;
+        try {
+            url = new URL("http://localhost:8080/generateReport2/"+id);
 
+//            if(!generatePdfLoop) {
+//                generatePdfLoop = true;
+                is = url.openStream();
+//            }
+        int ptr = 0;
+            int counter = 1;
+        buffer = new StringBuffer();
+        while ((ptr = is.read()) != -1) {
+            buffer.append((char)ptr);
+
+          if((char)ptr =='\n'){
+              counter++;
+               if(counter>24){
+                   buffer.append("<br/>");
+                }
+            }
+        }
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            System.out.println(buffer.toString());
+            String k = buffer.toString();
+            OutputStream file = new FileOutputStream(new File("C:\\Users\\Dominika Błasiak\\Desktop\\pdfy\\plik.pdf"));
+            Document document = new Document();
+            PdfWriter.getInstance(document, file);
+            document.open();
+            HTMLWorker htmlWorker = new HTMLWorker(document);
+            htmlWorker.parse(new StringReader(k));
+            document.close();
+            file.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "report_generate";
     }
 
 }

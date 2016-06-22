@@ -90,7 +90,7 @@
             <div class="col-sm-offset-4 col-sm-10">
                 <button type="submit" th:disabled="${controlsDisabled}" class="btn" >Generuj</button>
                 <button type="reset" th:disabled="${controlsDisabled}" class="btn">Anuluj zmiany</button>
-
+                <a href="reports.html" th:if="${controlsDisabled}" th:href="@{'/generateReport/'+*{id}}" class="btn">Generuj do pdf</a>
             </div>
         </div>
         <div th:text="${error != null} ? ${error}" class="label label-danger"></div>
