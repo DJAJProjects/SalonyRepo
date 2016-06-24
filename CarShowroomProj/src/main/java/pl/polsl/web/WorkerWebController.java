@@ -387,12 +387,10 @@ public class WorkerWebController extends  BaseWebController {
                                  @RequestParam(value="oldPassword") String oldPassword,
                                  @RequestParam(value = "password") String newPassword,
                                  @RequestParam(value="confirmPassword") String confirmPassword){
+        String decryptedOldPass =  workersController.decryptPassword(oldPassword);
         String decryptedNewPass =  workersController.decryptPassword(newPassword);
-        workersController.updatePassword(Data.user.getId(), decryptedNewPass);
-        return "password";
-       /* String decryptedOldPass =  workersController.decryptPassword(oldPassword);
-        String decryptedNewPass =  workersController.decryptPassword(newPassword);
-        if(!decryptedNewPass.equals(confirmPassword)){
+        String decryptedConfirmedPass = workersController.decryptPassword(confirmPassword);
+        if(!decryptedNewPass.equals(decryptedConfirmedPass)){
             model.addAttribute("error", "Hasła nie są takie same");
         }else if(!decryptedOldPass.equals(Data.user.getPassword()))
             model.addAttribute("error", "Podano nieprawidłowe hasło");
@@ -403,7 +401,7 @@ public class WorkerWebController extends  BaseWebController {
                 model.addAttribute("error", "Niestety nie udało się dodac obiektu do bazy");
         }
         refreshMenuPrivileges(model);
-        return "password";*/
+        return "password";
     }
 
 
