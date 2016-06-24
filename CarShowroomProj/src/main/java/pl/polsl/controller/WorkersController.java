@@ -96,6 +96,19 @@ public class WorkersController {
         return workersRepository.save(worker)!=null;
     }
 
+    public String decryptPassword(String target){
+        String newPass = null;
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA");
+            String data = target;
+            byte[] dataDigest = md.digest(data.getBytes());
+            newPass = new String(dataDigest);
+        }catch(Exception ex){
+            return null;
+        }
+        return newPass;
+    }
+
     /**
      * Method to add a new worker to database or only create worker
      * @param error error if error equals true, method ony create worker (method doesn't save in database)
@@ -120,12 +133,8 @@ public class WorkersController {
                             String password) {
         MessageDigest md = null;
         Worker retWorker = null;
-        try {
-            md = MessageDigest.getInstance("SHA");
-            String data = password;
-            byte[] dataDigest = md.digest(data.getBytes());
-            String newPass = new String(dataDigest);
-            Worker worker = new Worker(name,surname,payment, dateHired,dictionaryController.findOne(position),showroomsController.findOne(showroom),login, password);
+            String newPass = decryptPassword(password);
+            Worker worker = new Worker(name,surname,payment, dateHired,dictionaryController.findOne(position),showroomsController.findOne(showroom),login, newPass);
             if(error)
                 retWorker = worker;
             else {
@@ -150,10 +159,7 @@ public class WorkersController {
                     workersPrivilegesController.addWorkersPrivileges(retWorker, priv);
                 }
             }
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-            return null;
-        }
+
         return retWorker;
     }
     /**
