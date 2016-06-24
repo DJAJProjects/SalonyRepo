@@ -19,7 +19,9 @@ import pl.polsl.model.Privileges;
 import java.io.Console;
 
 /**
- * Created by Kuba on 08.04.2016.
+ * Privileges web controller class
+ * @author Jakub Wieczorek
+ * @version 1.0
  */
 @Controller
 public class PrivilegesWebController extends BaseWebController{
@@ -29,6 +31,11 @@ public class PrivilegesWebController extends BaseWebController{
     @Autowired
     private DictionaryController dictionaryController;
 
+    /**
+     * GET method for return privileges view
+     * @param model actual web model
+     * @return privileges view
+     */
     @RequestMapping(value ="/privileges")
     public String getPrivileges(Model model){
 
@@ -52,6 +59,13 @@ public class PrivilegesWebController extends BaseWebController{
         return "privileges";
     }
 
+
+    /**
+     * Method to display view about privileges details
+     * @param redirectAttributes
+     * @param id id privileges to display
+     * @return redirect to getPrivileges method
+     */
     @RequestMapping(value ="/viewPrivileges/{id}")
     public String viewPrivileges(RedirectAttributes redirectAttributes, @PathVariable("id")int id) {
 
@@ -65,6 +79,11 @@ public class PrivilegesWebController extends BaseWebController{
         return "redirect:/privileges/";
     }
 
+    /**
+     * Method to display add privileges view
+     * @param redirectAttributes
+     * @return redirect to getPrivileges method
+     */
     @RequestMapping(value ="/addPrivileges")
     public String addPrivileges(RedirectAttributes redirectAttributes) {
 
@@ -79,6 +98,12 @@ public class PrivilegesWebController extends BaseWebController{
         return "redirect:/privileges/";
     }
 
+    /**
+     * Method to display edit privileges view
+     * @param redirectAttributes
+     * @param id privileges id to edit
+     * @return redirect to getPrivileges method
+     */
     @RequestMapping(value ="/editPrivileges/{id}")
     public String editPrivileges(RedirectAttributes redirectAttributes, @PathVariable("id")int id) {
 
@@ -93,12 +118,29 @@ public class PrivilegesWebController extends BaseWebController{
         return "redirect:/privileges/";
     }
 
-
+    /**
+     * Method to delete privilege
+     * @param id privilege id to remove
+     * @return redirect to getPrivileges method
+     */
     @RequestMapping(value = "/deletePrivileges/{id}")
     public String deleteReport(@PathVariable("id")int id) {
         privilegesController.deletePrivilege(id);
         return "redirect:/privileges/";
     }
+
+
+    /**
+     * Method to save privilege to database
+     * @param id privilege id
+     * @param name privilege name
+     * @param module privilege module
+     * @param read privilege read
+     * @param insert privilege insert
+     * @param update privilege update
+     * @param delete privilege delete
+     * @return
+     */
     @RequestMapping(value ="/acceptModifyPrivileges", method = RequestMethod.POST)
     public String acceptModifyContractor(@RequestParam("id") int id,
                                          @RequestParam(value = "name") String name,
@@ -122,5 +164,15 @@ public class PrivilegesWebController extends BaseWebController{
         viewMode = ViewMode.DEFAULT;
 
         return "redirect:/privileges/";
+    }
+
+    /**
+     * Method to cancel privilege edit or add
+     * @return redirect to getPrivileges method
+     */
+    @RequestMapping(value="/resetPrivilegesChange")
+    public  String resetChange(){
+        viewMode = ViewMode.DEFAULT;
+        return "redirect:/privileges";
     }
 }

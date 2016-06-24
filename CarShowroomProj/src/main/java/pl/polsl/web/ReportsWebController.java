@@ -22,11 +22,12 @@ import java.net.URL;
 import java.sql.Date;
 
 /**
- * Created by Kuba on 20.04.2016.
+ * Reports web controller class
+ * @author Jakub Wieczorek
+ * @version 1.0
  */
 @Controller
 public class ReportsWebController extends BaseWebController {
-
 
     @Autowired
     private ReportsController reportsController;
@@ -38,12 +39,16 @@ public class ReportsWebController extends BaseWebController {
 
     private InputStream is;
 
+    /**
+     * GET method for return contractors view
+     * @param model actual web model
+     * @return contractors view
+     */
     @RequestMapping(value ="/reports")
     public String getReports(Model model){
 
         analisePrivileges("reports");
-        model.addAttribute("insertEnabled", true);// hehe
-
+        model.addAttribute("insertEnabled", true);
         if(viewMode == ViewMode.DEFAULT){
             model.addAttribute("controlsPanelVisible", false);
         }
@@ -63,6 +68,12 @@ public class ReportsWebController extends BaseWebController {
         return "reports";
     }
 
+    /**
+     * Method to display view about report details
+     * @param redirectAttributes
+     * @param id id report to display
+     * @return redirect to getReports method
+     */
     @RequestMapping(value ="/viewReport/{id}")
     public String viewReport(RedirectAttributes redirectAttributes, @PathVariable("id")int id) {
 
@@ -76,10 +87,14 @@ public class ReportsWebController extends BaseWebController {
         redirectAttributes.addFlashAttribute("showrooms", showroomsController.findAll());
         redirectAttributes.addFlashAttribute("controlsDisabled", true);
 
-
         return "redirect:/reports";
     }
 
+    /**
+     * Method to display add report view
+     * @param redirectAttributes
+     * @return redirect to getReports method
+     */
     @RequestMapping(value ="/addReport")
     public String addReports(RedirectAttributes redirectAttributes){
 
@@ -93,12 +108,27 @@ public class ReportsWebController extends BaseWebController {
         return "redirect:/reports";
     }
 
+    /**
+     * Method to delete report
+     * @param id report id to remove
+     * @return redirect to getReport method
+     */
     @RequestMapping(value = "/deleteReport/{id}")
     public String deleteReport(@PathVariable("id")int id) {
         reportsController.deleteReport(id);
-        return "redirect:/reports";
+        return "redirect:/reports/";
     }
 
+
+    /**
+     * Method to save report to database
+     * @param name report name
+     * @param showroom report showroom
+     * @param content report content
+     * @param dateBeggining report dateBeggining
+     * @param dateEnd report dateEnd
+     * @return
+     */
     @RequestMapping(value ="/acceptModifyReport", method = RequestMethod.POST)
     public String acceptModifyReport(@RequestParam(value = "name") String name,
                              @RequestParam(value = "showroom") int showroom,
@@ -113,6 +143,13 @@ public class ReportsWebController extends BaseWebController {
         viewMode = ViewMode.DEFAULT;
         return "redirect:/reports";
     }
+
+    /**
+     * Generates report in pdf format. Invoked in generateReport method.
+     * @param model
+     * @param id report id
+     * @return redirect to report_generate view
+     */
     @RequestMapping(value ="/generateReport2/{id}")
     public String generateReport2(Model model, @PathVariable("id")int id) {
         viewMode = ViewMode.VIEW_ALL;
@@ -127,6 +164,13 @@ public class ReportsWebController extends BaseWebController {
         model.addAttribute("controlsDisabled", true);
         return "report_generate";
     }
+
+    /**
+     * Generates report in pdf format
+     * @param model
+     * @param id report id
+     * @return redirect to report_generate view
+     */
     @RequestMapping(value ="/generateReport/{id}")
     public String generateReport(Model model, @PathVariable("id")int id) {
         viewMode = ViewMode.VIEW_ALL;
@@ -170,7 +214,7 @@ public class ReportsWebController extends BaseWebController {
         try {
             System.out.println(buffer.toString());
             String k = buffer.toString();
-            OutputStream file = new FileOutputStream(new File("C:\\Users\\Dominika Błasiak\\Desktop\\raport_pdf\\raport_"+id+".pdf"));
+            OutputStream file = new FileOutputStream(new File("raport_"+id+".pdf"));
             Document document = new Document();
             PdfWriter.getInstance(document, file);
             document.open();
@@ -182,6 +226,16 @@ public class ReportsWebController extends BaseWebController {
             e.printStackTrace();
         }
         return "report_generate";
+    }
+
+    /**
+     * Method to cancel report edit or add
+     * @return redirect to getReport method
+     */
+    @RequestMapping(value="/resetReportChange")
+    public  String resetChange(){
+        viewMode = ViewMode.DEFAULT;
+        return "redirect:/showroom";
     }
 
 }

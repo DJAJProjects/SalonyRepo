@@ -21,7 +21,9 @@ import java.util.List;
 import java.util.List;
 
 /**
- * Created by Kuba on 08.04.2016.
+ * Contractors web controller class
+ * @author Jakub Wieczorek
+ * @version 1.0
  */
 @Controller
 public class ContractorsWebController extends BaseWebController {
@@ -32,7 +34,11 @@ public class ContractorsWebController extends BaseWebController {
     @Autowired
     private DictionaryController dictionaryController;
 
-
+    /**
+     * GET method for return contractors view
+     * @param model actual web model
+     * @return contractors view
+     */
     @RequestMapping(value ="/contractors")
     public String getContractors(Model model){
 
@@ -60,6 +66,12 @@ public class ContractorsWebController extends BaseWebController {
         return "contractors";
     }
 
+    /**
+     * Method to display view about contractors details
+     * @param redirectAttributes
+     * @param id id contractors to display
+     * @return redirect to getContractors method
+     */
     @RequestMapping(value ="/viewContractor/{id}")
     public String viewContractor(RedirectAttributes redirectAttributes, @PathVariable("id")int id) {
 
@@ -77,6 +89,11 @@ public class ContractorsWebController extends BaseWebController {
         return "redirect:/contractors/";
     }
 
+    /**
+     * Method to display add contractors view
+     * @param redirectAttributes
+     * @return redirect to getContractors method
+     */
     @RequestMapping(value ="/addContractor")
     public String addContractor(RedirectAttributes redirectAttributes) {
 
@@ -92,6 +109,12 @@ public class ContractorsWebController extends BaseWebController {
         return "redirect:/contractors/";
     }
 
+    /**
+     * Method to display edit contractors view
+     * @param redirectAttributes
+     * @param id contractors id to edit
+     * @return redirect to getContractors method
+     */
     @RequestMapping(value ="/editContractor/{id}")
     public String editContractor(RedirectAttributes redirectAttributes, @PathVariable("id")int id) {
 
@@ -109,6 +132,20 @@ public class ContractorsWebController extends BaseWebController {
         return "redirect:/contractors/";
     }
 
+    /**
+     * Method to save contractor to database
+     * @param redirectAttributes contractor redirectAttributes
+     * @param id contractor id
+     * @param name contractor name
+     * @param surname contractor surname
+     * @param pesel contractor pesel
+     * @param nip contractor nip
+     * @param regon contractor regon
+     * @param city contractor city
+     * @param country contractor country
+     * @param street contractor street
+     * @return
+     */
     @RequestMapping(value ="/acceptModifyContractor", method = RequestMethod.POST)
     public String editContractor(   RedirectAttributes redirectAttributes,
                                     @RequestParam("id") int id,
@@ -137,9 +174,24 @@ public class ContractorsWebController extends BaseWebController {
         return "redirect:/contractors/";
     }
 
+    /**
+     * Method to delete contractor
+     * @param id contractor id to remove
+     * @return redirect to getContractor method
+     */
     @RequestMapping(value = "/deleteContractor/{id}")
     public String deleteContractor(@PathVariable("id")int id) {
         contractorsController.deleteContractor(id);
+        return "redirect:/contractors";
+    }
+
+    /**
+     * Method to cancel contractor edit or add
+     * @return redirect to getContractor method
+     */
+    @RequestMapping(value="/resetContractorsChange")
+    public  String resetChange(){
+        viewMode = ViewMode.DEFAULT;
         return "redirect:/contractors";
     }
 

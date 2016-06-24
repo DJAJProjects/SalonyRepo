@@ -41,7 +41,7 @@
                         <td class="center-item" th:text="${stat.count}"></td>
                         <td th:text="${report.name}"></td>
                         <td th:text="${report.showroom.name}"></td>
-                        <td class="center-item"><a href="reports.html" th:href="@{'/deleteReport/'+${report.id}}"><span class="glyphicon glyphicon-minus" aria-hidden="true" style="height:100%;width:100%"></span></a></td>
+                        <td class="center-item"><a href="reports.html" th:href="@{'/deleteReport/'+${report.id}}"><span class="glyphicon glyphicon-remove" aria-hidden="true" style="height:100%;width:100%"></span></a></td>
                         <td class="center-item"><a href="contractors.html" th:href="@{'/viewReport/'+${report.id}+'#anch'}"><span class="glyphicon glyphicon-eye-open" aria-hidden="true" style="height:100%;width:100%"></span></a></td>
                     </tr>
                 </tbody>
@@ -89,7 +89,9 @@
         <div class="form-group">
             <div class="col-sm-offset-4 col-sm-10">
                 <button type="submit" th:disabled="${controlsDisabled}" class="btn" >Generuj</button>
-                <button type="reset" th:disabled="${controlsDisabled}" class="btn">Anuluj zmiany</button>
+                <a href="reports.html.html" th:href="@{/resetReportChange}">
+                    <button type="button" th:disabled="${controlsDisabled}" class="btn">Anuluj zmiany</button>
+                </a>
                 <a href="reports.html" th:if="${controlsDisabled}" th:href="@{'/generateReport/'+*{id}}" class="btn">Generuj do pdf</a>
             </div>
         </div>
