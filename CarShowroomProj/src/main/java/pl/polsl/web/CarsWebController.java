@@ -43,6 +43,11 @@ public class CarsWebController extends BaseWebController {
     private boolean orderedCar;
     private boolean moduleOnlyCar;
 
+    /**
+     * GET method for return cars view
+     * @param model actual web model
+     * @return cars view
+     */
     @RequestMapping(value = "/cars", method = RequestMethod.GET)
     public String getCars(Model model) {
         if (Data.user == null) {
@@ -69,6 +74,11 @@ public class CarsWebController extends BaseWebController {
         return "cars";
     }
 
+    /**
+     * GET method that allows transfer all necessary information about cars
+     * @param model actual web model
+     * @return cars view
+     */
     @RequestMapping(value = "/carsDetails", method = RequestMethod.GET)
     public String carsDetails(Model model, @RequestParam(value="contract", required = false)Integer contract) {
         refreshMenuPrivileges(model);
@@ -124,6 +134,11 @@ public class CarsWebController extends BaseWebController {
         return "cars";
     }
 
+    /**
+     * GET method for allows add selected car
+     * @param contract contract id to check if car was add from contract module
+     * @return redirect to carsDetails method
+     */
     @RequestMapping(value ="/addNewCar", method = RequestMethod.GET)
     public String addNewCar(Model model, @RequestParam(value="contract", required = false)Integer contract){
         viewMode = ViewMode.INSERT;
@@ -139,6 +154,11 @@ public class CarsWebController extends BaseWebController {
         return "redirect:/carsDetails";
     }
 
+    /**
+     * GET method for allows delete selected car
+     * @param id if of selected car
+     * @return redirect to cars method
+     */
     @RequestMapping(value = "/deleteCar/{id}")
     public String deleteCar(@PathVariable("id")int id) {
         carsController.deleteCar(id);
@@ -146,6 +166,12 @@ public class CarsWebController extends BaseWebController {
         return "redirect:/cars";
     }
 
+    /**
+     * GET method for allows edit selected car
+     * @param id if of selected car
+     * @param model actual web model
+     * @return redirect to carsDetails method
+     */
     @RequestMapping(value = "/editCar/{id}")
     public String editCar(Model model, @PathVariable("id")int id) {
         viewMode = ViewMode.EDIT;
@@ -160,6 +186,11 @@ public class CarsWebController extends BaseWebController {
         return "redirect:/carsDetails";
     }
 
+    /**
+     * GET method for allows view all details about selected car
+     * @param id if of selected car
+     * @return redirect to carsDetails method
+     */
     @RequestMapping(value = "/viewCar/{id}")
     public String viewCar(Model model, @PathVariable("id")int id) {
         viewMode = ViewMode.VIEW_ALL;
@@ -171,9 +202,17 @@ public class CarsWebController extends BaseWebController {
         return "redirect:/carsDetails";
     }
 
+    /**
+     * POST method for allows modify first part information about car
+     * @param name name id of add/edit car
+     * @param prodDate date of production add/edit car
+     * @param showroom showroom id of add/edit car
+     * @return redirect to carsDetails method
+     */
     @RequestMapping(value = "/modifyCar1", method = RequestMethod.POST)
-    public String modifyCar1(RedirectAttributes redirectAttributes, @RequestParam("name")int name,
-                             @RequestParam("prodDate")Date prodDate,@RequestParam("showroom")int showroom) {
+    public String modifyCar1(@RequestParam("name")int name,
+                             @RequestParam("prodDate")Date prodDate,
+                             @RequestParam("showroom")int showroom) {
         car.setCarName(dictionaryController.findOne(name));
         car.setProdDate(prodDate);
         car.setShowroom(showroomsController.findOne(showroom));
@@ -189,6 +228,13 @@ public class CarsWebController extends BaseWebController {
         return "redirect:/carsDetails";
     }
 
+    /**
+     * POST method that allows save car to database
+     * @param id id of edit/add car
+     * @param order parameter to check if car was ordered
+     * @param contract parameter contract to add car to actual contract if car was ordered from contract module
+     * @return redirect to cars method
+     */
     @RequestMapping(value = "/modifyCar", method = RequestMethod.POST)
     public String modifyCar(RedirectAttributes redirectAttributes, @RequestParam("id") Integer id,
                             @RequestParam(value="ordered", required = false)Integer order,
@@ -199,6 +245,7 @@ public class CarsWebController extends BaseWebController {
             } else if(viewMode == ViewMode.EDIT){
                 Car editCar = carsController.editCar(id,car.getCarName().getId(),car.getProdDate(),car.getShowroom().getId(),car.getCost(), order == null ? 0 : 1,accessorySet,previousAccessorySet);
             }
+            moduleOnlyCar = false;
             return "redirect:/cars";
         }
         System.out.println("car order: " + car.getOrdered());
@@ -213,8 +260,13 @@ public class CarsWebController extends BaseWebController {
         return "redirect:/cars";
     }
 
+    /**
+     * POST method for allows add accessory assigned to car
+     * @param accessoryId id of add accessory
+     * @return redirect to carsDetails method
+     */
     @RequestMapping(value ="/addAccessoryToCar", method = RequestMethod.POST)
-    public String newAccessory(RedirectAttributes redirectAttributes, @RequestParam("accessoryId")Integer accessoryId) {
+    public String newAccessory(@RequestParam("accessoryId")Integer accessoryId) {
         Accessory part = accessoriesController.findOne(accessoryId);
         accessorySet.add(part);
         Integer tmpCost = car.getCost() + part.getCost();
@@ -223,6 +275,11 @@ public class CarsWebController extends BaseWebController {
         return "redirect:/carsDetails";
     }
 
+    /**
+     * GET method for allows delete accessory assigned to car
+     * @param id if of delete accessory
+     * @return redirect to carsDetails method
+     */
     @RequestMapping(value ="/deleteChosenAccessories/{id}")
     public String deleteAccessory(@PathVariable("id")int id){
         Integer tmpCost = car.getCost();
@@ -236,6 +293,10 @@ public class CarsWebController extends BaseWebController {
         return "redirect:/carsDetails";
     }
 
+    /**
+     * GET method that allows discard all changes in select/add car
+     * @return redirect to cars method
+     */
     @RequestMapping(value="/resetCarsChange")
     public  String resetChange(){
         viewMode = ViewMode.DEFAULT;

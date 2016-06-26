@@ -36,6 +36,12 @@ public class AccessoriesWebController extends  BaseWebController {
     private boolean editPart1;
     private Set<Accessory> freeAccessory;
 
+    /**
+     * GET method for return accessories view
+     * show only free accessories (available in magazine)
+     * @param model actual web model
+     * @return accessories view
+     */
     @RequestMapping(value = "/accessories")
     public String getAccessories(Model model) {
         if (Data.user == null) {
@@ -61,6 +67,11 @@ public class AccessoriesWebController extends  BaseWebController {
         return "accessories";
     }
 
+    /**
+     * GET method that allows add new accessory
+     * @param model actual web model
+     * @return redirect to accessoryDetails method
+     */
     @RequestMapping(value ="/addNewAccessory")
     public String addNewAccessory(Model model){
         accessory = new Accessory();
@@ -70,12 +81,23 @@ public class AccessoriesWebController extends  BaseWebController {
         return "redirect:/accessoryDetails";
     }
 
+    /**
+     * GET method that allows delete accessory
+     * @param id id accessory with will be delete
+     * @return redirect to accessories view
+     */
     @RequestMapping(value = "/deleteAccessory/{id}")
     public String deleteAccessory(@PathVariable("id")int id) {
         accessoriesController.deleteAccessory(id);
         return "redirect:/accessories";
     }
 
+    /**
+     * GET method that allows edit accessory
+     * @param model actual web model
+     * @param id id accessory with will be edit
+     * @return redirect to accessoryDetails method
+     */
     @RequestMapping(value = "/editAccessory/{id}")
     public String editAccessory(Model model, @PathVariable("id")int id) {
         viewMode = ViewMode.EDIT;
@@ -84,6 +106,12 @@ public class AccessoriesWebController extends  BaseWebController {
         return "redirect:/accessoryDetails";
     }
 
+    /**
+     * GET method that allows view all details about accessory
+     * @param model actual web model
+     * @param id id accessory with will be view
+     * @return redirect to accessoryDetails method
+     */
     @RequestMapping(value = "/viewAccessory/{id}")
     public String viewAccessory(Model model, @PathVariable("id")int id) {
         viewMode = ViewMode.VIEW_ALL;
@@ -92,6 +120,11 @@ public class AccessoriesWebController extends  BaseWebController {
         return "redirect:/accessoryDetails";
     }
 
+    /**
+     * GET method that allows transfer all necessary information about accessories
+     * @param model actual web model
+     * @return accessories view
+     */
     @RequestMapping(value = "/accessoryDetails", method = RequestMethod.GET)
     public String accessoryDetails(Model model){
         refreshMenuPrivileges(model);
@@ -142,6 +175,11 @@ public class AccessoriesWebController extends  BaseWebController {
         return "accessories";
     }
 
+    /**
+     * GET method for allows modify accessory
+     * @param name name of edit/add accessory
+     * @return redirect to accessoryDetails method
+     */
     @RequestMapping(value = "/modifyAccessory", method = RequestMethod.POST)
     public String modifyAccessory(@RequestParam("name")int name){
         accessory.setAccessory(dictionaryController.findOne(name));
@@ -149,6 +187,13 @@ public class AccessoriesWebController extends  BaseWebController {
         return "redirect:/accessoryDetails";
     }
 
+    /**
+     * POST method that allows save accessory to database
+     * @param id id of edit/add accessory
+     * @param cost cost of edit/add accessory
+     * @param assemblyCost assemblyCost of edit/add accessory
+     * @return redirect to accessories method
+     */
     @RequestMapping(value = "/modifyAccessoryCost", method = RequestMethod.POST)
     public String modifyAccessoryCost(@RequestParam("id")int id,@RequestParam("cost")int cost,
                                       @RequestParam("assemblyCost")int assemblyCost){
@@ -160,6 +205,10 @@ public class AccessoriesWebController extends  BaseWebController {
         return "redirect:/accessories";
     }
 
+    /**
+     * GET method that allows discard all changes in select/add accessory
+     * @return redirect to accessories method
+     */
     @RequestMapping(value="/resetAccessoriesChange")
     public  String resetChange(){
         viewMode = ViewMode.DEFAULT;

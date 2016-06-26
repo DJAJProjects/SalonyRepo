@@ -26,6 +26,11 @@ public class PromotionWebController extends BaseWebController {
 
     private ViewMode viewMode;
 
+    /**
+     * GET method for return promotion view
+     * @param model actual web model
+     * @return promotion view
+     */
     @RequestMapping(value = "/promotions")
     public String getAccessories(Model model) {
         if (Data.user == null) {
@@ -48,6 +53,11 @@ public class PromotionWebController extends BaseWebController {
         return "promotions";
     }
 
+    /**
+     * GET method for allows add new promotion
+     * @param model actual web model
+     * @return redirect to promotions method
+     */
     @RequestMapping(value ="/addNewPromotion")
     public String addNewPromotion(Model model){
         refreshMenuPrivileges(model);
@@ -60,12 +70,23 @@ public class PromotionWebController extends BaseWebController {
         return "promotions";
     }
 
+    /**
+     * GET method for allows delete selected promotion
+     * @param id if of selected promotion
+     * @return redirect to promotions method
+     */
     @RequestMapping(value = "/deletePromotion/{id}")
     public String deleteAccessory(@PathVariable("id")int id) {
         promotionsController.deletePromotion(id);
         return "redirect:/promotions";
     }
 
+
+    /**
+     * GET method for allows edit selected promotion
+     * @param id if of selected promotion
+     * @return redirect to promotions method
+     */
     @RequestMapping(value = "/editPromotion/{id}")
     public String editPromotion(Model model, @PathVariable("id")int id) {
         refreshMenuPrivileges(model);
@@ -82,6 +103,11 @@ public class PromotionWebController extends BaseWebController {
         return "promotions";
     }
 
+    /**
+     * GET method for allows view all details about selected promotion
+     * @param id if of selected promotion
+     * @return redirect to promotions method
+     */
     @RequestMapping(value = "/viewPromotion/{id}")
     public String viewPromotion(Model model, @PathVariable("id")int id) {
         refreshMenuPrivileges(model);
@@ -98,6 +124,15 @@ public class PromotionWebController extends BaseWebController {
         return "promotions";
     }
 
+    /**
+     * POST method that allows save promotion to database
+     * @param id id of edit/add promotion
+     * @param percValue percent of cost reduction
+     * @param name promotion name
+     * @param dateStart start date of promotion
+     * @param dateEnd end date of promotion
+     * @return redirect to promotions method
+     */
     @RequestMapping(value = "/modifyPromotion", method = RequestMethod.POST)
     public String editPromotion(@RequestParam("id")int id, @RequestParam("percValue")int percValue, @RequestParam("name")String name,
                                 @RequestParam("dateStart")Date dateStart, @RequestParam("dateEnd") Date dateEnd) {
@@ -109,6 +144,10 @@ public class PromotionWebController extends BaseWebController {
         return "redirect:/promotions";
     }
 
+    /**
+     * GET method that allows discard all changes in select/add promotion
+     * @return redirect to promotions method
+     */
     @RequestMapping(value="/resetPromotionChange")
     public  String resetChange(){
         viewMode = ViewMode.DEFAULT;

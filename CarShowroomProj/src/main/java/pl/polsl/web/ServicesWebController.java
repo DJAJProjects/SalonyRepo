@@ -49,6 +49,11 @@ public class ServicesWebController extends BaseWebController {
     private Accessory previousAccessory;
     int previousServiceTypeId;
 
+    /**
+     * GET method for return services view
+     * @param model actual web model
+     * @return services view
+     */
     @RequestMapping(value = "/services")
     public String getServices(Model model) {
         if (Data.user == null) {
@@ -72,6 +77,11 @@ public class ServicesWebController extends BaseWebController {
         return "services";
     }
 
+    /**
+     * GET method that allows transfer all necessary information about services
+     * @param model actual web model
+     * @return services view
+     */
     @RequestMapping(value = "/servicesDetails", method = RequestMethod.GET)
     public String servicesDetails(Model model) {
         refreshMenuPrivileges(model);
@@ -171,6 +181,10 @@ public class ServicesWebController extends BaseWebController {
         return "services";
     }
 
+    /**
+     * GET method for allows add new service
+     * @return redirect to servicesDetails method
+     */
     @RequestMapping(value ="/addNewService")
     public String addNewService(Model model){
         viewMode = ViewMode.INSERT;
@@ -182,6 +196,11 @@ public class ServicesWebController extends BaseWebController {
         return "redirect:/servicesDetails";
     }
 
+    /**
+     * GET method for allows delete service
+     * @param id if of selected service
+     * @return redirect to servicesDetails method
+     */
     @RequestMapping(value = "/deleteService/{id}")
     public String deleteService(@PathVariable("id")int id) {
         servicesController.deleteService(id);
@@ -190,6 +209,11 @@ public class ServicesWebController extends BaseWebController {
         return "redirect:/servicesDetails";
     }
 
+    /**
+     * GET method for allows edit service
+     * @param id if of selected service
+     * @return redirect to servicesDetails method
+     */
     @RequestMapping(value = "/editService/{id}")
     public String editService(Model model, @PathVariable("id")int id) {
         viewMode = ViewMode.EDIT;
@@ -202,6 +226,11 @@ public class ServicesWebController extends BaseWebController {
         return "redirect:/servicesDetails";
     }
 
+    /**
+     * GET method for allows view all details about selected service
+     * @param id if of selected service
+     * @return redirect to servicesDetails method
+     */
     @RequestMapping(value = "/viewService/{id}")
     public String viewService(Model model, @PathVariable("id")int id) {
         viewMode = ViewMode.VIEW_ALL;
@@ -213,6 +242,12 @@ public class ServicesWebController extends BaseWebController {
         return "redirect:/servicesDetails";
     }
 
+    /**
+     * POST method that allows save service type and car to temporary variable
+     * @param type service type
+     * @param idCar id car that will be serviced
+     * @return redirect to servicesDetails method
+     */
     @RequestMapping(value = "/modifyServiceType", method = RequestMethod.POST)
     public String modifyService1(Model model, @RequestParam("type") int type, @RequestParam("idCar")int idCar ){
         if(viewMode == ViewMode.EDIT) {
@@ -238,6 +273,11 @@ public class ServicesWebController extends BaseWebController {
         return "redirect:/servicesDetails";
     }
 
+    /**
+     * POST method that allows save service object to temporary variable
+     * @param idServiceObject id of service object
+     * @return redirect to servicesDetails method
+     */
     @RequestMapping(value = "/modifyServiceObject", method = RequestMethod.POST)
     public String modifyService2(@RequestParam("idServiceObject")int idServiceObject) {
         if(accessoryCost) {
@@ -258,6 +298,13 @@ public class ServicesWebController extends BaseWebController {
         return "redirect:/servicesDetails";
     }
 
+    /**
+     * POST method that allows save service to database
+     * @param id id of edit/add promotion
+     * @param idServiceman id of serviceman that is responsible for service
+     * @param dateConducted date of service
+     * @return redirect to services method
+     */
     @RequestMapping(value = "/modifyService", method = RequestMethod.POST)
     public String modifyService(@RequestParam("id") int id, @RequestParam("idServiceman")int idServiceman,
                                 @RequestParam("dateConducted")Date dateConducted) {
@@ -276,6 +323,10 @@ public class ServicesWebController extends BaseWebController {
         return "redirect:/services";
     }
 
+    /**
+     * GET method that allows discard all changes in select/add service
+     * @return redirect to services method
+     */
     @RequestMapping(value="/resetServiceChange")
     public  String resetChange(){
         viewMode = ViewMode.DEFAULT;

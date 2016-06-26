@@ -69,7 +69,11 @@ public class HelpWebController extends BaseWebController {
 //        return helpList;
 //    }
 
-
+    /**
+     * method that allows get all details about selected module, from xml file
+     * @param moduleName name of selected module
+     * @return Help object that contains all necessary information
+     */
     private Help getDescription(String moduleName) throws Exception {
         Help help = new Help();
         Resource resource = new ClassPathResource("static/help.xml");
@@ -98,6 +102,10 @@ public class HelpWebController extends BaseWebController {
         return null;
     }
 
+    /**
+     * method that allows get list all available modules for current user
+     * @return list all available modules for current user
+     */
     private List<Dictionary> getAvaiableModules() {
         List<Dictionary> dictionaryList = dictionaryController.findAllModules();
 
@@ -116,6 +124,11 @@ public class HelpWebController extends BaseWebController {
         return avaiableList;
     }
 
+    /**
+     * GET method for return help view
+     * @param model actual web model
+     * @return help view
+     */
     @RequestMapping(value = "/help")
     public String getCars(Model model) {
         model.addAttribute("module", getAvaiableModules());
@@ -124,6 +137,12 @@ public class HelpWebController extends BaseWebController {
         return "help";
     }
 
+    /**
+     * GET method for get information about selected module
+     * @param model actual web model
+     * @param moduleName name of selected module
+     * @return redirect to helpDetails method
+     */
     @RequestMapping(value = "/moduleDetails/{moduleName}")
     public String moduleDetails(Model model, @PathVariable("moduleName") String moduleName) {
         analisePrivileges(moduleName);
@@ -136,6 +155,11 @@ public class HelpWebController extends BaseWebController {
         return "redirect:/helpDetails";
     }
 
+    /**
+     * GET method for transfer information about selected module
+     * @param model actual web model
+     * @return help view
+     */
     @RequestMapping(value = "/helpDetails", method = RequestMethod.GET)
     public String helpDetails(Model model){
         refreshMenuPrivileges(model);
@@ -148,6 +172,10 @@ public class HelpWebController extends BaseWebController {
         return "help";
     }
 
+    /**
+     * GET method that allows return to previous view
+     * @return redirect to help method
+     */
     @RequestMapping(value="/resetView")
     public  String resetView(){
         viewMode = ViewMode.DEFAULT;
