@@ -41,7 +41,6 @@ public class CarsWebController extends BaseWebController {
     private Car car;
     private boolean flag;
     private boolean orderedCar;
-    private boolean moduleOnlyCar;
 
     /**
      * GET method for return cars view
@@ -65,7 +64,6 @@ public class CarsWebController extends BaseWebController {
         flag = false;
         orderedCar = false;
         accessorySet.clear();
-        moduleOnlyCar = true;
         analisePrivileges(Data.carsModuleValue);
         model.addAttribute("insertEnabled", insertEnabled);
         model.addAttribute("updateEnabled", updateEnabled);
@@ -239,13 +237,12 @@ public class CarsWebController extends BaseWebController {
     public String modifyCar(RedirectAttributes redirectAttributes, @RequestParam("id") Integer id,
                             @RequestParam(value="ordered", required = false)Integer order,
                             @RequestParam(value="contract", required = false)Integer contract) {
-        if(moduleOnlyCar) {
+        if(!orderedCar) {
             if(viewMode == ViewMode.INSERT){
                 Car addCar = carsController.addCar(car.getCarName().getId(),car.getProdDate(),car.getShowroom().getId(),car.getCost(),order == null ? 0 : 1,null,accessorySet);
             } else if(viewMode == ViewMode.EDIT){
                 Car editCar = carsController.editCar(id,car.getCarName().getId(),car.getProdDate(),car.getShowroom().getId(),car.getCost(), order == null ? 0 : 1,accessorySet,previousAccessorySet);
             }
-            moduleOnlyCar = false;
             return "redirect:/cars";
         }
         System.out.println("car order: " + car.getOrdered());
