@@ -2,22 +2,74 @@ package pl.polsl.model;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.util.Set;
 
 /**
- * Created by Kuba on 04.04.2016.
+ * Model class for worker
+ * @author Dominika Błasiak
+ * @version 1.0
  */
 @Entity
 @Table(name="workers", schema = "salonydb")
 public class Worker {
+    /**
+     * Worker id
+     */
     private int id;
-    private int idShowroom;
+    /**
+     * Worker name
+     */
     private String name;
+    /**
+     * Worker surname
+     */
     private String surname;
-    private String position;
-    private Integer payment;
+    /**
+     * Worker position
+     */
+    private Dictionary position;
+    /**
+     * Worker showroom where worker works
+     */
+    private Showroom showroom;
+    /**
+     * Worker payment
+     */
+    private int payment;
+    /**
+     * Worker date hired
+     */
     private Date dateHired;
+    /**
+     * Set of cars which is related to worker
+     */
+    private Set<Contract> contractList;
+    /**
+     * Worker login
+     */
+    private String login;
+    /**
+     * Worker password
+     */
+    private String password;
+
+    public Worker(String name, String surname, int payment, Date dateHired, Dictionary position, Showroom showroom, String login, String password) {
+       this.name = name;
+        this.surname = surname;
+        this.payment=payment;
+        this.position = position;
+        this.showroom = showroom;
+        this.login = login;
+        this.password = password;
+        this.dateHired = dateHired;
+    }
+
+    public Worker() {
+
+    }
 
     @Id
+    @GeneratedValue
     @Column(name = "id")
     public int getId() {
         return id;
@@ -27,18 +79,18 @@ public class Worker {
         this.id = id;
     }
 
-    @Basic
-    @Column(name = "id_showroom")
-    public int getIdShowroom() {
-        return idShowroom;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_showroom")
+    public Showroom getShowroom() {
+        return showroom;
+    }
+    public void setShowroom(Showroom showroom) {
+        this.showroom = showroom;
     }
 
-    public void setIdShowroom(int idShowroom) {
-        this.idShowroom = idShowroom;
-    }
-
     @Basic
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     public String getName() {
         return name;
     }
@@ -48,7 +100,7 @@ public class Worker {
     }
 
     @Basic
-    @Column(name = "surname")
+    @Column(name = "surname",nullable = false)
     public String getSurname() {
         return surname;
     }
@@ -57,28 +109,28 @@ public class Worker {
         this.surname = surname;
     }
 
-    @Basic
-    @Column(name = "position")
-    public String getPosition() {
+    @ManyToOne
+    @JoinColumn(name = "id_position")
+    public Dictionary getPosition() {
         return position;
     }
 
-    public void setPosition(String position) {
+    public void setPosition(Dictionary position) {
         this.position = position;
     }
 
     @Basic
-    @Column(name = "payment")
-    public Integer getPayment() {
+    @Column(name = "payment",nullable = false)
+    public int getPayment() {
         return payment;
     }
 
-    public void setPayment(Integer payment) {
+    public void setPayment(int payment) {
         this.payment = payment;
     }
 
     @Basic
-    @Column(name = "dateHired")
+    @Column(name = "date_hired",nullable = false)
     public Date getDateHired() {
         return dateHired;
     }
@@ -87,5 +139,31 @@ public class Worker {
         this.dateHired = dateHired;
     }
 
+    @OneToMany (mappedBy="worker")
+    public Set<Contract> getContractList() {
+        return contractList;
+    }
+    public void setContractList(Set<Contract> contractList) {
+        this.contractList = contractList;
+    }
 
+    @Basic
+    @Column(nullable = false, unique = true)
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    @Basic
+    @Column(nullable = false)
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }

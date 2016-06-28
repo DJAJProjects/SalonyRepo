@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:layout="http://www.w3.org/1999/xhtml" layout:decorator="index"
+      xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Faktury</title>
+</head>
+<body>
+<div layout:fragment="main" style="margin: 0 auto; max-width: 1000px;">
+    <div>
+        <div class="panel panel-default">
+            <!-- Default panel contents -->
+            <div class="panel-heading">Wystawione faktury:</div>
+
+            <!-- Table -->
+            <table class="table">
+                <!-- head row -->
+                <tr style="font-weight: bold;">
+                    <td class="col-md-2">Typ</td>
+                    <td class="col-md-2">Sprzedający</td>
+                    <td class="col-md-2">Kontrahent</td>
+                    <td class="col-md-2">Data utworzenia</td>
+                    <td class="col-md-2">Data sprzedaży</td>
+                    <td class="col-md-2">Kwota</td>
+                    <td class="col-md-2">Termin płatności</td>
+                    <td class="col-md-2">Forma płatności</td>
+                    <td class="col-md-2">Usuń</td>
+                </tr>
+
+                <tr th:each="invoice : ${invoices}">
+                    <td th:text="${invoice.invoiceType.value}"></td>
+                    <td th:text="${invoice.contract.worker.surname}"></td>
+                    <td th:text="${invoice.contract.contractor.surname}"></td>
+                    <td th:text="${invoice.dateCreated}"></td>
+                    <td th:text="${invoice.dateSold}"></td>
+                    <td th:text="${invoice.contract.totalCost}"></td>
+                    <td th:text="${invoice.paymentDeadline}"></td>
+                    <td th:text="${invoice.paymentForm.value}"></td>
+                    <td><a href="invoices.html" th:href="@{'/deleteInvoice/'+${invoice.id}}"><span class="glyphicon glyphicon-remove" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Usuń"></span></a></td>
+                    <td><a href="invoice_generate.html" th:href="@{'/viewInvoice/'+${invoice.id}}"><span class="glyphicon glyphicon-eye-open" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Usuń"></span></a></td>
+                </tr>
+
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>

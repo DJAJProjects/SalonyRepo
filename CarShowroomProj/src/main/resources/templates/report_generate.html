@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="pl" xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <title>RAPORT</title>
+    <link rel="stylesheet" href="http://cdn.jsdelivr.net/webjars/bootstrap/3.2.0/css/bootstrap.min.css"
+          th:href="@{/bootstrap/css/bootstrap.min.css}"/>
+    <script src="http://cdn.jsdelivr.net/webjars/bootstrap/3.2.0/js/bootstrap.min.js"
+            th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+
+    <link rel="stylesheet" type="text/css" href="../static/styles/style.css" th:href="@{/../styles/style.css}"/>
+    <link rel="stylesheet" type="text/css" href="../static/styles/bootstrap_style.css" th:href="@{/../styles/bootstrap_style.css}"/>
+    <script type="text/javascript" src="../static/javascript/validation.js" th:src="@{/../javascript/validation.js}"></script>
+    <script type="text/javascript" src="../static/jquery/jquery.tablesorter.min.js"  th:src="@{/../jquery/jquery.tablesorter.min.js}"></script>
+</head>
+<body>
+<br/>
+<br/>
+<form class="form-horizontal" role="form" method="get" action="/reports" th:object="${report}">
+    <input type="hidden" style="display: none;" name="id" th:field="*{id}"/>
+            <input th:field="*{name}"  name="name" type="hidden" class="form-control" placeholder="Wprowadź nazwę raportu"/>
+    <input th:field="*{showroom}"  name="name" type="hidden" class="form-control" placeholder="Wprowadź nazwę raportu"/>
+            <input th:value="${dateBeggining}"   name="dateBeggining" type="hidden" class="form-control" placeholder="Wprowadź datę początkową" required="required"/>
+            <input th:value="${dateEnd}" name="dateEnd"  type="hidden" class="form-control" placeholder="Wprowadź datę końcową" required="required"/>
+            <textarea th:field="*{content}" rows="10"  name="content" class="form-control" />
+            <button type="submit" class="btn" ></button>
+</form>
+</body>
+</html>

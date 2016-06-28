@@ -1,6 +1,7 @@
 package pl.polsl.model;
 
 import javax.persistence.*;
+import java.util.Set;
 
 /**
  * Created by Kuba on 04.04.2016.
@@ -14,11 +15,34 @@ public class Contractor {
     private String pesel;
     private String nip;
     private String regon;
-    private Integer idCity;
-    private Integer idCountry;
+    private Dictionary city;
+    private Dictionary country;
     private String street;
+    private Set<Contract> contract;
+
+
+    public Contractor(){}
+
+    public Contractor(String name,
+                      String surname,
+                      String pesel,
+                      String nip,
+                      String regon,
+                      Dictionary city,
+                      Dictionary country,
+                      String street){
+        this.name = name;
+        this.surname = surname;
+        this.pesel = pesel;
+        this.nip = nip;
+        this.regon = regon;
+        this.city = city;
+        this.country = country;
+        this.street = street;
+    }
 
     @Id
+    @GeneratedValue
     @Column(name = "id")
     public int getId() {
         return id;
@@ -78,24 +102,24 @@ public class Contractor {
         this.regon = regon;
     }
 
-    @Basic
-    @Column(name = "id_city")
-    public Integer getIdCity() {
-        return idCity;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_city")
+    public Dictionary getCity() {
+        return city;
     }
 
-    public void setIdCity(Integer idCity) {
-        this.idCity = idCity;
+    public void setCity(Dictionary city) {
+        this.city = city;
     }
 
-    @Basic
-    @Column(name = "id_country")
-    public Integer getIdCountry() {
-        return idCountry;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_country")
+    public Dictionary getCountry() {
+        return country;
     }
 
-    public void setIdCountry(Integer idCountry) {
-        this.idCountry = idCountry;
+    public void setCountry(Dictionary country) {
+        this.country = country;
     }
 
     @Basic
@@ -108,5 +132,9 @@ public class Contractor {
         this.street = street;
     }
 
+    @OneToMany(mappedBy="contractor")
+    public Set<Contract> getContract() {return contract;}
+
+    public void setContract(Set<Contract> contract){this.contract = contract;};
 
 }

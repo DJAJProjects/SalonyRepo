@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml" layout:decorator="index">
+<head>
+    <title>Dodatkowe wyposażenie</title>
+</head>
+
+<body>
+<div layout:fragment="main" style="margin: 0 auto; max-width: 1000px;">
+    <br/>
+    <div th:if="${insertEnabled}">
+        <div class="btn-group" role="group" aria-label="..." style="margin: 20px 0;">
+            <a href="accessories.html" th:href="@{/addNewAccessory}+'#anch'"><button type="button" class="btn">Dodaj akcesorium</button></a>
+        </div>
+    </div>
+    <div>
+        <div class="panel">
+            <!-- Default panel contents -->
+            <div class="panel-heading"><b>DOSTĘPNE AKCESORIA</b>
+                <div class="form-group pull-right">
+                    <input type="text" class="search form-control" placeholder="Wyszukaj w tabeli"/>
+                </div>
+                <span class="counter pull-right"></span>
+            </div>
+
+            <!-- Table of dictionary data-->
+            <table class="table tablesorter table-hover results" id="mytable">
+                <!-- head row -->
+                <thead>
+                <tr style="font-weight: bold;">
+                    <td class="col-md-3 change-on-hand">Nazwa</td>
+                    <td class="con-md-3 change-on-hand">Cena [PLN]</td>
+                    <td class="con-md-3 change-on-hand">Koszt montażu</td>
+                    <td th:if="${updateEnabled}" class="col-md-1 center-item">Edytuj</td>
+                    <td th:if="${deleteEnabled}" class="col-md-1 center-item">Usuń</td>
+                    <td class="col-md-1 center-item">Podgląd</td>
+                </tr>
+                <!-- Show when result is not found -->
+                <tr class="no-result">
+                    <td colspan="6"><b>Brak wyników wyszukiwania</b></td>
+                </tr>
+                </thead>
+                <!-- body row -->
+                <tbody>
+                <tr th:each="accessory : ${accessories}">
+                    <td th:text="${accessory.accessory.value}"></td>
+                    <td th:text="${accessory.cost}"></td>
+                    <td th:text="${accessory.assemblyCost}"></td>
+                    <td th:if="${updateEnabled}" class="center-item"><a href="accessories.html" th:href="@{'/editAccessory/'+${accessory.id}+'#anch'}"><span class="glyphicon glyphicon-edit" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Edytuj" style="height:100%;width:100%"></span></a></td>
+                    <td th:if="${deleteEnabled}" class="center-item"><a href="accessories.html" th:href="@{'/deleteAccessory/'+${accessory.id}}"><span class="glyphicon glyphicon-remove" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Usuń" style="height:100%;width:100%"></span></a></td>
+                    <td class="center-item"><a href="accessories.html" th:href="@{'/viewAccessory/'+${accessory.id}+'#anch'}"><span class="glyphicon glyphicon-eye-open" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Podgląd" style="height:100%;width:100%"></span></a></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <!--Modify accessory-->
+    <a name="anch"></a>
+    <form th:if="${controlsPanelVisible}" class="form-horizontal" role="form" method="post" action="/modifyAccessory#anch" th:object="${accessory}">
+        <div class="form-group">
+            <label class="control-label col-sm-offset-2 col-sm-2">Nazwa:</label>
+            <div class="col-sm-4">
+                <select type="text" name="name" list="accessoryList" required="required" class="form-control" aria-label="...">
+                    <datalist id="accessoryList">
+                        <option th:disabled="${controlsDisabledPart1}"></option>
+                        <option th:disabled="${controlsDisabledPart1}" th:each="accessoryName : ${accessoryNames}" th:value="${accessoryName.id}" th:text="${accessoryName.value}" th:selected="${accessoryName.id}==${accessoryNameId}"></option>
+                    </datalist>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+        <div class="col-sm-offset-4 col-sm-10">
+            <button th:disabled="${controlsDisabledPart1}" type="submit" class="btn">Ok</button>
+        </div>
+    </div>
+    </form>
+    <form th:if="${controlsPanelVisible}" class="form-horizontal" role="form" method="post" action="/modifyAccessoryCost#anch" th:object="${accessory}">
+        <div class="form-group">
+            <label class="control-label col-sm-offset-2 col-sm-2">Cena [PLN]:</label>
+            <div class="col-sm-4">
+                <select type="text" name="cost" placeholder="Wybierz cenę" list="costList" required="required" class="form-control" aria-label="...">
+                    <datalist id="costList">
+                        <option th:disabled="${controlsDisabledPart2}"></option>
+                        <option th:disabled="${controlsDisabledPart2}" th:each="c : ${costList}" th:value="${c}" th:text="${c}" th:selected="${c}==${cost}"></option>
+                    </datalist>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-offset-2 col-sm-2">Koszt montażu [PLN]:</label>
+            <div class="col-sm-4">
+                <select type="text" name="assemblyCost" list="assemblyCostList" required="required" class="form-control" aria-label="...">
+                    <datalist id="assemblyCostList">
+                        <option th:disabled="${controlsDisabledPart2}"></option>
+                        <option th:disabled="${controlsDisabledPart2}" th:each="c : ${assemblyCostList}" th:value="${c}" th:text="${c}" th:selected="${c}==${assemblyCost}"></option>
+                    </datalist>
+                </select>
+            </div>
+        </div>
+        <input type="hidden" style="display: none;" name="id" th:field="*{id}"/>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" th:disabled="${controlsDisabledPart2}" class="btn btn-default" >Akceptuj</button>
+                <!--<button type="reset" th:disabled="${controlsDisabledPart2}" class="btn btn-default">Anuluj zmiany</button>-->
+                <a href="accessories.html" th:href="@{/resetAccessoriesChange}">
+                    <button type="button" th:disabled="${controlsDisabled}" class="btn">Anuluj zmiany</button>
+                </a>
+            </div>
+        </div>
+    </form>
+    <br/>
+</div>
+</body>
+</html>

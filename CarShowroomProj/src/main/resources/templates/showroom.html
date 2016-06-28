@@ -1,41 +1,137 @@
 <!DOCTYPE html>
-<html xmlns:layout="http://www.w3.org/1999/xhtml" layout:decorator="index">
+<html xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml" layout:decorator="index">
 <head>
     <title>Salony</title>
+    <script type="text/javascript">
+    function print_error() {
+        alert("Salon jest powiązany z innymi rekordami. Nie mozna go usunąć");
+    }
+    function print_error_director() {
+        alert("Nie ma wolnych dyrektorów, którzy mogliby zaopiekować się salonem");
+    }
+</script>
 </head>
-<body>
+<body  th:attr="onload=${deleteShowroomError!=null ? 'print_error()' : null}">
 <div layout:fragment="main" style="margin: 0 auto; max-width: 1000px;">
-    <div class="btn-group" role="group" aria-label="..." style="margin: 20px 0;">
-        <button type="button" class="btn btn-default"><a href="showroom_add.html" th:href="@{/addShowroom}">Dodaj salon</a></button>
-    </div>
-    <div>
-        <div class="panel panel-default">
-            <!-- Default panel contents -->
-            <div class="panel-heading">Lista salonów</div>
+    <br/>
+    <div th:if="${insertEnabled}" >
+        <div class="btn-group" role="group" aria-label="..." style="margin: 20px 0;">
+            <a th:if="${directorCount &gt; 0}" th:href="@{/addShowroom#anch}"><button type="button" class="btn">Dodaj salon</button></a>
+            <a th:unless="${directorCount &gt; 0}"><button type="button" class="btn" onclick="print_error_director()">Dodaj salon</button></a>
 
-            <!-- Table -->
-            <table class="table">
-                <!-- head row -->
-                <tr style="font-weight: bold;">
-                    <td class="col-md-1">#</td>
-                    <td class="col-md-3">Miasto</td>
-                    <td class="col-md-3">Ulica</td>
-                    <td class="col-md-2">Państwo</td>
-                    <td class="col-md-1">Edytuj</td>
-                    <td class="col-md-1">Usuń</td>
-                </tr>
-
-                <tr th:each="showroom,stat : ${showrooms}">
-                    <td th:text="${stat.count}">lala</td>
-                    <td th:text="${showroom.idCity}">lala</td>
-                    <td th:text="${showroom.street}">lala</td>
-                    <td th:text="${showroom.idCountry}">lala</td>
-                    <td><a href="showroom.html" th:href="@{'/editShowroom/'+${showroom.id}}" ><span class="glyphicon glyphicon-pencil" aria-hidden="true">lala</span></a></td>
-                    <td><a href="showroom.html" th:href="@{'/deleteShowroom/'+${showroom.id}}"><span class="glyphicon glyphicon-minus" aria-hidden="true">lala</span></a></td>
-                </tr>
-            </table>
         </div>
     </div>
+    <div class="panel">
+        <!-- Default panel contents -->
+        <div class="panel-heading"><b>LISTA SALONÓW</b>
+            <div class="form-group pull-right">
+                <input type="text" class="search form-control" placeholder="Wyszukaj w tabeli"/>
+            </div>
+            <span class="counter pull-right"></span>
+        </div>
+        <!-- Table of showrooms -->
+        <table class="table tablesorter table-hover results" id="mytable">
+            <!-- head row -->
+            <thead>
+                <tr style="font-weight: bold; margin: 0 auto;">
+                    <td class="col-md-1 change-on-hand center-item">#</td>
+                    <td class="col-md-2 change-on-hand">Nazwa</td>
+                    <td class="col-md-2 change-on-hand">Miasto</td>
+                    <td class="col-md-2 change-on-hand">Państwo</td>
+                    <td class="col-md-2 change-on-hand">Kierownik</td>
+                    <td th:if="${updateEnabled}" class="col-md-1 center-item">Edytuj</td>
+                    <td th:if="${deleteEnabled}" class="col-md-1 center-item">Usuń</td>
+                    <td class="col-md-1 center-item">Podgląd</td>
+                </tr>
+                <!-- Show when result not found -->
+                <tr class="no-result">
+                    <td colspan="8"><b>Brak wyników wyszukiwania</b></td>
+                </tr>
+            </thead>
+            <!-- body row -->
+            <tbody>
+                <tr th:each="showroom,stat : ${showrooms}">
+                    <td th:text="${stat.count}" class="center-item"></td>
+                    <td th:text="${showroom.name}"></td>
+                    <td th:text="${showroom.city.value}"></td>
+                    <td th:text="${showroom.country.value}"></td>
+                    <td th:text="${showroom.director.surname}"></td>
+                    <td class="center-item" th:if="${updateEnabled}">
+                        <a th:href="@{'/editShowroom/'+${showroom.id}+'#anch'}" >
+                            <span class="glyphicon glyphicon-edit" aria-hidden="true" style="height:100%;width:100%" data-toggle="tooltip" data-placement="top" title="Edytuj">
+                            </span>
+                        </a>
+                    </td>
+                    <td class="center-item" th:if="${deleteEnabled}">
+                        <a th:href="@{'/deleteShowroom/'+${showroom.id}}" onclick="return confirm_delete(this);"><!---->
+                            <span class="glyphicon glyphicon-remove" aria-hidden="true" style="height:100%;width:100%" data-toggle="tooltip" data-placement="top" title="Usuń"></span>
+                        </a>
+                    </td>
+                    <td class="center-item">
+                        <a th:href="@{'/viewShowroom/'+${showroom.id}+'#anch'}">
+                            <span class="glyphicon glyphicon-eye-open" aria-hidden="true" style="height:100%;width:100%" data-toggle="tooltip" data-placement="top" title="Podgląd">
+                            </span>
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <br/>
+    <a th:if="${controlsPanelVisible}" name="anch"></a>
+    <!--edit, edd, display showroom-->
+    <form th:if="${controlsPanelVisible}" class="form-horizontal" role="form" method="post" action="/acceptModifyShowroom" th:object="${showroom}">
+        <input type="hidden" style="display: none;" name="id" th:field="*{id}"/>
+        <div class="form-group">
+            <label class="control-label col-sm-offset-2 col-sm-2">Nazwa:</label>
+            <div class="col-sm-4">
+                <input th:disabled="${controlsDisabled}" th:field="*{name}" name="name" type="text" class="form-control" placeholder="Wprowadź nazwę salonu, min. 3 znaki" required="required" pattern=".{3,}"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-offset-2 col-sm-2">Ulica:</label>
+            <div class="col-sm-4">
+                <input th:disabled="${controlsDisabled}" th:field="*{street}" name="street" type="text" class="form-control" placeholder="Wprowadź ulicę, min 3 znaki" required="required" pattern=".{3,}"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-offset-2 col-sm-2">Miasto:</label>
+            <div class="col-sm-4">
+                <select th:disabled="${controlsDisabled}" name="city" class="form-control" aria-label="..." required="required">
+                    <option value="" text="Wybierz miasto"></option>
+                    <option  th:each="c : ${cities}" th:value="${c.id}" th:text="${c.value}" th:selected="${c.id}==${cityId}"></option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-offset-2 col-sm-2">Państwo:</label>
+            <div class="col-sm-4">
+                <select th:disabled="${controlsDisabled}" name="country" class="form-control" aria-label="..." required="required">
+                    <option value="" text="Wybierz państwo"></option>
+                    <option th:each="c : ${countries}" th:value="${c.id}" th:text="${c.value}" th:selected="${c.id}==${countryId}"></option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-offset-2 col-sm-2">Kierownik:</label>
+            <div class="col-sm-4">
+                <select th:disabled="${controlsDisabled}" name="director" class="form-control" aria-label="..." required="required" >
+                    <option value="" text="Wybierz kierownika"></option>
+                    <option th:each="d : ${directors}" th:value="${d.id}" th:text="${d.surname}" th:selected="${d.id}==${directorId}"></option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-4 col-sm-10">
+                <button type="submit" th:disabled="${controlsDisabled}" class="btn" >Akceptuj</button>
+                <a href="worker.html" th:href="@{/resetShowroomChange}">
+                    <button type="button" th:disabled="${controlsDisabled}" class="btn">Anuluj zmiany</button>
+                </a>
+            </div>
+        </div>
+        <div th:text="${error != null} ? ${error}" class="label label-danger"></div>
+    </form>
+    <br/>
 </div>
 </body>
 </html>

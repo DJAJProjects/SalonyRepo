@@ -1,1 +1,2 @@
-# SalonyRepo
+# SalonyRepo - projekt
+

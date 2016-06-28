@@ -6,36 +6,94 @@
 <body>
 <div layout:fragment="main" style="margin: 0 auto; max-width: 1000px;">
     <div class="btn-group" role="group" aria-label="..." style="margin: 20px 0;">
-        <button type="button" class="btn btn-default"><a href="showroom_add.html" th:href="@{/addShowroom}">Dodaj salon</a></button>
+        <a th:href="@{/addShowroom#anch}"><button type="button" class="btn ">Dodaj salon</button></a>
     </div>
     <div>
-        <div class="panel panel-default">
+        <div class="panel">
             <!-- Default panel contents -->
             <div class="panel-heading">Lista salonów</div>
-
             <!-- Table -->
             <table class="table">
                 <!-- head row -->
                 <tr style="font-weight: bold;">
                     <td class="col-md-1">#</td>
-                    <td class="col-md-3">Miasto</td>
+                    <td class="col-md-3">Nazwa</td>
+                    <td class="col-md-2">Miasto</td>
                     <td class="col-md-3">Ulica</td>
                     <td class="col-md-2">Państwo</td>
+                    <td class="col-md-3">Kierownik</td>
                     <td class="col-md-1">Edytuj</td>
                     <td class="col-md-1">Usuń</td>
+                    <td class="col-md-1">Podgląd</td>
                 </tr>
 
                 <tr th:each="showroom,stat : ${showrooms}">
-                    <td th:text="${stat.count}">lala</td>
-                    <td th:text="${showroom.idCity}">lala</td>
-                    <td th:text="${showroom.street}">lala</td>
-                    <td th:text="${showroom.idCountry}">lala</td>
-                    <td><a href="showroom.html" th:href="@{'/editShowroom/'+${showroom.id}}" ><span class="glyphicon glyphicon-pencil" aria-hidden="true">lala</span></a></td>
-                    <td><a href="showroom.html" th:href="@{'/deleteShowroom/'+${showroom.id}}"><span class="glyphicon glyphicon-minus" aria-hidden="true">lala</span></a></td>
+                    <td th:text="${stat.count}"></td>
+                    <td th:text="${showroom.name}"></td>
+                    <td th:text="${showroom.city.value}"></td>
+                    <td th:text="${showroom.street}"></td>
+                    <td th:text="${showroom.country.value}"></td>
+                    <td th:text="${showroom.director.surname}"></td>
+                    <td><a th:href="@{'/editShowroom/'+${showroom.id}+'#anch'}" ><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a></td>
+                    <td><a th:href="@{'/deleteShowroom/'+${showroom.id}}"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a></td>
+                    <td><a th:href="@{'/viewShowroom/'+${showroom.id}+'#anch'}"><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span></a></td>
                 </tr>
             </table>
         </div>
     </div>
+    <br/>
+    <!--Add showroom-->
+    <a name="anch"></a>
+    <!--Edit, Add, Display showroom-->
+    <form th:if="${controlsPanelVisible}" class="form-horizontal" role="form" method="post" action="/acceptModifyShowroom" th:object="${showroom}">
+        <input type="hidden" style="display: none;" name="id" th:field="*{id}"/>
+        <div class="form-group">
+            <label class="control-label col-sm-2">Nazwa:</label>
+            <div class="col-sm-10">
+                <input th:disabled="${controlsDisabled}" th:field="*{name}" name="name" type="text" class="form-control" placeholder="Wprowadź nazwę salonu" required="required"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-2">Ulica:</label>
+            <div class="col-sm-10">
+                <input th:disabled="${controlsDisabled}" th:field="*{street}" name="street" type="text" class="form-control" placeholder="Wprowadź adres" required="required"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-2">Miasto:</label>
+            <div class="col-sm-10">
+                <select th:disabled="${controlsDisabled}" name="city" class="form-control" aria-label="..." required="required">
+                    <option value="" text="Wybierz miasto"></option>
+                    <option  th:each="c : ${cities}" th:value="${c.id}" th:text="${c.value}" th:selected="${c.id}==${cityId}"></option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-2">Państwo:</label>
+            <div class="col-sm-10">
+                <select th:disabled="${controlsDisabled}" name="country" class="form-control" aria-label="..." required="required">
+                    <option value="" text="Wybierz państwo"></option>
+                    <option th:each="c : ${countries}" th:value="${c.id}" th:text="${c.value}" th:selected="${c.id}==${countryId}"></option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-2">Kierownik:</label>
+            <div class="col-sm-10">
+                <select th:disabled="${controlsDisabled}" name="director" class="form-control" aria-label="..." required="required" >
+                    <option value="" text="Wybierz kierownika"></option>
+                    <option th:each="d : ${directors}" th:value="${d.id}" th:text="${d.surname}" th:selected="${d.id}==${directorId}"></option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" th:disabled="${controlsDisabled}" class="btn" >Akceptuj</button>
+                <button type="reset" th:disabled="${controlsDisabled}" class="btn">Anuluj zmiany</button>
+            </div>
+        </div>
+    </form>
+    <br/>
 </div>
 </body>
 </html>

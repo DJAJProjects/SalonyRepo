@@ -1,1 +1,4 @@
  CarShowroomProj/build/
+*.xml
+*.xml
+CarShowroomProj/src/main/resources/application.properties

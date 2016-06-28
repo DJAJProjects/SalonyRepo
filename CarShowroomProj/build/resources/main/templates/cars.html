@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:layout="http://www.w3.org/1999/xhtml" layout:decorator="index"
+      xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Samochody</title>
+</head>
+<body>
+<div layout:fragment="main" style="margin: 0 auto; max-width: 1000px;">
+    <div class="btn-group" role="group" aria-label="..." style="margin: 20px 0;">
+        <button type="button" class="btn btn-default"><a href="cars.html" th:href="@{/addNewCar}+'#anch'">Dodaj samochód</a></button>
+    </div>
+    <div>
+        <div class="panel panel-default">
+            <!-- Default panel contents -->
+            <div class="panel-heading panel-heading-34">Dostępne samochody
+                <div class="form-group pull-right">
+                    <input type="text" class="search form-control" placeholder="Wyszukaj w tabeli"/>
+                </div>
+                <span class="counter pull-right"></span>
+            </div>
+            <!-- Table -->
+            <table class="table tablesorter table-hover table-bordered results" id="mytable">
+                <!-- head row -->
+                <thead>
+                <tr style="font-weight: bold; margin: 0 auto;">
+                    <td class="col-md-2">Model</td>
+                    <td class="col-md-2">Data produkcji</td>
+                    <td class="col-md-2">Cena [PLN]</td>
+                    <td class="col-md-2">Status</td>
+                    <td class="col-md-2">Salon</td>
+                    <td class="col-md-1 center-item">Edytuj</td>
+                    <td class="col-md-1 center-item">Usuń</td>
+                    <td class="col-md-1 center-item">Podgląd</td>
+                </tr>
+                <tr class="warning no-result">
+                    <td colspan="8"><i class="fa fa-warning"></i> No result</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="car : ${cars}">
+                    <td th:text="${car.carName.value}"></td>
+                    <td th:text="${car.prodDate}"></td>
+                    <td th:text="${car.cost}"></td>
+                    <div th:if="${car.ordered}"><td>Zamówiony</td></div>
+                    <div th:unless="${car.ordered}"><td>Dostępny w salonie</td></div>
+                    <td th:text="${car.showroom.name}"></td>
+                    <td class="center-item"><a href="cars.html" th:href="@{'/editCar/'+${car.id}+'#anch'}"><span class="glyphicon glyphicon-edit" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Edytuj"></span></a></td>
+                    <td class="center-item"><a href="cars.html" th:href="@{'/deleteCar/'+${car.id}}"><span class="glyphicon glyphicon-remove" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Usuń"></span></a></td>
+                    <td class="center-item"><a href="cars.html" th:href="@{'/viewCar/'+${car.id}+'#anch'}"><span class="glyphicon glyphicon-eye-open" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Podgląd"></span></a></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!--Modify car-->
+    <a name="anch"></a>
+    <form th:if="${controlsPanelVisible}" class="form-horizontal" role="form" method="post" action="/modifyCar1#anch" th:object="${car}">
+        <div th:if="${contract}"><input type="hidden" name="contract" th:value="${contract}"/></div>
+        <!--<input th:if="${existingCar}" type="hidden" style="display: none;" name="id" th:field="*{id}"/>-->
+        <div class="form-group">
+            <label class="control-label col-sm-2">Salon:</label>
+            <div class="col-sm-10">
+                <select type="text" name="showroom" list="showroomList" required="required" class="form-control" aria-label="...">
+                    <datalist id="showroomList">
+                        <option th:disabled="${controlsDisabledPart1}"></option>
+                        <option th:disabled="${controlsDisabledPart1}" th:each="showroom : ${showrooms}" th:value="${showroom.id}" th:text="${showroom.name}" th:selected="${showroom.id}==${showroomId}"></option>
+                    </datalist>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-2">Model:</label>
+            <div class="col-sm-10">
+                <select id="selectCar" type="text" name="name" list="carList" required="required" class="form-control" aria-label="...">
+                    <datalist id="carList">
+                        <option th:disabled="${controlsDisabledPart1}"></option>
+                        <option th:disabled="${controlsDisabledPart1}" th:each="carName : ${carNames}" th:value="${carName.id}" th:text="${carName.value}"  th:selected="${carName.id}==${carNameId}"></option>
+                    </datalist>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-2">Data produkcji:</label>
+            <div class="col-sm-10">
+                <input id="date" onfocus="loadCurrentDate('max');" th:disabled="${controlsDisabledPart1}" th:field="*{prodDate}"
+                       name="prodDate" type="date" class="form-control" min="2000-01-01" required="required"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" th:disabled="${controlsDisabledPart1}" class="btn btn-default" >Akceptuj</button>
+                <button type="reset" th:disabled="${controlsDisabledPart1}" class="btn btn-default">Anuluj zmiany</button>
+            </div>
+        </div>
+    </form>
+
+    <div th:if="${controlsPanelVisible}" >
+        <div th:if="${chosenAccessories}">
+            <div class="col-sm-offset-2 col-sm-10">
+                <table th:disabled="${controlsDisabled}" class="table">
+                    <tr>Wybrane przez Ciebie dodatkowe akcesoria:</tr>
+                    <tr th:each ="item : ${chosenAccessories}">
+                        <td th:text="${item.accessory.value}"/>
+                        <td th:disabled="${controlsDisabled}" ><a href="contracts.html" th:href="@{'/deleteChosenAccessories/'+${item.id}}"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <form th:if="${controlsPanelVisible}" class="form-horizontal" role="form" method="post" action="/addAccessoryToCar#anch">
+        <div class="form-group">
+            <label class="control-label col-sm-2">Dostępne akcesoria:</label>
+            <div class="col-sm-10">
+                <select type="text" name="accessoryId" list="accessoryList" class="form-control" aria-label="...">
+                    <datalist id="accessoryList">
+                        <option th:disabled="${controlsCostDisabled}" th:each="a : ${accessory}" th:value="${a.id}" th:text="${a.accessory.value}"></option>
+                    </datalist>
+                </select>
+            </div>
+        </div>
+        <div class="col-sm-offset-2 col-sm-10">
+            <button th:disabled="${controlsCostDisabled}" type="submit" class="btn btn-default">Ok</button>
+        </div>
+    </form>
+
+    <form th:if="${controlsPanelVisible}" class="form-horizontal" role="form" method="post" action="/modifyCar#anch" th:object="${car}">
+        <div class="form-group">
+            <label class="control-label col-sm-2">Cena [PLN]:</label>
+            <div class="col-sm-10">
+                <input id="cost" th:disabled="${editCostDisabled}" th:field="*{cost}" name="cost" type="number" min="0" max="999999" class="form-control" required="required"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-2">Zamówienie:</label>
+            <div class="col-sm-10">
+                <div th:unless="${ordered}"><input  th:disabled="${controlsDisabled}" name="ordered" type="checkbox" th:value ="1"/></div>
+                <div th:if="${ordered}"><input th:disabled="${disabledOrdered}" name="ordered" type="checkbox" th:value ="1" th:checked ="1"/></div>
+            </div>
+        </div>
+        <input type="hidden" style="display: none;" name="id" th:field="*{id}"/>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" th:disabled="${controlsCostDisabled}" class="btn btn-default" >Akceptuj</button>
+                <button type="reset" th:disabled="${controlsCostDisabled}" class="btn btn-default">Anuluj zmiany</button>
+            </div>
+        </div>
+    </form>
+
+</div>
+</body>
+</html>

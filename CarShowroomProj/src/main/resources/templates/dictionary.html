@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml" layout:decorator="index">
+<head>
+    <title>Słownik</title>
+    <script type="text/javascript">
+        function print_error() {
+            alert("Usuwany rekord jest powiązany z innymi rekordami. Nie mozna go usunąć");
+        }
+    </script>
+</head>
+<body th:attr="onload=${deleteDictionaryError!=null ? 'print_error()' : null}">
+<div layout:fragment="main" style="margin: 0 auto; max-width: 1000px;">
+    <br/>
+    <div th:if="${insertEnabled}" class="btn-group" role="group" aria-label="..." style="margin: 20px 0;">
+        <a href="dictionary.html" th:href="@{/addDictionary}+'#anch'"><button type="button" class="btn">Dodaj wartość do słownika</button></a>
+    </div>
+    <div>
+        <div class="panel">
+            <!-- Default panel contents -->
+            <div class="panel-heading"><b>LISTA DANYCH SŁOWNIKOWYCH</b>
+                <div class="form-group pull-right">
+                    <input type="text" class="search form-control" placeholder="Wyszukaj w tabeli"/>
+                </div>
+                <span class="counter pull-right"></span>
+            </div>
+
+            <!-- Table of dictionary data-->
+            <table class="table tablesorter table-hover results" id="mytable">
+                <!-- head row -->
+                <thead>
+                    <tr style="font-weight: bold;">
+                        <td class="col-md-1 center-item">#</td>
+                        <td class="col-md-3">Typ</td>
+                        <td class="col-md-2">Wartość podstawowa</td>
+                        <td class="col-md-2">Wartość alternatywna*</td>
+                        <td class="col-md-2">Wartość alternatywna 2*</td>
+                        <td class="col-md-1">Edytuj</td>
+                        <td class="col-md-1">Usuń</td>
+                        <td class="col-md-1">Podgląd</td>
+                    </tr>
+                    <!-- Show when result is not found -->
+                    <tr class="no-result">
+                        <td colspan="8"><b>Brak wyników wyszukiwania</b></td>
+                    </tr>
+                </thead>
+                <!-- body row -->
+                <tbody>
+                    <tr th:each="dictionary,stat : ${dictionaries}">
+                        <td th:text="${stat.count}" class="center-item"></td>
+                        <td th:text="${dictionary.type}"></td>
+                        <td th:text="${dictionary.value}"></td>
+                        <td th:text="${dictionary.value2}"></td>
+                        <td th:text="${dictionary.value3}"></td>
+                        <td class="center-item" th:if="${updateEnabled}">
+                            <a th:href="@{'/editDictionary/'+${dictionary.id}+'#anch'}" >
+                            <span class="glyphicon glyphicon-edit" aria-hidden="true" style="height:100%;width:100%" data-toggle="tooltip" data-placement="top" title="Edytuj">
+                            </span>
+                            </a>
+                        </td>
+                        <td class="center-item" th:if="${deleteEnabled}">
+                            <a th:href="@{'/deleteDictionary/'+${dictionary.id}}" onclick="return confirm_delete(this);"><!---->
+                                <span class="glyphicon glyphicon-remove" aria-hidden="true" style="height:100%;width:100%" data-toggle="tooltip" data-placement="top" title="Usuń"></span>
+                            </a>
+                        </td>
+                        <td class="center-item">
+                            <a th:href="@{'/viewDictionary/'+${dictionary.id}+'#anch'}">
+                            <span class="glyphicon glyphicon-eye-open" aria-hidden="true" style="height:100%;width:100%" data-toggle="tooltip" data-placement="top" title="Podgląd">
+                            </span>
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <a th:if="${controlsPanelVisible}" name="anch"></a>
+    <!--edit, add, display dictionary -->
+    <form th:if="${controlsPanelVisible}" class="form-horizontal" role="form" method="post" action="/acceptModifyDictionary" th:object="${dictionary}">
+        <input type="hidden" style="display: none;" name="id" th:field="*{id}"/>
+        <div class="form-group">
+            <label class="control-label col-sm-offset-2 col-sm-2">Typ:</label>
+            <div class="col-sm-4">
+                <select  th:disabled="${controlsDisabled}" name="type" class="form-control" aria-label="..." >
+                    <option th:value="-1" text="Wybierz typ"></option>
+                    <option  th:each="type : ${types}"  th:text="${type}" th:selected="${type}==${dictionary.type}"></option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-offset-2 col-sm-2">Wartość podstawowa:</label>
+            <div class="col-sm-4">
+                <input   th:disabled="${controlsDisabled}" th:field="*{value}" name="value" type="text" class="form-control" placeholder="Wprowadź wartość" required="required"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-offset-2 col-sm-2">Wartość alternatywna*:</label>
+            <div class="col-sm-4">
+                <input  th:disabled="${controlsDisabled}" th:field="*{value2}" name="value2" type="text" class="form-control" placeholder="Wprowadź wartość"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-offset-2 col-sm-2">Wartość alternatywna 2*:</label>
+            <div class="col-sm-4">
+                <input  th:disabled="${controlsDisabled}" th:field="*{value3}" name="value3" type="text" class="form-control" placeholder="Wprowadź wartość"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-4 col-sm-10">
+                <button type="submit" th:disabled="${controlsDisabled}" class="btn" >Akceptuj</button>
+                <a href="dictionary.html" th:href="@{/resetDictionaryChange}">
+                    <button type="button" th:disabled="${controlsDisabled}" class="btn">Anuluj zmiany</button>
+                </a>
+            </div>
+        </div>
+    </form>
+    <br/>
+</div>
+</body>
+</html>

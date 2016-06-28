@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.sql.Date;
 
 /**
- * Created by Kuba on 04.04.2016.
+ * Created by Aleksandra Chronowska on 04.04.2016.
  */
 @Entity
 @Table(name="invoices", schema = "salonydb")
@@ -13,9 +13,25 @@ public class Invoice {
     private Date dateCreated;
     private Date dateSold;
     private Date paymentDeadline;
-    private Integer idPaymentForm;
-    private Integer idType;
+    private Dictionary paymentForm;
+    private Dictionary invoiceType;
+    private Contract contract;
+    private Boolean isPaid;
 
+
+    public Invoice() {}
+
+    public Invoice(Date dateCreated, Date dateSold, Date paymentDeadline, Dictionary paymentForm, Dictionary invoiceType, Contract contract) {
+        this.dateCreated = dateCreated;
+        this.dateSold = dateSold;
+        this.paymentDeadline = paymentDeadline;
+        this.paymentForm = paymentForm;
+        this.invoiceType = invoiceType;
+        this.contract = contract;
+    }
+
+
+    @GeneratedValue
     @Id
     @Column(name = "id")
     public int getId() {
@@ -34,6 +50,16 @@ public class Invoice {
 
     public void setDateCreated(Date dateCreated) {
         this.dateCreated = dateCreated;
+    }
+
+    @Basic
+    @Column(name = "is_paid")
+    public Boolean getIsPaid() {
+        return isPaid;
+    }
+
+    public void setIsPaid(Boolean isPaid) {
+        this.isPaid = isPaid;
     }
 
     @Basic
@@ -57,22 +83,30 @@ public class Invoice {
     }
 
     @Basic
-    @Column(name = "id_payment_form")
-    public Integer getIdPaymentForm() {
-        return idPaymentForm;
+    @ManyToOne
+    @JoinColumn(name="id_payment_form")
+    public Dictionary getPaymentForm() {
+        return paymentForm;
     }
 
-    public void setIdPaymentForm(Integer idPaymentForm) {
-        this.idPaymentForm = idPaymentForm;
+    public void setPaymentForm(Dictionary idPaymentForm) {
+        this.paymentForm = idPaymentForm;
     }
 
     @Basic
-    @Column(name = "id_type")
-    public Integer getIdType() {
-        return idType;
+    @ManyToOne
+    @JoinColumn(name="id_type")
+    public Dictionary getInvoiceType() {
+        return invoiceType;
     }
 
-    public void setIdType(Integer idType) {
-        this.idType = idType;
+    public void setInvoiceType(Dictionary type) {
+        this.invoiceType = type;
     }
+
+    @OneToOne(mappedBy="invoice")
+    public Contract getContract() {return contract;}
+
+    public void setContract(Contract contract){this.contract = contract;}
+
 }

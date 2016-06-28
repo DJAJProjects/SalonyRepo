@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml" layout:decorator="index">
+<head>
+    <title>Serwis</title>
+</head>
+<body>
+<div layout:fragment="main" style="margin: 0 auto; max-width: 1000px;">
+    <br/>
+    <div th:if="${insertEnabled}">
+        <div class="btn-group" role="group" aria-label="..." style="margin: 20px 0;">
+            <a th:href="@{/addNewService#anch}"><button type="button" class="btn">Dodaj serwis</button></a>
+        </div>
+    </div>
+    <div class="panel">
+        <!-- Default panel contents -->
+        <div class="panel-heading"><b>PRZEPROWADZONE SERWISY</b>
+            <div class="form-group pull-right">
+                <input type="text" class="search form-control" placeholder="Wyszukaj w tabeli"/>
+            </div>
+            <span class="counter pull-right"></span>
+        </div>
+        <!-- Table of showrooms -->
+        <table class="table tablesorter table-hover results" id="mytable">
+            <!-- head row -->
+            <thead>
+            <tr style="font-weight: bold; margin: 0 auto;">
+                <td class="col-md-2">Nazwa</td>
+                <td class="col-md-2">Serwisant</td>
+                <td class="col-md-2">Samochód</td>
+                <td class="col-md-3">Przedmiot serwisu</td>
+                <!--<td class="con-md-2">Cena usługi [PLN]</td>-->
+                <!--<td class="con-md-2">Data wykonania</td>-->
+                <td th:if="${updateEnabled}" class="col-md-1 center-item">Edytuj</td>
+                <td th:if="${deleteEnabled}" class="col-md-1 center-item">Usuń</td>
+                <td class="col-md-1 center-item">Podgląd</td>
+            </tr>
+            <!-- Show when result not found -->
+            <tr class="no-result">
+                <td colspan="8"><b>Brak wyników wyszukiwania</b></td>
+            </tr>
+            </thead>
+            <!-- body row -->
+            <tbody>
+            <tr th:each="service : ${services}">
+                <td th:text="${service.serviceType.value}"></td>
+                <td th:text="${service.serviceman.surname}"></td>
+                <td th:text="${service.car.carName.value}"></td>
+                <td th:if="${service.serviceType.id}=='47'" th:text="${service.accessory.accessory.value}"></td>
+                <td th:if="${service.serviceType.id}=='31'" th:text="${service.subserviceType.value}"></td>
+                <td th:if="${service.serviceType.id}=='32'" th:text="${service.subserviceType.value}"></td>
+                <!--<td th:text="${service.cost}"></td>-->
+                <!--<td th:text="${service.dateConducted}"></td>-->
+                <td th:if="${updateEnabled}" class="center-item"><a href="services.html" th:href="@{'/editService/'+${service.id}+'#anch'}"><span class="glyphicon glyphicon-edit" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Edytuj" style="height:100%;width:100%"></span></a></td>
+                <td th:if="${deleteEnabled}" class="center-item"><a href="services.html" th:href="@{'/deleteService/'+${service.id}}"><span class="glyphicon glyphicon-remove" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Usuń" style="height:100%;width:100%"></span></a></td>
+                <td class="center-item"><a href="services.html" th:href="@{'/viewService/'+${service.id}+'#anch'}"><span class="glyphicon glyphicon-eye-open" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Podgląd" style="height:100%;width:100%"></span></a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <br/>
+
+    <!--Modify service-->
+    <a name="anch"></a>
+    <form th:if="${controlsPanelVisible}" class="form-horizontal" role="form" method="post" action="/modifyServiceType#anch" th:object="${service}">
+        <div class="form-group">
+            <label class="control-label col-sm-offset-2 col-sm-2">Typ serwisu:</label>
+            <div class="col-sm-4">
+                <select type="text" name="type" list="serviceList" required="required" class="form-control" aria-label="...">
+                    <datalist id="serviceList">
+                        <option th:disabled="${controlsDisabledPart1}"></option>
+                        <option th:disabled="${controlsDisabledPart1}" th:each="type : ${types}" th:value="${type.id}" th:text="${type.value}" th:selected="${type.id}==${serviceTypeId}"></option>
+                    </datalist>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-offset-2 col-sm-2">Samochód:</label>
+            <div class="col-sm-4">
+                <select type="text" name="idCar" placeholder="Wybierz samochód" list="carsList" required="required" class="form-control" aria-label="...">
+                    <datalist id="carsList">
+                        <option th:disabled="${controlsDisabledPart1}"></option>
+                        <option th:disabled="${controlsDisabledPart1}" th:each="car : ${cars}" th:value="${car.id}" th:text="${car.carName.value}" th:selected="${car.id}==${serviceCarId}"></option>
+                    </datalist>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-4 col-sm-10">
+                <button type="submit" th:disabled="${controlsDisabledPart1}" class="btn btn-default" >Ok</button>
+                <!--<button type="reset" th:disabled="${controlsDisabledPart1}" class="btn btn-default">Anuluj zmiany</button>-->
+                <!--<a href="services.html" th:href="@{/resetServiceChange}">-->
+                    <!--<button type="button" th:disabled="${controlsDisabledPart1}" class="btn">Anuluj zmiany</button>-->
+                <!--</a>-->
+            </div>
+        </div>
+    </form>
+
+    <form th:if="${controlsPanelVisible}" class="form-horizontal" role="form" method="post" action="/modifyServiceObject#anch" th:object="${service}">
+        <div class="form-group">
+            <label class="control-label col-sm-offset-2 col-sm-2">Przedmiot serwisu:</label>
+            <div class="col-sm-4">
+                <select type="text" name="idServiceObject" list="list" required="required" class="form-control" aria-label="...">
+                    <datalist id="list">
+                        <option th:disabled="${controlsDisabledPart2}"></option>
+                        <option th:disabled="${controlsDisabledPart2}" th:if="${part}" th:each="a : ${accessories}" th:value="${a.id}" th:text="${a.accessory.value}" th:selected="${a.id}==${serviceAccessoryId}"></option>
+                        <option th:disabled="${controlsDisabledPart2}" th:if="${serv}" th:each="so : ${serviceObjects}" th:value="${so.id}" th:text="${so.value}" th:selected="${so.id}==${serviceObjectId}"></option>
+                    </datalist>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-4 col-sm-10">
+                <button th:disabled="${controlsDisabledPart2}" type="submit" class="btn">Ok</button>
+            </div>
+        </div>
+    </form>
+
+    <form th:if="${controlsPanelVisible}" class="form-horizontal" role="form" method="post" action="/modifyService#anch" th:object="${service}">
+        <div class="form-group">
+            <label class="control-label col-sm-offset-2 col-sm-2">Koszt [PLN]:</label>`
+            <div class="col-sm-4">
+                <input th:disabled="${controlsDisabledCost}" th:field="*{cost}" name="cost" type="number" min="0" max="999999" class="form-control" required="required"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-offset-2 col-sm-2">Data wykonania serwisu:</label>
+            <div class="col-sm-4">
+                <input id="date" onfocus="loadCurrentDate('max');" th:disabled="${controlsDisabledPart3}" th:field="*{dateConducted}"
+                       name="dateConducted" type="date" class="form-control" min="2000-01-01" required="required"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-offset-2 col-sm-2">Serwisant:</label>
+            <div class="col-sm-4">
+                <select type="text" name="idServiceman" placeholder="Wybierz serwisanta" list="servicemansList" required="required" class="form-control" aria-label="...">
+                    <datalist id="servicemansList">
+                        <option th:disabled="${controlsDisabledPart3}"></option>
+                        <option th:disabled="${controlsDisabledPart3}" th:each="serviceman : ${servicemans}" th:value="${serviceman.id}" th:text="${serviceman.surname}" th:selected="${serviceman.id}==${serviceServicemanId}"></option>
+                    </datalist>
+                </select>
+            </div>
+        </div>
+        <input type="hidden" style="display: none;" name="id" th:field="*{id}"/>
+        <div class="form-group">
+            <div class="col-sm-offset-4 col-sm-10">
+                <button type="submit" th:disabled="${controlsDisabledPart3}" class="btn" >Akceptuj</button>
+                <!--<button type="reset" th:disabled="${controlsDisabledPart3}" class="btn">Anuluj zmiany</button>-->
+                <a href="services.html" th:href="@{/resetServiceChange}">
+                    <button type="button" th:disabled="${controlsDisabled}" class="btn">Anuluj zmiany</button>
+                </a>
+            </div>
+        </div>
+    </form>
+    <br/>
+</div>
+</body>
+</html>

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml" layout:decorator="index">
+<head>
+    <title>Raporty</title>
+</head>
+<body>
+
+<script>$(document).ready(function() {
+    $(".search").keyup(function () {
+        var searchTerm = $(".search").val();
+        var listItem = $('.results tbody').children('tr');
+        var searchSplit = searchTerm.replace(/ /g, "'):containsi('")
+
+        $.extend($.expr[':'], {'containsi': function(elem, i, match, array){
+            return (elem.textContent || elem.innerText || '').toLowerCase().indexOf((match[3] || "").toLowerCase()) >= 0;
+        }
+        });
+
+        $(".results tbody tr").not(":containsi('" + searchSplit + "')").each(function(e){
+            $(this).attr('visible','false');
+        });
+
+        $(".results tbody tr:containsi('" + searchSplit + "')").each(function(e){
+            $(this).attr('visible','true');
+        });
+
+        var jobCount = $('.results tbody tr[visible="true"]').length;
+        $('.counter').text(jobCount + ' item');
+
+        if(jobCount == '0') {$('.no-result').show();}
+        else {$('.no-result').hide();}
+    });
+});</script>
+
+<div layout:fragment="main" style="margin: 0 auto; max-width: 1000px;">
+    <div class="btn-group" role="group" aria-label="..." style="margin: 20px 0;">
+        <button type="button" class="btn btn-default"><a href="#anch" th:href="@{/addReport#anch}">Dodaj raport</a></button>
+    </div>
+    <div>
+        <div class="form-group pull-right">
+            <input type="text" class="search form-control" placeholder="What are you looking for?"/>
+        </div>
+        <span class="counter pull-right"></span>
+
+        <div class="panel panel-default">
+            <!-- Default panel contents -->
+            <div class="panel-heading">Lista raportów</div>
+
+            <!-- Table -->
+            <table class="table tablesorter table-hover table-bordered results" id="mytable">
+                <!-- head row -->
+                <thead>
+                    <tr style="font-weight: bold;">
+                        <td class="col-md-1 change-on-hand">#</td>
+                        <td class="col-md-2 change-on-hand">Nazwa</td>
+                        <td class="col-md-3 change-on-hand">Salon</td>
+                        <td class="col-md-1">Usuń</td>
+                        <td class="col-md-1">Podgląd</td>
+                    </tr>
+                    <tr class="warning no-result">
+                        <td colspan="8"><i class="fa fa-warning"></i> No result</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="report,stat : ${reports}">
+                        <td th:text="${stat.count}"></td>
+                        <td th:text="${report.name}"></td>
+                        <td th:text="${report.showroom.name}"></td>
+                        <td><a href="reports.html" th:href="@{'/deleteReport/'+${report.id}}"><span class="glyphicon glyphicon-minus" aria-hidden="true"></span></a></td>
+                        <td><a href="contractors.html" th:href="@{'/viewReport/'+${report.id}}"><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span></a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <br/>
+    <form th:if="${controlsPanelVisible}"  class="form-horizontal" role="form" method="post" action="/acceptModifyReport" th:object="${report}">
+        <input type="hidden" style="display: none;" name="id" th:field="*{id}"/>
+        <div class="form-group">
+            <label class="control-label col-sm-2">Nazwa:</label>
+            <div class="col-sm-10">
+                <input th:field="*{name}" th:disabled="${controlsDisabled}"  name="name" type="text" class="form-control" placeholder="Wprowadź nazwę raportu"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-2">Salon:</label>
+            <div class="col-sm-10">
+                <select name="showroom"  th:disabled="${controlsDisabled}" type="text" placeholder="Wybierz salon" class="form-control" aria-label="...">
+                    <datalist id="showroomAddList">
+                        <option th:each="showroom : ${showrooms}" th:value="${showroom.id}" th:text="${showroom.name}"></option>
+                    </datalist>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-2">Data początkowa:</label>
+            <div class="col-sm-10">
+                <input th:field="*{dateBeggining}" th:disabled="${controlsDisabled}"  name="dateBeggining" type="date" class="form-control" placeholder="Wprowadź datę początkową"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-2">Data końcowa:</label>
+            <div class="col-sm-10">
+                <input th:field="*{dateEnd}" th:disabled="${controlsDisabled}" name="dateEnd"  type="date" class="form-control" placeholder="Wprowadź datę końcową"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-2">Zawartość raportu:</label>
+            <div class="col-sm-10">
+                <textarea th:field="*{content}" th:disabled="${controlsDisabled}" rows="10"  name="content" class="form-control" />
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" th:disabled="${controlsDisabled}" class="btn btn-default" >Generuj</button>
+                <button type="reset" th:disabled="${controlsDisabled}" class="btn btn-default">Anuluj zmiany</button>
+
+            </div>
+        </div>
+    </form>
+    <br/>
+</div>
+</body>
+</html>

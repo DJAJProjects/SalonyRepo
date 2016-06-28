@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:layout="http://www.w3.org/1999/xhtml" layout:decorator="index"
+      xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Promocje</title>
+    <script type="text/javascript" src="../static/javascript/validation.js" th:src="@{/../javascript/validation.js}"></script>
+</head>
+<body>
+
+<div layout:fragment="main" style="margin: 0 auto; max-width: 1000px;">
+    <div class="btn-group" role="group" aria-label="..." style="margin: 20px 0;">
+        <button type="button" class="btn btn-default"><a href="promotions.html" th:href="@{/addNewPromotion}+'#anch'">Dodaj promocję</a></button>
+    </div>
+    <div >
+        <div class="panel panel-default">
+            <!-- Default panel contents -->
+            <div class="panel-heading panel-heading-34">Dostępne promocje
+                <div class="form-group pull-right">
+                    <input type="text" class="search form-control" placeholder="Wyszukaj w tabeli"/>
+                </div>
+                <span class="counter pull-right"></span>
+            </div>
+            <!-- Table -->
+            <table class="table tablesorter table-hover table-bordered results" id="mytable">
+                <!-- head row -->
+                <thead>
+                    <tr style="font-weight: bold;">
+                        <td class="col-md-2">Nazwa</td>
+                        <td class="con-md-2">Rabat</td>
+                        <td class="con-md-2">Data rozpoczęcia</td>
+                        <td class="con-md-2">Data zakończenia</td>
+                        <td class="col-md-1 center-item">Edytuj</td>
+                        <td class="col-md-1 center-item">Usuń</td>
+                        <td class="col-md-1 center-item">Podgląd</td>
+                    </tr>
+                    <tr class="warning no-result">
+                        <td colspan="8"><i class="fa fa-warning"></i> No result</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="promotion : ${promotions}">
+                        <td th:text="${promotion.name}"></td>
+                        <td th:text="${promotion.percValue}"></td>
+                        <td th:text="${promotion.dateStart}"></td>
+                        <td th:text="${promotion.dateEnd}"></td>
+                        <td class="center-item"><a href="promotions.html" th:href="@{'/editPromotion/'+${promotion.id}+'#anch'}"><span class="glyphicon glyphicon-edit" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Edytuj"></span></a></td>
+                        <td class="center-item"><a href="promotions.html" th:href="@{'/deletePromotion/'+${promotion.id}}"><span class="glyphicon glyphicon-remove" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Usuń"></span></a></td>
+                        <td class="center-item"><a href="promotions.html" th:href="@{'/viewPromotion/'+${promotion.id}+'#anch'}"><span class="glyphicon glyphicon-eye-open" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Podgląd"></span></a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!--Modify promotion-->
+    <a name="anch"></a>
+    <form th:if="${controlsPanelVisible}" class="form-horizontal" role="form" method="post" action="/modifyPromotion" th:object="${promotion}">
+        <input type="hidden" style="display: none;" name="id" th:field="*{id}"/>
+        <div class="form-group">
+            <label class="control-label col-sm-2">Nazwa:</label>
+            <div class="col-sm-10">
+                <input placeholder="Wprowadź nazwę" th:disabled="${controlsDisabled}" th:value="${promotionName}" name="name" type="text" class="form-control" required="required"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-2">Procent obniżki:</label>
+            <div class="col-sm-10">
+                <input placeholder="Wprowadź procent obniżki" th:disabled="${controlsDisabled}" th:value="${promotionPercValue}" name="percValue" type="number" min="0" max="100" class="form-control" required="required"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-2">Data rozpoczęcia promocji:</label>
+            <div class="col-sm-10">
+                <input id="date" onfocus="loadCurrentDate('min');" th:disabled="${controlsDisabled}" th:field="*{dateStart}" name="dateStart" type="date" max="9999-12-31" class="form-control" required="required"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-2">Data zakończenia promocji:</label>
+            <div class="col-sm-10">
+                <!--dataRozpoczęcia < dataZakończenia-->
+                <input id="date2" onfocus="loadStartDate();" th:disabled="${controlsDisabled}" th:field="*{dateEnd}" name="dateEnd" type="date" class="form-control" min="*{dateStart}" max="9999-12-31" required="required"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" th:disabled="${controlsDisabled}" class="btn btn-default" >Akceptuj</button>
+                <button type="reset" th:disabled="${controlsDisabled}" class="btn btn-default">Anuluj zmiany</button>
+            </div>
+        </div>
+    </form>
+
+</div>
+</body>
+</html>

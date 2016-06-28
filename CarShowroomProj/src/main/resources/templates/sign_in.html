@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml" layout:decorator="index">
+<head>
+    <title>Logowanie</title>
+    <link rel="stylesheet" type="text/css" href="../static/styles/login_style.css" th:href="@{/../styles/login_style.css}"/>
+    <script type="text/javascript">
+        function log_in() {
+            alert("Proszę się zalogować");
+        }
+    </script>
+</head>
+<body class="main-login-view" th:attr="onload=${userNotLoggedIn!=null ? 'log_in()' : null}">
+<div layout:fragment="content" style="display: none;"></div>
+<div layout:fragment="main" style="margin: 0 auto; max-width:1000px;">
+        <form class="form-signin" action="/signIn" method="post">
+            <div class="form-content">
+                <h2> LOGOWANIE</h2>
+                <input name="login" type="text" class="form-control" placeholder="Podaj login" required="required"/>
+                <br/>
+                <input type="password" name="password" class="form-control" placeholder="Podaj hasło" required="required"/>
+                <br/>
+                <button class="btn btn-lg btn-block" type="submit">Zaloguj</button>
+                <!--<div th:if="${error}" class="label label-danger">Podano niepoprawne dane</div>-->
+                <div th:if="${error}" class="label label-danger">Podano niepoprawne dane</div>
+            </div>
+        </form>
+</div>
+</body>
+</html>

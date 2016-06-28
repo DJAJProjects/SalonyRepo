@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml" layout:decorator="index">
+<head>
+    <title>Raporty</title>
+</head>
+<body>
+<div layout:fragment="main" style="margin: 0 auto; max-width: 1000px;">
+    <br/>
+    <div th:if="${insertEnabled}"> <!-- -->
+        <div class="btn-group" role="group" aria-label="..." style="margin: 20px 0;">
+            <a th:href="@{/addReport#anch}"><button type="button" class="btn">Dodaj raport</button></a>
+        </div>
+    </div>
+    <div>
+        <div class="panel">
+            <!-- Default panel contents -->
+            <div class="panel-heading"><b>LISTA RAPORTÓW</b>
+                <div class="form-group pull-right">
+                    <input type="text" class="search form-control" placeholder="Wyszukaj w tabeli"/>
+                </div>
+                <span class="counter pull-right"></span>
+            </div>
+
+            <!-- Table -->
+            <table class="table tablesorter table-hover results" id="mytable">
+                <!-- head row -->
+                <thead>
+                    <tr style="font-weight: bold;">
+                        <td class="col-md-1 change-on-hand center-item">#</td>
+                        <td class="col-md-6 change-on-hand">Nazwa</td>
+                        <td class="col-md-3 change-on-hand">Salon</td>
+                        <td class="col-md-1 center-item">Usuń</td>
+                        <td class="col-md-1 center-item">Podgląd</td>
+                    </tr>
+                    <tr class="no-result">
+                        <td colspan="5"><b>Brak wyników wyszukiwania</b></td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="report,stat : ${reports}">
+                        <td class="center-item" th:text="${stat.count}"></td>
+                        <td th:text="${report.name}"></td>
+                        <td th:text="${report.showroom.name}"></td>
+                        <td class="center-item"><a href="reports.html" th:href="@{'/deleteReport/'+${report.id}}"><span class="glyphicon glyphicon-remove" aria-hidden="true" style="height:100%;width:100%"></span></a></td>
+                        <td class="center-item"><a href="contractors.html" th:href="@{'/viewReport/'+${report.id}+'#anch'}"><span class="glyphicon glyphicon-eye-open" aria-hidden="true" style="height:100%;width:100%"></span></a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <br/>
+    <a th:if="${controlsPanelVisible}" name="anch"></a>
+    <form th:if="${controlsPanelVisible}"  class="form-horizontal" role="form" method="post" action="/acceptModifyReport" th:object="${report}">
+        <input type="hidden" style="display: none;" name="id" th:field="*{id}"/>
+        <div class="form-group">
+            <label class="control-label col-sm-offset-2 col-sm-2">Nazwa:</label>
+            <div class="col-sm-4">
+                <input th:field="*{name}" th:disabled="${controlsDisabled}"  name="name" type="text" class="form-control" placeholder="Wprowadź nazwę raportu"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-offset-2 col-sm-2">Salon:</label>
+            <div class="col-sm-4">
+                <select name="showroom"  th:disabled="${controlsDisabled}" type="text" placeholder="Wybierz salon" class="form-control" aria-label="..." required="required">
+                    <datalist id="showroomAddList">
+                        <option th:each="showroom : ${showrooms}" th:value="${showroom.id}" th:text="${showroom.name}"></option>
+                    </datalist>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-offset-2 col-sm-2">Data początkowa:</label>
+            <div class="col-sm-4">
+                <input th:value="${dateBeggining}" th:disabled="${controlsDisabled}"  name="dateBeggining" type="date" class="form-control" placeholder="Wprowadź datę początkową" required="required"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-offset-2 col-sm-2">Data końcowa:</label>
+            <div class="col-sm-4">
+                <input th:value="${dateEnd}" th:disabled="${controlsDisabled}" name="dateEnd"  type="date" class="form-control" placeholder="Wprowadź datę końcową" required="required"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-offset-2 col-sm-2">Zawartość raportu:</label>
+            <div class="col-sm-4">
+                <textarea th:field="*{content}" th:disabled="${controlsDisabled}" rows="10"  name="content" class="form-control" />
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-4 col-sm-10">
+                <button type="submit" th:disabled="${controlsDisabled}" class="btn" >Generuj</button>
+                <a href="reports.html.html" th:href="@{/resetReportChange}">
+                    <button type="button" th:disabled="${controlsDisabled}" class="btn">Anuluj zmiany</button>
+                </a>
+                <a href="reports.html" th:if="${controlsDisabled}" th:href="@{'/generateReport/'+*{id}}" class="btn">Generuj do pdf</a>
+            </div>
+        </div>
+        <div th:text="${error != null} ? ${error}" class="label label-danger"></div>
+    </form>
+    <br/>
+</div>
+</body>
+</html>

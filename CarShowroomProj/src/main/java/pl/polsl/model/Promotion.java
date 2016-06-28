@@ -1,6 +1,8 @@
 package pl.polsl.model;
 
 import javax.persistence.*;
+import java.sql.Date;
+import java.util.Set;
 
 /**
  * Created by Kuba on 04.04.2016.
@@ -11,11 +13,31 @@ public class Promotion {
     private int id;
     private int percValue;
     private String name;
-    private Integer idAccessory;
-    private Integer idCar;
-    private Integer idContract;
+    private Date dateStart;
+    private Date dateEnd;
+    //    private Integer idAccessory;
+    private Set<Contract>contracts;
+
+    public Promotion() {
+    }
+
+    public Promotion(int percValue, String name, Date dateStart, Date dateEnd) {
+        this.percValue = percValue;
+        this.name = name;
+        this.dateStart = dateStart;
+        this.dateEnd = dateEnd;
+    }
+
+    public Promotion(int id, int percValue, String name, Date dateStart, Date dateEnd) {
+        this.id = id;
+        this.percValue = percValue;
+        this.name = name;
+        this.dateStart = dateStart;
+        this.dateEnd = dateEnd;
+    }
 
     @Id
+    @GeneratedValue
     @Column(name = "id")
     public int getId() {
         return id;
@@ -46,33 +68,44 @@ public class Promotion {
     }
 
     @Basic
-    @Column(name = "id_accessory")
-    public Integer getIdAccessory() {
-        return idAccessory;
+    @Column(name = "date_start")
+    public Date getDateStart() {
+        return dateStart;
     }
 
-    public void setIdAccessory(Integer idAccessory) {
-        this.idAccessory = idAccessory;
-    }
-
-    @Basic
-    @Column(name = "id_car")
-    public Integer getIdCar() {
-        return idCar;
-    }
-
-    public void setIdCar(Integer idCar) {
-        this.idCar = idCar;
+    public void setDateStart(Date start) {
+        this.dateStart = start;
     }
 
     @Basic
-    @Column(name = "id_contract")
-    public Integer getIdContract() {
-        return idContract;
+    @Column(name = "date_end")
+    public Date getDateEnd() {
+        return dateEnd;
     }
 
-    public void setIdContract(Integer idContract) {
-        this.idContract = idContract;
+    public void setDateEnd(Date end) {
+        this.dateEnd = end;
+    }
+
+
+//    @Basic
+//    @Column(name = "id_accessory")
+//    public Integer getIdAccessory() {
+//        return idAccessory;
+//    }
+//
+//    public void setIdAccessory(Integer idAccessory) {
+//        this.idAccessory = idAccessory;
+//    }
+
+    @Basic
+    @ManyToMany(mappedBy = "promotions", fetch = FetchType.EAGER)
+    public Set<Contract> getContracts() {
+        return this.contracts;
+    }
+
+    public void setContracts(Set<Contract> contracts) {
+        this.contracts = contracts;
     }
 
 }

@@ -1,19 +1,26 @@
 package pl.polsl.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
+import java.util.Set;
 
 /**
- * Created by Kuba on 04.04.2016.
+ * Created by Aleksandra Chronowska on 04.04.2016.
  */
 @Entity
 @Table(name="contracts", schema = "salonydb")
 public class Contract {
     private int id;
-    private Integer idSeller;
-    private Integer idInvoice;
-    private Integer idContractor;
+    private Worker worker;
+    private Invoice invoice;
+    private Contractor contractor;
     private Integer totalCost;
+    private Set<Accessory> accessoryList;
+    private Set<Car> carList;
+    private Set<Promotion>promotions;
 
+    @GeneratedValue
     @Id
     @Column(name = "id")
     public int getId() {
@@ -23,35 +30,37 @@ public class Contract {
     public void setId(int id) {
         this.id = id;
     }
-
+    @JsonIgnore
     @Basic
-    @Column(name = "id_seller")
-    public Integer getIdSeller() {
-        return idSeller;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_seller")
+    public Worker getWorker() {
+        return worker;
     }
 
-    public void setIdSeller(Integer idSeller) {
-        this.idSeller = idSeller;
+    public void setWorker(Worker worker) {
+        this.worker = worker;
     }
 
-    @Basic
-    @Column(name = "id_invoice")
-    public Integer getIdInvoice() {
-        return idInvoice;
+    @JsonIgnore
+    @OneToOne()
+    @JoinColumn(name = "id_invoice")
+    public Invoice getInvoice() {
+        return invoice;
     }
 
-    public void setIdInvoice(Integer idInvoice) {
-        this.idInvoice = idInvoice;
+    public void setInvoice(Invoice idInvoice) {
+        this.invoice = idInvoice;
     }
 
-    @Basic
-    @Column(name = "id_contractor")
-    public Integer getIdContractor() {
-        return idContractor;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_contractor")
+    public Contractor getContractor() {
+        return contractor;
     }
 
-    public void setIdContractor(Integer idContractor) {
-        this.idContractor = idContractor;
+    public void setContractor(Contractor contractor) {
+        this.contractor = contractor;
     }
 
     @Basic
@@ -64,5 +73,32 @@ public class Contract {
         this.totalCost = totalCost;
     }
 
+    @OneToMany (mappedBy="contract", fetch = FetchType.EAGER)
+    public Set<Accessory> getAccessoryList() {
+        return accessoryList;
+    }
+
+    public void setAccessoryList(Set<Accessory> accessoryList) {
+        this.accessoryList = accessoryList;
+    }
+
+    @OneToMany (mappedBy="contract",fetch = FetchType.EAGER)
+    public Set<Car> getCarList() {
+        return carList;
+    }
+
+    public void setCarList(Set<Car> carList) {
+        this.carList = carList;
+    }
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name="contracts_promotions",
+            joinColumns=@JoinColumn(name="id_contracts", referencedColumnName="id"),
+            inverseJoinColumns=@JoinColumn(name="id_promotions", referencedColumnName="id"))
+    public Set<Promotion> getPromotions() {
+        return promotions;
+    }
+    public void setPromotions(Set<Promotion>promotions) {this.promotions = promotions;}
 
 }

@@ -1,0 +1,123 @@
+#nav-menu{
+    box-sizing: border-box;
+    width:100%;
+    background-color: #3F5765/*#EFEFEF*/;
+    display: inline-block;
+}
+#nav-menu ul{
+    padding: 20px 0px;
+}
+/* Jasny blok pod menu*/
+.my-block{
+    clear: both;
+    height:10px;
+    width:100%;
+    background-color: #EFEFEF;
+}
+#nav-menu a{
+    text-align: center;
+    display: inline;
+    float: left;
+    color:#EFEFEF;
+    line-height: 50px;
+    padding: 0px 12px;
+    text-transform: uppercase;
+    list-style: none;
+}
+
+#nav-menu a:hover{
+    color: #FF530D;
+    text-decoration: none;
+    -webkit-transition: color 500ms linear;
+    -moz-transition: color 500ms linear;
+    -o-transition: color 500ms linear;
+    -ms-transition: color 500ms linear;
+    background-color: #EFEFEF;
+}
+
+hr{
+    margin: 0;
+    padding: 0;
+    height: 2px;
+    background-color: #FF530D;
+}
+.btn-group{
+    color: #EFEFEF;
+}
+
+#menuIndex2{
+    margin: 20px auto;
+}
+#menuIndex2 .circle{
+    border-radius: 50%;
+    background-color: #3F5765;
+    color:#EFEFEF;
+    animation: background-color 1s linear infinite;
+
+}
+#menuIndex2 img{
+    width:100%;
+    padding:25px;
+}
+
+#menuIndex2 div.thumbnail {
+    text-align: center;
+    border: none;
+}
+
+#menuIndex2 div.thumbnail:hover>.caption {
+    color: #FF530D;
+}
+#menuIndex2 div.thumbnail:hover>.circle {
+    color:#EFEFEF;
+    background-color: #FF530D;
+    -webkit-transition: background-color 500ms linear;
+    -moz-transition: background-color 500ms linear;
+    -o-transition: background-color 500ms linear;
+    -ms-transition: background-color 500ms linear;
+    transition: background-color 500ms linear;
+}
+
+/*
+Łapka po najechaniu na nagłowek tabeli
+*/
+.change-on-hand:hover{
+     cursor: pointer;
+ }
+.change-on-hand:active{
+    cursor: pointer;
+}
+
+/* Wyszukiwanie */
+.results tr[visible='false'],
+.no-result{
+    display:none;
+}
+
+.results tr[visible='true']{
+    display:table-row;
+}
+.counter{
+    padding: 0px 8px 8px;
+    color:#fff;
+}
+/* Koniec wyszukiwania */
+.glyphicon{
+    color:#2B3A42;
+}
+.panel {
+    border: 1px solid #3F5765;
+    border-radius: 0px;
+}
+
+.center-item{
+    text-align:center;
+}
+
+.table-hover>tbody>tr:hover {
+    background-color: #BDD4DE;
+}
+.empty{
+    width:100%;
+    heigth: 20px;
+}

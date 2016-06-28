@@ -1,12 +1,235 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:layout="http://www.w3.org/1999/xhtml" layout:decorator="index">
 <head>
-    <meta charset="UTF-8"/>
-    <title></title>
+    <title>Sprzedaże</title>
+
 </head>
 <body>
-<form></form>
-<a class="btn btn-info" href="newContract.html" th:href="@{/contractsNewView}">Nowa sprzedaż</a>
+<div layout:fragment="main" style="margin: 0 auto; max-width: 1000px;">
+    <div class="btn-group" role="group" aria-label="..." style="margin: 20px 0;">
+        <!--<a class="btn btn-default" th:href="@{/addContract#anch}">Nowa sprzedaż</a>-->
+        <div th:if="${insertEnabled}" >
+             <a class="btn" href="contracts.html" th:href="@{/addContract}+'#anch'">Nowa sprzedaż</a>
+        </div>
+    </div>
 
+    <!-- Contract all view-->
+    <div>
+        <div class="panel">
+            <!-- Default panel contents -->
+            <div class="panel-heading"><b>DOKONANE SPRZEDAŻE</b>
+                <div class="form-group pull-right">
+                    <input type="text" class="search form-control" placeholder="Wyszukaj w tabeli"/>
+                </div>
+                <span class="counter pull-right"></span>
+            </div>
+
+            <!-- Table -->
+            <table class="table tablesorter table-hover results" id="mytable">
+                <!-- head row -->
+                <thead>
+                <tr style="font-weight: bold; margin: 0 auto;">
+                        <td class="col-md-3 change-on-hand">Sprzedający</td>
+                        <!--<td class="col-md-3">Data wystawienia faktury</td>-->
+                        <td class="col-md-3 change-on-hand ">Kontrahent</td>
+                        <td class="col-md-2 change-on-hand ">Kwota transakcji</td>
+                        <td th:if="${updateEnabled}" class=" center-item col-md-1 change-on-hand center-item">Edytuj</td>
+                        <td th:if="${deleteEnabled}" class="center-item col-md-1 change-on-hand center-item">Usuń</td>
+                        <td class="col-md-1 change-on-hand center-item">Podgląd</td>
+                    </tr>
+                <tr class="no-result">
+                    <td colspan="6"><b>Brak wyników wyszukiwania</b></td>
+                </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="contract : ${contracts}">
+                        <td class="center-item" th:text="${contract.worker.surname}"></td>
+                        <div class="center-item" th:if="${contract.contractor}"><td th:text="${contract.contractor.surname}"></td></div>
+                        <div class="center-item" th:unless="${contract.contractor}"><td></td></div>
+                        <td class="center-item" th:text="${contract.totalCost}"></td>
+                        <td class="center-item" th:if="${updateEnabled}"> <a href="#anch" th:href="@{'/editContract/'+${contract.id}+'#anch'}" ><span class="glyphicon glyphicon-edit" aria-hidden="true" style="height:100%;width:100%"></span></a></td>
+                        <td class="center-item" th:if="${deleteEnabled}"><a href="contracts.html" th:href="@{'/deleteContract/'+${contract.id}}"><span class="glyphicon glyphicon-remove" aria-hidden="true" style="height:100%;width:100%"></span></a></td>
+                        <td class="center-item"><a href="#anch" th:href="@{'/viewContract/'+${contract.id}+'#anch'}"><span class="glyphicon glyphicon-eye-open" aria-hidden="true" style="height:100%;width:100%"></span></a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <br/>
+        <div th:if="${carView}" >
+
+            <!-- Add cars-->
+            <a name="anch"></a>
+
+            <div th:if="${choosenCar}" class="row">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <label>Wybrane samochody:</label>
+                    <br/>
+                    <table class="table-bordered col-md-6 change-on-hand">
+                        <!--<tr>Wybrane samochody:</tr>-->
+                        <tr style="font-weight: bold; margin: 0 auto;">
+                            <td class="center-item">Model: </td>
+                            <td class="center-item">Cena: </td>
+
+                        </tr>
+                        <tr th:each ="item : ${choosenCar}">
+                            <td class="center-item" th:text="${item.carName.value}"/>
+                            <td class="center-item" th:text="${item.cost}"/>
+                            <td class="center-item" th:disabled="${disabledButtons}"><a href="contracts.html" th:href="@{'/deleteChoosenCar/'+${item.id}+'#anch'}"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a></td>
+
+                            <br/>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <br/>
+
+            <div th:if="${invisibleCarList}">
+
+                <form class="form-horizontal" role="form" method="post" action="/addCar#anch">
+                    <div class="form-group">
+                        <label class="control-label col-sm-2">Samochody:</label>
+                        <div class="col-sm-10">
+                            <select th:disabled="${disabledButtons}" name="car" class="form-control" aria-label="..." required="required">
+                                <option value="" text="Samochód:"></option>
+                                <option th:disabled="${disabledButtons}" th:each="c : ${cars}" th:value="${c.id}" th:text="${c.carName.value}"></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <button th:disabled="${disabledButtons}" type="submit" class="btn btn-default">Ok</button>
+                        </div>
+                    </div>
+                    <div th:text="${error != null} ? ${error}" class="label label-danger"></div>
+                </form>
+
+            </div>
+
+            <!--Order action-->
+            <form role="form" method="post" action="/orderCar#anch">
+                <div class="form-group">
+                    <button th:disabled="${disabledButtons}" type="submit" class="col-sm-offset-2 btn btn-default">Zamów samochód</button>
+                </div>
+            </form>
+            <br/><br />
+
+            <!-- Add accessories-->
+            <div th:if="${choosenAccessories}" class ="row">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <label>Wybrane częsci samochodowe:</label>
+                    <br/>
+                    <table th:disabled="${disabledButtons}" class="table-bordered col-md-6 change-on-hand">
+                        <tr style="font-weight: bold; margin: 0 auto;">
+                            <td class="center-item">Nazwa: </td>
+                            <td class="center-item">Cena: </td>
+                        </tr>
+                        <tr th:each ="item : ${choosenAccessories}">
+                            <td class="center-item" th:text="${item.accessory.value}"/>
+                            <td class="center-item" th:text="${item.cost}"/>
+                            <td class="center-item" th:disabled="${disabledButtons}" ><a href="contracts.html" th:href="@{'/deleteChoosenAccessories/'+${item.id}+'#anch'}"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a></td>
+                            <br/>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <br/>
+            <div th:if="${invisibleAccessoryList}">
+                <a name="anch2"></a>
+
+                <form class="form-horizontal" role="form" method="post" action="/addAccessory#anch">
+                    <div class="form-group">
+                        <label class="control-label col-sm-2">Akcesoria:</label>
+                        <div class="col-sm-10">
+                            <select th:disabled="${disabledButtons}" name="accessory" class="form-control" aria-label="..." required="required">
+                                <option value="" text="Akcesoria:"></option>
+                                <option  th:each="c : ${accessories}" th:value="${c.id}" th:text="${c.accessory.value}"></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <button th:disabled="${disabledButtons}" type="submit" class="btn btn-default">Ok</button>
+                        </div>
+                    </div>
+                    <div th:text="${error != null} ? ${error}" class="label label-danger"></div>
+
+                </form>
+            </div>
+
+            <!-- Add promotion-->
+            <div class="form-group">
+                <div th:if="${choosenPromotion}">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <table class="table-bordered col-md-6 change-on-hand">
+                            <tr style="font-weight: bold; margin: 0 auto;">
+                                <td class="center-item">Wybrana promocja: </td>
+                            </tr>
+                            <tr th:each ="item : ${choosenPromotion}">
+                                <td class="center-item" th:text="${item.name}"/>
+                                <td class="center-item" th:disabled="${disabledButtons}"><a href="contracts.html" th:href="@{'/deleteChoosenPromotion/'+${item.id}+'#anch'}"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a></td>
+                                <br/>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div th:if="${invisiblePromotionList}">
+
+                <br/>
+                <form class="form-horizontal" role="form" method="post" action="/addPromotion#anch">
+                    <div class="form-group">
+                        <label class="control-label col-sm-2">Aktualne promocje:</label>
+
+                        <div class="col-sm-10">
+                            <select th:disabled="${disabledButtons}" name="promotion" class="form-control" aria-label="..." required="required">
+                                <option value="" text="Promocje:"></option>
+                                <option th:disabled="${disabledButtons}" th:each="c : ${promotions}" th:value="${c.id}" th:text="${c.name}"></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <button th:disabled="${disabledButtons}" type="submit" class="btn btn-default">Ok</button>
+                        </div>
+                    </div>
+                    <div th:text="${error != null} ? ${error}" class="label label-danger"></div>
+                </form>
+                <div th:if="${cannotAddPromotion}"><label class="label label-danger">NALEŻY WYBRAĆ PRODUKT</label></div>
+                <br/>
+            </div>
+            <form class="form-horizontal" role="form" method="post" action="/confirmContract#anch">
+                <div class="form-group">
+                    <label class="control-label col-sm-2">Klient:</label>
+                    <div class="col-sm-10">
+                        <select th:disabled="${disabledButtons}" name="client" class="form-control" aria-label="..." required="required">
+                            <option value="" text="Klient:"></option>
+                            <option  th:if="${contractor}" th:each="c : ${contractors}" th:value="${c.id}" th:text="${c.surname}" th:selected="${c.id}==${contractor.id}"></option>
+                            <option  th:unless="${contractor}" th:each="c : ${contractors}" th:value="${c.id}" th:text="${c.surname}"></option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Go to make invoice-->
+                <div th:unless="${contract}" class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button th:disabled="${disabledButtons}" type="submit" class="btn btn-default">Akceptuj</button>
+                        <a th:disabled="${disabledButtons}" class="btn" href="contracts.html" th:href="@{/contracts}">Anuluj</a>
+                    </div>
+                </div>
+            </form>
+
+            <br/>
+            <div th:if="${contract}" class="form-group">
+                <form class="form-horizontal" role="form" method="post" action="/chooseGenerateOption">
+                    <input type="hidden" name="contract_id" th:value="${contract.id}"/>
+                    <button th:disabled="${disabledConfirmButton}" type="submit" class="btn btn-default">Generuj fakture</button>
+                    <a th:disabled="${disabledConfirmButton}" class="btn" href="contracts.html" th:href="@{/contracts}">Zakończ</a>
+                    <div th:text="${error != null} ? ${error}" class="label label-danger"></div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
 </body>
 </html>

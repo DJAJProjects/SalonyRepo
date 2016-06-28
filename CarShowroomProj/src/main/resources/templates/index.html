@@ -1,32 +1,120 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:layout="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.w3.org/1999/xhtml">
 <head lang="pl">
     <meta charset="UTF-8"/>
     <title>Salon samochodowy</title>
-    <link rel="stylesheet" href="../../datatables/dataTables.bootstrap.css"
-          th:href="@{/datatables/dataTables.bootstrap.css}"/>
+    <!-- Jquery 2.2.3 -->
+    <script src="https://code.jquery.com/jquery-2.2.3.min.js"></script>
+    <!-- Core files -->
+    <script src="../static/jquery/jquery-alert-dialogs/js/jquery.alerts.js" th:src="@{/../jquery/jquery-alert-dialogs/js/jquery.alerts.js}" type="text/javascript"></script>
+    <link href="../static/jquery/jquery-alert-dialogs/css/jquery.alerts.css" th:href="@{/../jquery/jquery-alert-dialogs/css/jquery.alerts.css}"  rel="stylesheet" type="text/css" media="screen" />
+    <script src="../static/jquery/jquery-alert-dialogs/js/jquery.js" th:src="@{/../jquery/jquery-alert-dialogs/js/jquery.js}" type="text/javascript"></script>
+    <script src="../static/jquery/jquery-alert-dialogs/js/jquery.ui.draggable.js" th:src="@{/../jquery/jquery-alert-dialogs/js/jquery.ui.draggable.js}" type="text/javascript"></script>
     <!-- Bootstrap 3.3.5 -->
     <link rel="stylesheet" href="http://cdn.jsdelivr.net/webjars/bootstrap/3.2.0/css/bootstrap.min.css"
           th:href="@{/bootstrap/css/bootstrap.min.css}"/>
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css"/>
-    <!-- Ionicons -->
-    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css"/>
-    <!-- Select2 -->
-    <link rel="stylesheet" href="../../select2/select2.min.css"
-          th:href="@{/select2/select2.min.css}"/>
+    <script src="http://cdn.jsdelivr.net/webjars/bootstrap/3.2.0/js/bootstrap.min.js"
+            th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+    <script th:src="@{https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js}"></script>
+    <script th:src="@{http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js}"></script>
+    <link rel="stylesheet" type="text/css" href="../static/styles/style.css" th:href="@{/../styles/style.css}"/>
+    <link rel="stylesheet" type="text/css" href="../static/styles/bootstrap_style.css" th:href="@{/../styles/bootstrap_style.css}"/>
+    <script type="text/javascript" src="../static/javascript/validation.js" th:src="@{/../javascript/validation.js}"></script>
+    <script type="text/javascript" src="../static/jquery/jquery.tablesorter.min.js"  th:src="@{/../jquery/jquery.tablesorter.min.js}"></script>
+    <script>
+        $(document).ready(function(){
+            $(function(){
+                $("#mytable").tablesorter();
+            });
+        });
+    </script>
+    <script>$(document).ready(function() {
+        $(".search").keyup(function () {
+            var searchTerm = $(".search").val();
+            var listItem = $('.results tbody').children('tr');
+            var searchSplit = searchTerm.replace(/ /g, "'):containsi('")
+            $.extend($.expr[':'], {'containsi': function(elem, i, match, array){
+                return (elem.textContent || elem.innerText || '').toLowerCase().indexOf((match[3] || "").toLowerCase()) >= 0;
+            }
+            });
+            $(".results tbody tr").not(":containsi('" + searchSplit + "')").each(function(e){
+                $(this).attr('visible','false');
+            });
+            $(".results tbody tr:containsi('" + searchSplit + "')").each(function(e){
+                $(this).attr('visible','true');
+            });
+            var jobCount = $('.results tbody tr[visible="true"]').length;
+            $('.counter').text('Liczba rezultatów: ' +jobCount);
+            if(jobCount == '0') {$('.no-result').show();}
+            else {$('.no-result').hide();}
+        });
+    });</script>
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
-    <header id="#SITE" style="margin: 0 auto; max-width: 1000px">
-        <nav layout:fragment="content"  style="margin: 20px;">
-            <ul class="nav nav-pills">
-                <li role="presentation" ><a href="showroom.html" th:href="@{/showroom}">Salony</a></li>
-                <li role="presentation" ><a href="worker.html" th:href="@{/worker}">Pracownicy</a></li>
-            </ul>
+    <header layout:fragment="content" id="nav-menu" style="margin:0 auto">
+        <nav class="navbar navbar-inverse">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand active" style="color: white;" th:href="@{/menu}">MENU</a>
+                </div>
+                <ul class="nav navbar-nav">
+                    <li th:class="${classActiveShowrooms}"><a href="#" th:if="${showroomsVisible}" th:href="@{/showroom}">SALONY</a></li>
+                    <li th:class="${classActiveWorkers}"><a th:if="${workersVisible}" th:href="@{/worker}">Pracownicy</a></li>
+                    <li th:class="${classActiveContracts}"><a th:if="${contractsVisible}" th:href="@{/contracts}">sprzedaże</a></li>
+                    <li th:class="${classActiveContractors}"><a th:if="${contractorsVisible}" th:href="@{/contractors}">klienci</a></li>
+                    <li th:class="${classActivePromotions}"><a th:if="${promotionsVisible}" th:href="@{/promotions}">Promocje</a></li>
+                    <li th:class="${classActiveCars}"><a th:if="${carsVisible}" th:href="@{/cars}">Samochody</a></li>
+                    <li th:class="${classActiveReports}"><a th:if="${reportsVisible}" th:href="@{/reports}">Raporty</a></li>
+                    <li th:class="${classActiveAccessories}"><a th:if="${accessoriesVisible}" th:href="@{/accessories}">akcesoria</a></li>
+                    <li th:class="${classActiveInvoices}"><a th:if="${invoicesVisible}" th:href="@{/invoices}">faktury</a></li>
+                    <li th:class="${classActiveServices}"><a th:if="${servicesVisible}" th:href="@{/services}">serwisy</a></li>
+                    <li th:class="${classActivePrivileges}"><a th:if="${privilegesVisible}" th:href="@{/privileges}">uprawnienia</a></li>
+                    <li th:class="${classActiveDictionary}"><a href="#" th:if="${dictionaryVisible}" th:href="@{/dictionary}">słownik</a></li>
+                    <li class="dropdown" style="float: right;"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Opcje<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li class="option"><a th:href="@{/help}"><span class="glyphicon glyphicon-book"></span> Pomoc</a></li>
+                            <li class="option"><a th:href="@{/changePassword}"><span class="glyphicon glyphicon-pencil"></span> Zmień hasło</a></li>
+                            <li class="option"><a th:href="@{/logOut}"><span class="glyphicon glyphicon-log-out"></span> Wyloguj</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
         </nav>
-        <hr/>
+        <!--<nav >-->
+            <!--<ul style="margin: 0 auto;  max-width:1260px;">-->
+                <!--<a href="menu.html"  ><li role="presentation" >MENU</li></a>-->
+                <!--<a href="showroom.html" th:if="${showroomsVisible}" th:href="@{/showroom}"><li role="presentation" >SALONY</li></a>-->
+                <!--<a href="worker.html" th:if="${workersVisible}" th:href="@{/worker}"><li role="presentation" >PRACOWNICY</li></a>-->
+                <!--<a href="contracts.html" th:if="${contractsVisible}" th:href="@{/contracts}"><li role="presentation" >SPRZEDAŻE</li></a>-->
+                <!--<a href="contractors.html" th:if="${contractorsVisible}" th:href="@{/contractors}"><li role="presentation" >Klienci</li></a>-->
+                <!--<a href="invoices.html" th:if="${invoicesVisible}" th:href="@{/invoices}"><li role="presentation" >Faktury</li></a>-->
+                <!--<a href="cars.html" th:if="${carsVisible}" th:href="@{/cars}"><li role="presentation" >Samochody</li></a>-->
+                <!--<a href="reports.html" th:if="${reportsVisible}" th:href="@{/reports}"><li role="presentation" >Raporty</li></a>-->
+                <!--<a href="accessories.html" th:if="${accessoriesVisible}" th:href="@{/accessories}"><li role="presentation" >Akcesoria</li></a>-->
+                <!--<a href="promotions.html" th:if="${promotionsVisible}" th:href="@{/promotions}"><li role="presentation" >Promocje</li></a>-->
+                <!--<a href="services.html" th:if="${servicesVisible}" th:href="@{/services}"><li role="presentation" >Serwis</li></a>-->
+                <!--<a href="dictionary.html" th:if="${dictionaryVisible}" th:href="@{/dictionary}"><li role="presentation" >Słownik</li></a>-->
+                <!--<a href="privileges.html" th:if="${privilegesVisible}" th:href="@{/privileges}"><li role="presentation" >Uprawnienia</li></a>-->
+                <!--<li role="presentation" >-->
+                    <!--<div class="dropdown">-->
+                        <!--<button type="button" data-toggle="dropdown">Dropdown Example-->
+                            <!--<span class="caret"></span></button>-->
+                        <!--<ul class="dropdown-menu">-->
+                            <!--<li><a href="#">HTML</a></li>-->
+                            <!--<li><a href="#">CSS</a></li>-->
+                            <!--<li><a href="#">JavaScript</a></li>-->
+                        <!--</ul>-->
+                    <!--</div>-->
+                <!--</li>-->
+            <!--</ul>-->
+            <!--<div class="my-block"></div>-->
+            <!--<hr/>-->
+        <!--</nav>-->
+        <div class="empty"></div>
     </header>
-<div layout:fragment="main"></div>
-
+    <div th:unless="${forbiddenAccess}" layout:fragment="main">
+    </div>
+    <div th:if="${forbiddenAccess}" class="control-label col-sm-offset-4 col-sm-10"><br/>Nie masz uprawnień by przeglądać ten moduł</div>
 </body>
 </html>
